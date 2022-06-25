@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.visiongame.visiongame">
-   <application
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+    <application
         android:label="visiongame"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

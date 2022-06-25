@@ -16,13 +16,16 @@ class VisionTextToSpeechConverter{
     setUpTTs();
   }
 
-  void setUpTTs(){
+  void setUpTTs() async{
+    await _textToSpeechConverter.setVolume(1.0);
+    await _textToSpeechConverter.awaitSpeakCompletion(true);
     _textToSpeechConverter.setLanguage('en');
     _textToSpeechConverter.setSpeechRate(0.4);
   }
 
-  void speakText(String inputText) async{
+  Future<bool> speakText(String inputText) async{
     await _textToSpeechConverter.speak(inputText);
+    return Future.value(true);
   }
 
 }
