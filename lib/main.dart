@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:injectable/injectable.dart';
 import 'package:visiongame/router/app_router.gr.dart';
+import 'package:visiongame/texttospeech/vision_text_to_speech_converter.dart';
+import 'package:visiongame/voiceinput/vision_speech_input.dart';
 import 'base/constants.dart';
 import 'injector/injection.dart';
 
@@ -14,6 +16,8 @@ void main() async{
 Future<void> _init() async{
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+  final visiontts = locator<VisionTextToSpeechConverter>();
+  await visiontts.setUpTTs();
 }
 
 @injectable

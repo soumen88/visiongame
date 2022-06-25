@@ -65,6 +65,9 @@ dependencies:
   #Taking speech inputs in app
   speech_to_text: ^5.6.0
 
+  #Asking permissions in app
+  permission_handler: ^10.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
