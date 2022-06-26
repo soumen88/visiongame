@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:visiongame/game/helpers/direction.dart';
 import 'package:visiongame/game/helpers/swipe_detector.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/logger_utils.dart';
@@ -18,16 +19,23 @@ class MainGamePage extends HookConsumerWidget {
         body: SwipeDetector(
           onSwipeDown: (Offset offset){
             _logger.log(_TAG, "Swipe down");
+            game.onArrowKeyChanged(Direction.down);
           },
           onSwipeLeft: (Offset offset){
             _logger.log(_TAG, "Swipe left");
+            game.onArrowKeyChanged(Direction.left);
           },
           onSwipeRight: (Offset offset){
             _logger.log(_TAG, "Swipe right");
+            game.onArrowKeyChanged(Direction.right);
           },
           onSwipeUp: (Offset offset){
             _logger.log(_TAG, "Swipe up");
+            game.onArrowKeyChanged(Direction.up);
           },
+          /*onSwipe: (SwipeDirection swipeDirection, Offset offset){
+
+          },*/
           child: Stack(
             children: [
               GameWidget(game: game),
