@@ -1,28 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/base/permission_utils.dart';
+import 'package:visiongame/base/speech_input_model.dart';
+import 'package:visiongame/enums/speech_input_enums.dart';
 import 'package:visiongame/injector/injection.dart';
 
+import '../../base/logger_utils.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../../voiceinput/vision_speech_input.dart';
 import '../model/home_screen_view_state.dart';
 
 class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
-
+  final _logger = locator<LoggerUtils>();
+  final _TAG = "HomeScreenStateNotifer";
+  ///Below variable is used for text to speech
   final visionTts = locator<VisionTextToSpeechConverter>();
+  ///Below variable is used for taking speech input from user
   final visionSpeechInput = locator<VisionSpeechInput>();
+  ///Below variable is used for displaying bottom sheet on the home screen
+  BehaviorSubject<bool?> bottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
+  BehaviorSubject<bool?> startNextScreenEvent = BehaviorSubject<bool?>.seeded(null);
 
-  HomeScreenStateNotifer() : super(const HomeScreenViewState.loading());
+  HomeScreenStateNotifer() : super(const HomeScreenViewState.loading()){
+    listenToSpeechInput();
+  }
 
   ///Step 1 - Display the loading animation for displaying hi robot on home screen
   void init() async{
-    state = HomeScreenViewState.loading();
+    state = const HomeScreenViewState.loading();
     PermissionUtils permissionUtils = PermissionUtils();
     bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
     if(isPermissionGranted){
       state = const HomeScreenViewState.homeView();
       Future.delayed(Duration(seconds: 2),(){
-        startIntroduction();
+        //startIntroduction();
+        reloadBottomSheet(true);
       });
     }
   }
@@ -34,6 +47,36 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     await visionTts.speakText(lineTwo);
     String lineThree = "To Continue playing, Please speak ready or double tap any where on the screen";
     await visionTts.speakText(lineThree);
-    await visionSpeechInput.startListening();
+    reloadBottomSheet(true);
+  }
+
+
+  ///When this function is loaded with value as true then bottom sheet is displayed on home screen
+  ///for 5 seconds and then closed
+  ///For this duration the speech input is also invoked for capturing what user is saying
+  void reloadBottomSheet(bool value) async{
+    bottomSheetEvent.add(true);
+    await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
+    Future.delayed(Duration(seconds: ApplicationConstants.kTimerLimit),() async{
+      bottomSheetEvent.add(false);
+      await visionSpeechInput.stopListening();
+    });
+  }
+
+  ///Whatever the user has spoken will be listened here
+  void listenToSpeechInput(){
+    visionSpeechInput.currentInput.listen((SpeechInputModel? inputModel) {
+      _logger.log(_TAG, "Input model $inputModel");
+      if(inputModel != null && inputModel.textRecognized.isNotEmpty &&
+          inputModel.speechInputEnums == SpeechInputEnums.START_GAME){
+        if(inputModel.textRecognized.contains("start")){
+
+        }
+      }
+    });
+  }
+
+  void startNextScreen(bool value){
+    startNextScreenEvent.add(true);
   }
 }
