@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:visiongame/game/helpers/direction.dart';
@@ -39,6 +40,14 @@ class MainGamePage extends HookConsumerWidget {
           child: Stack(
             children: [
               GameWidget(game: game),
+              Positioned(
+                top: 100,
+                left: 100,
+                child: ElevatedButton(onPressed: (){
+                  var player = game.getPlayer;
+                  _logger.log(_TAG, "Player current position ${player.position}");
+                }, child: Text("Test")),
+              )
             ],
           ),
         )

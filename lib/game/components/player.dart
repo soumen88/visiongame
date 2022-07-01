@@ -28,12 +28,18 @@
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:visiongame/injector/injection.dart';
+import '../../base/logger_utils.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
 class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
+  final _logger = locator<LoggerUtils>();
+  final _TAG = "Player";
+
   final double _playerSpeed = 300.0;
   final double _animationSpeed = 0.15;
+
 
   late final SpriteAnimation _runDownAnimation;
   late final SpriteAnimation _runLeftAnimation;
@@ -54,6 +60,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   Future<void> onLoad() async {
     super.onLoad();
     _loadAnimations().then((_) => {animation = _standingAnimation});
+    add(RectangleHitbox());
   }
 
   @override
@@ -65,7 +72,13 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollision(intersectionPoints, other);
-
+    _logger.log(_TAG, "Inside on collision");
+    if (other is ScreenHitbox) {
+      if (!_hasCollided) {
+        _hasCollided = true;
+        _collisionDirection = direction;
+      }
+    }
   }
 
   @override
