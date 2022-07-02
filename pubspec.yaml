@@ -86,7 +86,7 @@ dev_dependencies:
   build_runner: ^2.1.11
 
   #For generating dependency injector classes
-  injectable_generator: ^1.2.2
+  injectable_generator: ^1.5.3
 
   #Generating immutable data classes
   freezed_annotation: ^2.0.3
@@ -96,6 +96,8 @@ dev_dependencies:
 
   #Generating automatic routes for screen navigation
   auto_route_generator: ^4.0.0
+
+  analyzer: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:injectable/injectable.dart';
 import 'package:visiongame/router/app_router.gr.dart';
 import 'package:visiongame/texttospeech/vision_text_to_speech_converter.dart';
-import 'package:visiongame/voiceinput/vision_speech_input.dart';
 import 'base/constants.dart';
 import 'injector/injection.dart';
 
@@ -36,6 +35,7 @@ class MyApp extends HookConsumerWidget {
       DeviceOrientation.landscapeRight,
     ]);
     return MaterialApp.router(
+      debugShowCheckedModeBanner: true,
       title: ApplicationConstants.APP_NAME,
       routeInformationParser: _appRouter.defaultRouteParser(),
       routerDelegate: _appRouter.delegate(),
