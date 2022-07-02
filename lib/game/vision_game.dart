@@ -3,9 +3,13 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
+import 'package:visiongame/game/triggers/game_triggers.dart';
+import 'package:visiongame/injector/injection.dart';
+import '../base/logger_utils.dart';
 import 'components/player.dart';
 import 'helpers/direction.dart';
 import 'helpers/map_loader.dart';
@@ -13,10 +17,34 @@ import 'dart:async' as gameTimer;
 
 /// This class encapulates the whole game.
 class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector{
+  final _logger = locator<LoggerUtils>();
+  final _TAG = "VisionGame";
   final Player _player = Player();
   final Ghost _ghostPlayer = Ghost();
   final VisionWorld _world = VisionWorld();
+  final Coins _coins = Coins();
   bool running = true;
+  final _gameTriggers = locator<GameTriggers>();
+
+  VisionGame(){
+    listenPlayerDead();
+  }
+
+  void listenPlayerDead(){
+    _gameTriggers.isPlayerDead.listen((bool? value) {
+      _logger.log(_TAG, "Player death received $value");
+      if(value != null && value){
+        Future.delayed(Duration(seconds: 2), () async{
+          await addNewPlayer();
+        });
+      }
+    });
+  }
+
+  Future<void> addNewPlayer() async{
+    await add(_player);
+
+  }
 
   @override
   Future<void> onLoad() async {
@@ -37,6 +65,10 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       _ghostPlayer.position = Vector2(camera.position.x + 30, camera.position.y + 60) ;
     });
 
+    gameTimer.Timer.periodic(Duration(seconds: 5), (timer) async{
+      await add(_coins);
+      _coins.position = Vector2(camera.position.x + 30, camera.position.y + 100) ;
+    });
   }
 
   onArrowKeyChanged(Direction direction){

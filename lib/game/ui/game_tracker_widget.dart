@@ -16,10 +16,7 @@ class GameTrackerWidget extends HookConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     final _gameTrigger = locator<GameTriggers>();
     final playerLifeStream = useStream(_gameTrigger.playerLifeStream.stream);
-    _logger.log(_TAG, "Player life ${playerLifeStream.data}");
-    if(playerLifeStream.data != null){
-
-    }
+    final playerCoinStream = useStream(_gameTrigger.playerCoinsStream.stream);
 
     return Stack(
       children: [
@@ -33,7 +30,8 @@ class GameTrackerWidget extends HookConsumerWidget{
                   width: 30,
                   height: 30,
                 ),
-                Text("3",
+                if(playerLifeStream.data != null)
+                  Text("${playerCoinStream.data}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24
@@ -51,7 +49,8 @@ class GameTrackerWidget extends HookConsumerWidget{
                   width: 30,
                   height: 30,
                 ),
-                Text("${playerLifeStream.data}",
+                if(playerLifeStream.data != null)
+                  Text("${playerLifeStream.data}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24

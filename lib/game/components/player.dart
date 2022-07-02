@@ -28,6 +28,7 @@
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
@@ -39,6 +40,7 @@ import '../triggers/game_triggers.dart';
 class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
   final _TAG = "Player";
+  final _gameTriggers = locator<GameTriggers>();
 
   final double _playerSpeed = 300.0;
   final double _animationSpeed = 0.15;
@@ -64,7 +66,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     ///Start with initial lives as 3
-    //_gameTriggers.addPlayerLife(isInitial: true, addlife: false);
+    _gameTriggers.addPlayerLife(isInitial: true, addlife: false);
+    _gameTriggers.addPlayerCoins(isInitial: true, addCoins: false);
+    _logger.log(_TAG, "Inside load function");
   }
 
   @override
@@ -83,6 +87,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
         _collisionDirection = direction;
       }
     }
+
   }
 
 
@@ -91,10 +96,11 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     super.onCollisionStart(intersectionPoints, other);
 
     if(other is Ghost){
-      //_logger.log(_TAG, "Inside on collision with ghost");
+      _logger.log(_TAG, "Inside on collision with ghost");
       //_gameTriggers.addPlayerDead(true);
       removeFromParent();
     }
+
 
 
   }
