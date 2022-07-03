@@ -1,6 +1,8 @@
 import 'package:flame/game.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:visiongame/base/constants.dart';
+import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 
 import '../../base/logger_utils.dart';
@@ -17,34 +19,38 @@ class GameTriggers{
   final _logger = locator<LoggerUtils>();
   final _TAG = "GameTriggers";
 
-  ///Below variable keeps track of players life in the game
-  BehaviorSubject<int?> playerLifeStream = BehaviorSubject.seeded(null);
-
   ///Below variable keeps track of number of coins that player would collect in the game
   BehaviorSubject<int?> playerCoinsStream = BehaviorSubject.seeded(null);
 
-  BehaviorSubject<PlayerMotionModel?> isPlayerDead = BehaviorSubject.seeded(null);
+  ///Below variable keeps track of players life in the game
+  BehaviorSubject<PlayerMotionModel?> playerLifeEventNotifier = BehaviorSubject.seeded(null);
 
-  BehaviorSubject<bool?> addCoinInGame = BehaviorSubject.seeded(null);
+  ///Below variable indicates if game is paused or running
+  BehaviorSubject<bool?> isGamePausedNotifer = BehaviorSubject.seeded(null);
 
-  void addPlayerDead(Vector2 playerPosition){
-
-    var playerLifeLeft = playerLifeStream.value!;
-    playerLifeLeft = playerLifeLeft - 1;
-    playerLifeStream.add(playerLifeLeft);
-    PlayerMotionModel playerMotionModel = PlayerMotionModel(event: "Death", position: playerPosition);
-    isPlayerDead.add(playerMotionModel);
-  }
-
-  void addPlayerLife({bool isInitial = false, required bool addlife} ){
+  void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
     if(isInitial){
-      _logger.log(_TAG, "Adding life to player");
-      playerLifeStream.add(3);
+      PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
+      playerLifeEventNotifier.add(playerMotionModel);
     }
-    else if(addlife){
-      int currentLifes = playerLifeStream.value!;
-      currentLifes++;
-      playerLifeStream.add(currentLifes);
+    if(event == PlayerLifeStatusEnums.PLAYER_DEAD){
+      var playerMotionModel = playerLifeEventNotifier.value!;
+      if(playerMotionModel.playerLivesLeft > 0){
+        int remainingLivesLeft = playerMotionModel.playerLivesLeft - 1;
+        PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_NEW_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
+        playerLifeEventNotifier.add(newPlayerModel);
+      }
+      else{
+        PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_OVER, position: playerPosition, playerLivesLeft: 0);
+        playerLifeEventNotifier.add(newPlayerModel);
+      }
+    }
+
+    if(event == PlayerLifeStatusEnums.PLAYER_ADD_LIFE){
+      var playerMotionModel = playerLifeEventNotifier.value!;
+      int remainingLivesLeft = playerMotionModel.playerLivesLeft + 1;
+      PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_NEW_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
+      playerLifeEventNotifier.add(newPlayerModel);
     }
   }
 
@@ -60,7 +66,12 @@ class GameTriggers{
     }
   }
 
-  void addCoin(bool value){
-
+  void addGamePauseOrResume({required bool isGamePaused}){
+    if(isGamePaused){
+      isGamePausedNotifer.add(true);
+    }
+    else{
+      isGamePausedNotifer.add(false);
+    }
   }
 }

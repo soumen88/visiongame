@@ -28,6 +28,7 @@
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
@@ -66,7 +67,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     ///Start with initial lives as 3
-    _gameTriggers.addPlayerLife(isInitial: true, addlife: false);
     _gameTriggers.addPlayerCoins(isInitial: true, addCoins: false);
     _logger.log(_TAG, "Inside load function");
   }
@@ -96,12 +96,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     super.onCollisionStart(intersectionPoints, other);
 
     if(other is Ghost){
-      _logger.log(_TAG, "Inside on collision with ghost");
-      //_gameTriggers.addPlayerDead(true);
+      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
       removeFromParent();
     }
-
-
 
   }
 

@@ -47,7 +47,7 @@ class MainGamePage extends HookConsumerWidget {
                 top: 100,
                 left: 100,
                 child: ElevatedButton(onPressed: (){
-                  _gameTrigger.addPlayerLife(isInitial: true, addlife: false);
+
                 }, child: Text("Test")),
               ),
               GameTrackerWidget(),

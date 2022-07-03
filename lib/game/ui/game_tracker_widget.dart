@@ -15,7 +15,7 @@ class GameTrackerWidget extends HookConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _gameTrigger = locator<GameTriggers>();
-    final playerLifeStream = useStream(_gameTrigger.playerLifeStream.stream);
+    final playerLifeStream = useStream(_gameTrigger.playerLifeEventNotifier.stream);
     final playerCoinStream = useStream(_gameTrigger.playerCoinsStream.stream);
 
     return Stack(
@@ -50,7 +50,7 @@ class GameTrackerWidget extends HookConsumerWidget{
                   height: 30,
                 ),
                 if(playerLifeStream.data != null)
-                  Text("${playerLifeStream.data}",
+                  Text("${playerLifeStream.data!.playerLivesLeft}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24

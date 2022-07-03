@@ -17,8 +17,7 @@ class TimerStateNotifier extends StateNotifier<TimerViewState> {
 
 
   void startTimer(){
-    final Stream<int> _timerStream =
-    Stream.periodic(const Duration(seconds: 1), (int count) {
+    final Stream<int> _timerStream = Stream.periodic(const Duration(seconds: 1), (int count) {
       return count;
     }).takeWhile((element) => secondsPassed < ApplicationConstants.kTimerLimit);
 

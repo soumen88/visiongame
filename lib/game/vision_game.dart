@@ -1,19 +1,22 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
+import 'package:visiongame/game/components/hearts.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
+import 'package:visiongame/game/models/player_motion_model.dart';
 import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/logger_utils.dart';
 import 'components/player.dart';
 import 'helpers/direction.dart';
 import 'helpers/map_loader.dart';
-import 'dart:async' as gameTimer;
 
 /// This class encapulates the whole game.
 class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector{
@@ -21,21 +24,23 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   final _TAG = "VisionGame";
   final Player _player = Player();
   final Ghost _ghostPlayer = Ghost();
+  final Hearts _hearts = Hearts();
   final VisionWorld _world = VisionWorld();
   final Coins _coins = Coins();
   bool running = true;
   final _gameTriggers = locator<GameTriggers>();
+  var _random = Random();
 
   VisionGame(){
     listenPlayerDead();
   }
 
   void listenPlayerDead(){
-    _gameTriggers.isPlayerDead.listen((bool? value) {
-      _logger.log(_TAG, "Player death received $value");
-      if(value != null && value){
+    _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
+      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE){
         Future.delayed(Duration(seconds: 2), () async{
-          await addNewPlayer();
+          _player.position = playerMotionModel.position;
+          await add(_player);
         });
       }
     });
@@ -54,20 +59,50 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await add(_ghostPlayer);
     addWorldCollision();
     _player.position = _world.size / 1.5;
+    _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_INIT, _player.position, isInitial: true);
     camera.followComponent(_player,
         worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
 
     _ghostPlayer.position = _world.size / 1.6;
-    gameTimer.Timer.periodic(Duration(seconds: 5), (timer) {
-      //_ghostPlayer.position = camera.position;
-      _ghostPlayer.switchDirection();
 
-      _ghostPlayer.position = Vector2(camera.position.x + 30, camera.position.y + 60) ;
+    final Stream<int> _ghostPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
+      return count;
+    }).takeWhile((element) => running);
+
+    final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
+      return count;
+    }).takeWhile((element) => running);
+
+    final Stream<int> _heartPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
+      return count;
+    }).takeWhile((element) => running);
+
+    _ghostPositionStream.listen((int event) {
+      //_ghostPlayer.position = camera.position;
+      int randomX = next(50, 100);
+      int randomY = next(50, 100);
+      _logger.log(_TAG, "Random x $randomX");
+      _ghostPlayer.switchDirection();
+      _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
     });
 
-    gameTimer.Timer.periodic(Duration(seconds: 5), (timer) async{
-      await add(_coins);
-      _coins.position = Vector2(camera.position.x + 30, camera.position.y + 100) ;
+    _coinPositionStream.listen((int event)  async{
+      int randomX = next(50, 100);
+      int randomY = next(50, 500);
+      if(!_coins.isMounted){
+        await add(_coins);
+        _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
+      }
+    });
+
+    _heartPositionStream.listen((int event)  async{
+      if(!_hearts.isMounted){
+        int randomX = next(50, 400);
+        int randomY = next(50, 1000);
+        await add(_hearts);
+        _hearts.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
+      }
+
     });
   }
 
@@ -103,5 +138,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       resumeEngine();
     }
     running = !running;
+    _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
+
+  /**
+   * Generates a positive random integer uniformly distributed on the range
+   * from [min], inclusive, to [max], exclusive.
+   */
+  int next(int min, int max) => min + _random.nextInt(max - min);
 }
