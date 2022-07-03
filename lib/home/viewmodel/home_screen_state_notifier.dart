@@ -18,6 +18,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   final visionTts = locator<VisionTextToSpeechConverter>();
   ///Below variable is used for taking speech input from user
   final visionSpeechInput = locator<VisionSpeechInput>();
+
   ///Below variable is used for displaying bottom sheet on the home screen
   BehaviorSubject<bool?> bottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
   BehaviorSubject<bool?> startNextScreenEvent = BehaviorSubject<bool?>.seeded(null);

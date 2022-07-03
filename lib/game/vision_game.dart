@@ -78,10 +78,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     }).takeWhile((element) => running);
 
     _ghostPositionStream.listen((int event) {
-      //_ghostPlayer.position = camera.position;
       int randomX = next(50, 100);
       int randomY = next(50, 100);
-      _logger.log(_TAG, "Random x $randomX");
       _ghostPlayer.switchDirection();
       _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
     });
