@@ -33,6 +33,10 @@ class VisionSpeechInput{
       currentEnum = SpeechInputEnums.START_GAME;
       await _speechToText.listen(onResult: onSpeechResult);
     }
+    if(currentInput == SpeechInputEnums.RESTART_GAME){
+      currentEnum = SpeechInputEnums.RESTART_GAME;
+      await _speechToText.listen(onResult: onSpeechResult);
+    }
 
   }
 

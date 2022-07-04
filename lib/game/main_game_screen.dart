@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:visiongame/base/empty_widget.dart';
 import 'package:visiongame/game/helpers/direction.dart';
@@ -11,23 +12,38 @@ import 'package:visiongame/game/ui/game_tracker_widget.dart';
 import 'package:visiongame/game/ui/game_volume_widget.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/logger_utils.dart';
+import '../loading/loading_widget.dart';
 import '../providers/provider.dart';
-import 'helpers/joypad.dart';
 import 'vision_game.dart';
 
 class MainGamePage extends HookConsumerWidget {
   final _logger = locator<LoggerUtils>();
   final _TAG = "MainGamePage";
-  VisionGame game = VisionGame();
+
   final _gameTrigger = locator<GameTriggers>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     final gameProviderState = ref.read(gameProvider);
+    final gameNotifier = ref.watch(gameProvider.notifier);
+    VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+    useEffect((){
+      _logger.log(_TAG, "Inside use effect");
+      Future.delayed(Duration.zero, (){
+        _logger.log(_TAG, "Starting game view");
+        gameNotifier.init();
+      });
+    }, const []);
+
     return gameProviderState.maybeWhen(
         displayGameOver: (){
+          _logger.log(_TAG, "Displaying game over view");
           return GameOverWidget();
         },
         displayGameView: (){
+          _logger.log(_TAG, "Displaying game view");
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(
@@ -47,9 +63,6 @@ class MainGamePage extends HookConsumerWidget {
                   //_logger.log(_TAG, "Swipe up");
                   game.onArrowKeyChanged(Direction.up);
                 },
-                /*onSwipe: (SwipeDirection swipeDirection, Offset offset){
-
-          },*/
                 child: Stack(
                   children: [
                     GameWidget(game: game),
@@ -66,6 +79,10 @@ class MainGamePage extends HookConsumerWidget {
                 ),
               )
           );
+        },
+        loading: (){
+          _logger.log(_TAG, "Displaying game loading view");
+          return LoadingWidget();
         },
         orElse: (){
           return EmptyWidget();

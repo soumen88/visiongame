@@ -43,7 +43,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   final _TAG = "Player";
   final _gameTriggers = locator<GameTriggers>();
 
-  final double _playerSpeed = 300.0;
+  final double _playerSpeed = 100.0;
   final double _animationSpeed = 0.15;
 
   late final SpriteAnimation _runDownAnimation;
@@ -96,8 +96,8 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     super.onCollisionStart(intersectionPoints, other);
 
     if(other is Ghost){
-      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();
+      /*_gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
+      removeFromParent();*/
     }
 
   }

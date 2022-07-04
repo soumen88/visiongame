@@ -4,16 +4,19 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
+import 'package:visiongame/game/models/ghost_position_model.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/logger_utils.dart';
+import '../texttospeech/vision_text_to_speech_converter.dart';
 import 'components/player.dart';
 import 'helpers/direction.dart';
 import 'helpers/map_loader.dart';
@@ -27,12 +30,18 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   final Hearts _hearts = Hearts();
   final VisionWorld _world = VisionWorld();
   final Coins _coins = Coins();
+  int screenHeight;
+  int screenWidth;
   bool running = true;
   final _gameTriggers = locator<GameTriggers>();
-  var _random = Random();
+  final _random = Random();
 
-  VisionGame(){
+  ///Below variable is used for speaking about ghost position in the game
+  final _visionTts = locator<VisionTextToSpeechConverter>();
+
+  VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
+    listenToGhostMovement();
   }
 
   void listenPlayerDead(){
@@ -46,14 +55,22 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     });
   }
 
-  Future<void> addNewPlayer() async{
-    await add(_player);
-
+  void listenToGhostMovement(){
+    _ghostPlayer.ghostPositionNotifier.listen((GhostPositionModel? ghostPositionModel) async{
+      if(ghostPositionModel != null && running){
+        int randomX = next(50, 400);
+        int randomY = next(50, 400);
+        _logger.log(_TAG, "Running $running");
+        _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        await speakMovement(ghostPositionModel);
+      }
+    });
   }
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    _logger.log(_TAG, "inside on load");
     await add(_world);
     await add(_player);
     await add(_ghostPlayer);
@@ -65,10 +82,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
     _ghostPlayer.position = _world.size / 1.6;
 
-    final Stream<int> _ghostPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
-      return count;
-    }).takeWhile((element) => running);
-
     final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
       return count;
     }).takeWhile((element) => running);
@@ -76,13 +89,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     final Stream<int> _heartPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
       return count;
     }).takeWhile((element) => running);
-
-    _ghostPositionStream.listen((int event) {
-      int randomX = next(50, 100);
-      int randomY = next(50, 100);
-      _ghostPlayer.switchDirection();
-      _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
-    });
 
     _coinPositionStream.listen((int event)  async{
       int randomX = next(50, 100);
@@ -94,13 +100,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     });
 
     _heartPositionStream.listen((int event)  async{
+      int randomX = next(50, 400);
+      int randomY = next(50, 1000);
       if(!_hearts.isMounted){
-        int randomX = next(50, 400);
-        int randomY = next(50, 1000);
         await add(_hearts);
         _hearts.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
       }
-
     });
   }
 
@@ -138,6 +143,37 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     running = !running;
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
+
+  Future<void> speakMovement(GhostPositionModel ghostPositionModel) async{
+    String speakString = "";
+    bool isRight = _ghostPlayer.position.x > _player.position.x;
+    if(ghostPositionModel.isXAxisMovement){
+      if(isRight){
+        speakString = "Enemy coming from right";
+      }
+      else{
+        speakString = "Enemy coming from left";
+      }
+    }
+    else{
+      if(ghostPositionModel.isDown && isRight){
+        speakString = "Enemy coming from right and walking down";
+      }
+      else if(ghostPositionModel.isDown && !isRight){
+        speakString = "Enemy coming from left and walking down";
+      }
+      else if(!ghostPositionModel.isDown && isRight){
+        speakString = "Enemy coming from right and walking up";
+      }
+      else if(!ghostPositionModel.isDown && !isRight){
+        speakString = "Enemy coming from left and walking up";
+      }
+    }
+    _logger.log(_TAG, "Speak String $speakString");
+    await _visionTts.speakText(speakString);
+  }
+
+
 
   /**
    * Generates a positive random integer uniformly distributed on the range

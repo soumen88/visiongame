@@ -28,6 +28,10 @@ class GameTriggers{
   ///Below variable indicates if game is paused or running
   BehaviorSubject<bool?> isGamePausedNotifer = BehaviorSubject.seeded(null);
 
+  ///Below variable decides if game can be controlled with voice input
+  BehaviorSubject<bool?> isVoiceInputEnabled = BehaviorSubject<bool?>.seeded(null);
+
+
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
     if(isInitial){
       PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
@@ -74,4 +78,18 @@ class GameTriggers{
       isGamePausedNotifer.add(false);
     }
   }
+
+  void toggleVoiceInput({bool isInitial = false}){
+    ///Assuming initially voice input will be enabled for the game
+    if(isInitial){
+      isVoiceInputEnabled.add(true);
+    }
+    else{
+      bool currentValue = isVoiceInputEnabled.value!;
+      currentValue = !currentValue;
+      isVoiceInputEnabled.add(currentValue);
+    }
+
+  }
+
 }

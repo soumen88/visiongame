@@ -5,6 +5,7 @@ import 'package:visiongame/injector/injection.dart';
 
 import '../../base/constants.dart';
 import '../../base/logger_utils.dart';
+import '../../base/permission_utils.dart';
 import '../../enums/player_life_status_enums.dart';
 import '../../enums/speech_input_enums.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
@@ -26,8 +27,13 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   ///Below variable is used for displaying bottom sheet on the game over screen
   BehaviorSubject<bool?> gameOverbottomSheetNotifier = BehaviorSubject<bool?>.seeded(null);
 
-  GameViewStateNotifier() : super(const GameScreenViewState.displayGameOver()) {
+  GameViewStateNotifier() : super(const GameScreenViewState.displayGameView()) {
     listenPlayerEvents();
+  }
+
+  void init(){
+    _gameTriggers.toggleVoiceInput(isInitial: true);
+    state = const GameScreenViewState.displayGameView();
   }
 
   void listenPlayerEvents(){
@@ -40,11 +46,16 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startGameOverScript() async{
-    String lineOne = "Alas, that was bad. We hope that you liked our game";
-    await visionTts.speakText(lineOne);
-    String lineTwo = "Do you want to continue playing our game";
-    await visionTts.speakText(lineTwo);
-    reloadBottomSheet(true);
+    PermissionUtils permissionUtils = PermissionUtils();
+    bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
+    if(isPermissionGranted){
+      String lineOne = "Alas, that was bad. We hope that you liked our game";
+      await visionTts.speakText(lineOne);
+      String lineTwo = "Do you want to continue playing our game?";
+      await visionTts.speakText(lineTwo);
+      reloadBottomSheet(true);
+    }
+
   }
 
   ///When this function is loaded with value as true then bottom sheet is displayed on home screen
@@ -52,7 +63,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   ///For this duration the speech input is also invoked for capturing what user is saying
   void reloadBottomSheet(bool value) async{
     gameOverbottomSheetNotifier.add(true);
-    await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
+    await visionSpeechInput.startListening(SpeechInputEnums.RESTART_GAME);
     Future.delayed(Duration(seconds: ApplicationConstants.kTimerLimit),() async{
       gameOverbottomSheetNotifier.add(false);
       await visionSpeechInput.stopListening();
