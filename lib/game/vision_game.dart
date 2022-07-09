@@ -170,7 +170,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       }
     }
     _logger.log(_TAG, "Speak String $speakString");
-    await _visionTts.speakText(speakString);
+    //await _visionTts.speakText(speakString);
   }
 
 

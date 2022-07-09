@@ -21,7 +21,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
 
   ///Below variable is used for displaying bottom sheet on the home screen
   BehaviorSubject<bool?> bottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
-  BehaviorSubject<bool?> startNextScreenEvent = BehaviorSubject<bool?>.seeded(null);
+  BehaviorSubject<String?> startNextScreenEvent = BehaviorSubject<String?>.seeded(null);
 
   HomeScreenStateNotifer() : super(const HomeScreenViewState.loading()){
     listenToSpeechInput();
@@ -32,7 +32,8 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     state = const HomeScreenViewState.loading();
     PermissionUtils permissionUtils = PermissionUtils();
     bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
-    if(isPermissionGranted){
+    bool isSpeechInputInitialized = await visionSpeechInput.setUpVoiceInput();
+    if(isPermissionGranted && isSpeechInputInitialized){
       state = const HomeScreenViewState.homeView();
       Future.delayed(Duration(seconds: 2),(){
         //startIntroduction();
@@ -57,11 +58,15 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   ///For this duration the speech input is also invoked for capturing what user is saying
   void reloadBottomSheet(bool value) async{
     bottomSheetEvent.add(true);
-    await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
-    Future.delayed(Duration(seconds: ApplicationConstants.kTimerLimit),() async{
-      bottomSheetEvent.add(false);
-      await visionSpeechInput.stopListening();
-    });
+    bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
+    if(isListening){
+      Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
+        _logger.log(_TAG, "Stop bottom sheet now");
+        await visionSpeechInput.stopListening();
+        bottomSheetEvent.add(false);
+      });
+    }
+
   }
 
   ///Whatever the user has spoken will be listened here
@@ -70,14 +75,15 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
       _logger.log(_TAG, "Input model $inputModel");
       if(inputModel != null && inputModel.textRecognized.isNotEmpty &&
           inputModel.speechInputEnums == SpeechInputEnums.START_GAME){
-        if(inputModel.textRecognized.contains("start")){
-
+        if(inputModel.textRecognized.contains("start") || inputModel.textRecognized.contains("ready")){
+            startNextScreen(ApplicationConstants.ScreenDifficulty);
         }
       }
+
     });
   }
 
-  void startNextScreen(bool value){
-    startNextScreenEvent.add(true);
+  void startNextScreen(String value){
+    startNextScreenEvent.add(value);
   }
 }

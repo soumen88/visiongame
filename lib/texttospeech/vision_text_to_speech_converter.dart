@@ -17,9 +17,16 @@ class VisionTextToSpeechConverter{
     await _textToSpeechConverter.setSpeechRate(0.4);
   }
 
+  ///When the result from speak is 1 then it indicates that current speak part is complete
+  ///Hence we are sending true only once the sentence is finished
   Future<bool> speakText(String inputText) async{
-    await _textToSpeechConverter.speak(inputText);
-    return Future.value(true);
+    var result = await _textToSpeechConverter.speak(inputText);
+    if(result == 1){
+      return Future.value(true);
+    }
+    else{
+      return Future.value(false);
+    }
   }
 
 }

@@ -1,6 +1,7 @@
 
 
 import 'package:auto_route/auto_route.dart';
+import 'package:visiongame/difficultylevel/difficulty_level.dart';
 import 'package:visiongame/splash/splash_screen.dart';
 
 import '../game/main_game_screen.dart';
@@ -17,6 +18,10 @@ import '../home/home_screen.dart';
       AutoRoute(
         path: "/home",
         page: HomeScreenPage,
+      ),
+      AutoRoute(
+        path: "/difficultylevel",
+        page: DifficultyLevelScreen,
       ),
       AutoRoute(
         path: "/gameScreen",
