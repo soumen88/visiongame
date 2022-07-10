@@ -57,14 +57,24 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   ///for 5 seconds and then closed
   ///For this duration the speech input is also invoked for capturing what user is saying
   void reloadBottomSheet(bool value) async{
-    bottomSheetEvent.add(true);
-    bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
-    if(isListening){
-      Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
-        _logger.log(_TAG, "Stop bottom sheet now");
-        await visionSpeechInput.stopListening();
-        bottomSheetEvent.add(false);
-      });
+    if(value){
+      bottomSheetEvent.add(true);
+      bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
+      if(isListening){
+        Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
+          _logger.log(_TAG, "Stop bottom sheet now");
+          if(visionSpeechInput.isSpeechEnabled){
+            bool isStopped = await visionSpeechInput.stopListening();
+            if(isStopped){
+              bottomSheetEvent.add(false);
+            }
+          }
+        });
+      }
+    }
+    else{
+      bottomSheetEvent.add(false);
+      await visionSpeechInput.stopListening();
     }
 
   }

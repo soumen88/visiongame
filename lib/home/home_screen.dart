@@ -22,7 +22,7 @@ class HomeScreenPage extends HookConsumerWidget{
 
   final _logger = locator<LoggerUtils>();
   final _TAG = "HomeScreenPage";
-  final _visionTts = locator<VisionSpeechInput>();
+  //final _visionSpeechInput = locator<VisionSpeechInput>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeScreenNotifier = ref.watch(homeScreenProviders.notifier);
@@ -51,6 +51,8 @@ class HomeScreenPage extends HookConsumerWidget{
       );
     }
 
+    ///When display sheet data is true then bottom sheet is displayed and when it is false it gets
+    ///hidden
     if(displaySheet.data != null){
       if(displaySheet.data == false){
         Future.delayed(Duration.zero, (){
@@ -76,6 +78,7 @@ class HomeScreenPage extends HookConsumerWidget{
           return GestureDetector(
             onDoubleTap: (){
               _logger.log(_TAG, 'Double tap event received');
+              homeScreenNotifier.reloadBottomSheet(false);
               homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
             },
             child: Scaffold(
@@ -86,7 +89,7 @@ class HomeScreenPage extends HookConsumerWidget{
                     margin: EdgeInsets.all(20),
                     child: ElevatedButton(onPressed: (){
                       _logger.log(_TAG, "Check if listening");
-                      _visionTts.checkIfListening();
+                      //_visionSpeechInput.checkIfListening();
                     }, child: Text("Test")),
                   ),
                   RobotWaveWidget()

@@ -12,6 +12,7 @@ import '../base/constants.dart';
 import '../base/logger_utils.dart';
 import '../game/helpers/swipe_detector.dart';
 import '../home/start_listening_widget.dart';
+import '../home/viewmodel/robot_wave_widget.dart';
 import '../injector/injection.dart';
 
 class DifficultyLevelScreen extends HookConsumerWidget{
@@ -22,11 +23,10 @@ class DifficultyLevelScreen extends HookConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
 
     final difficultyScreenNotifier = ref.watch(difficultyScreenProviders.notifier);
-    final homeScreenNotifier = ref.watch(homeScreenProviders.notifier);
     final difficultyScreenState = ref.watch(difficultyScreenProviders);
     final timerNotifier = ref.watch(timerProvider.notifier);
     final displaySheet = useStream(difficultyScreenNotifier.difficultyScreenBottomSheetEvent.stream);
-    final startNextScreen = useStream(homeScreenNotifier.startNextScreenEvent.stream);
+    final startNextScreen = useStream(difficultyScreenNotifier.startNextScreenEvent.stream);
 
     useEffect((){
       if(difficultyScreenNotifier.isSpeakingComplete == false){
@@ -34,12 +34,11 @@ class DifficultyLevelScreen extends HookConsumerWidget{
           bool isSpeakingComplete = await difficultyScreenNotifier.askForDifficultyLevel();
           if(isSpeakingComplete){
             _logger.log(_TAG, "Speaking is complete now");
-            difficultyScreenNotifier.reloadDifficultyBottomSheet(true);
-          }
 
+          }
         });
       }
-    });
+    }, const []);
 
 
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenGame){
@@ -61,6 +60,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     }
 
     if(displaySheet.data != null){
+      _logger.log(_TAG, "Bottom sheet data ${displaySheet.data}");
       if(displaySheet.data == false){
         Future.delayed(Duration.zero, (){
           Navigator.pop(context);
@@ -77,34 +77,28 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     return difficultyScreenState.maybeWhen(
         homeView: (){
           return Scaffold(
-            body: SwipeDetector(
-              onSwipeDown: (Offset offset){
-                _logger.log(_TAG, "Swipe down");
+            body: SizedBox.expand(
+              child: SwipeDetector(
+                behavior: HitTestBehavior.opaque,
+                onSwipeDown: (Offset offset){
+                  _logger.log(_TAG, "Swipe down");
 
-              },
-              onSwipeLeft: (Offset offset){
-                _logger.log(_TAG, "Swipe left");
-
-              },
-              onSwipeRight: (Offset offset){
-                _logger.log(_TAG, "Swipe right");
-
-              },
-              onSwipeUp: (Offset offset){
-                _logger.log(_TAG, "Swipe up");
-
-              },
-              child:
-              SizedBox.expand(
-                child: Container(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: // Load a Lottie animation file from your assets
-                    Lottie.asset('assets/animation/robot_wave.json'),
-                  ),
-                ),
+                },
+                onSwipeLeft: (Offset offset){
+                  _logger.log(_TAG, "Swipe left");
+                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                },
+                onSwipeRight: (Offset offset){
+                  _logger.log(_TAG, "Swipe right");
+                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                },
+                onSwipeUp: (Offset offset){
+                  _logger.log(_TAG, "Swipe up");
+                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                },
+                child: RobotWaveWidget(),
               ),
-            ),
+            )
           );
         },
         orElse: (){

@@ -23,6 +23,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
 
   ///Below variable will show bottom sheet on the difficulty selection screen
   BehaviorSubject<bool?> difficultyScreenBottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
+  BehaviorSubject<String?> startNextScreenEvent = BehaviorSubject<String?>.seeded(null);
 
   bool isSpeakingComplete = false;
 
@@ -30,33 +31,35 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     listenToSpeechInput();
   }
 
-
+  ///Below function asks for difficulty level in the game
   Future<bool> askForDifficultyLevel() async{
-
     state = const DifficultyLevelViewState.homeView();
-    String lineOne = "Nice!";
-    bool isSpeakComplete1 = await visionTts.speakText(lineOne);
-    String lineTwo = "Now we move to our next part.";
-    bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
-    String lineThree = "What would be the difficulty for this game? You have three choices";
-    bool isSpeakComplete3 = await visionTts.speakText(lineThree);
-    String lineFour = "Would you want your game to be easy, medium or hard?";
-    bool isSpeakComplete4 = await visionTts.speakText(lineFour);
-    String lineFive = "Swipe left or say easy";
-    bool isSpeakComplete5 = await visionTts.speakText(lineFive);
-    String lineSix = "Or Swipe right or say medium";
-    bool isSpeakComplete6 = await visionTts.speakText(lineSix);
-    String lineSeven = "And you can Swipe up or say hard for selecting hard";
-    bool isSpeakComplete7 = await visionTts.speakText(lineSeven);
-    if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4 &&
-        isSpeakComplete5 && isSpeakComplete6 && isSpeakComplete7 ){
-      _logger.log(_TAG, "All speak completed");
-      isSpeakingComplete = true;
-      return Future.value(isSpeakingComplete);
+    bool isSpeechInputInitializationComplete = await visionSpeechInput.setUpVoiceInput();
+    if(isSpeechInputInitializationComplete){
+      String lineOne = "Nice!";
+      bool isSpeakComplete1 = await visionTts.speakText(lineOne);
+      String lineTwo = "Now we move to our next part.";
+      bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
+      /*String lineThree = "What would be the difficulty for this game? You have three choices";
+      bool isSpeakComplete3 = await visionTts.speakText(lineThree);
+      String lineFour = "Would you want your game to be easy, medium or hard?";
+      bool isSpeakComplete4 = await visionTts.speakText(lineFour);
+      String lineFive = "Swipe left or say easy";
+      bool isSpeakComplete5 = await visionTts.speakText(lineFive);
+      String lineSix = "Or Swipe right or say medium";
+      bool isSpeakComplete6 = await visionTts.speakText(lineSix);
+      String lineSeven = "And you can Swipe up or say hard for selecting hard";
+      bool isSpeakComplete7 = await visionTts.speakText(lineSeven);*/
+      /*if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4 &&
+          isSpeakComplete5 && isSpeakComplete6 && isSpeakComplete7 ){*/
+      if( isSpeakComplete1 && isSpeakComplete2){
+        _logger.log(_TAG, "All speak completed");
+        isSpeakingComplete = true;
+        reloadDifficultyBottomSheet(true);
+        return Future.value(isSpeakingComplete);
+      }
     }
-    else{
-      return Future.value(false);
-    }
+    return Future.value(false);
   }
 
   ///Whatever the user has spoken will be listened here
@@ -69,7 +72,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
             || inputModel.textRecognized.contains("medium")
             || inputModel.textRecognized.contains("hard")){
           _logger.log(_TAG, "Start next game screen");
-          //startNextScreenEvent.add(ApplicationConstants.ScreenGame);
+          startNextScreen(ApplicationConstants.ScreenGame);
         }
       }
     });
@@ -83,14 +86,16 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   void reloadDifficultyBottomSheet(bool value) async{
     difficultyScreenBottomSheetEvent.add(true);
     _logger.log(_TAG, "Beginning to listen again");
-    bool isInitialized = await visionSpeechInput.setUpVoiceInput();
-    if(isInitialized){
-      await visionSpeechInput.startListening(SpeechInputEnums.DIFFICULTY_LEVEL);
+    bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.DIFFICULTY_LEVEL);
+    if(isListening){
       Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
         difficultyScreenBottomSheetEvent.add(false);
         await visionSpeechInput.stopListening();
       });
     }
+  }
 
+  void startNextScreen(String value){
+    startNextScreenEvent.add(value);
   }
 }

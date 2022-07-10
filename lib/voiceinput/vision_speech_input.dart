@@ -9,20 +9,28 @@ import 'package:visiongame/injector/injection.dart';
 
 import '../base/logger_utils.dart';
 
-@injectable
 class VisionSpeechInput{
+  static final VisionSpeechInput _instance = VisionSpeechInput._init();
+
+  static VisionSpeechInput get instance => _instance;
+
+  VisionSpeechInput._init();
+
   final _TAG = "VisionSpeechInput";
   final _logger = locator<LoggerUtils>();
   SpeechToText _speechToText = SpeechToText();
-  bool _isSpeechEnabled = false;
+  bool isSpeechEnabled = false;
   SpeechInputEnums? currentEnum;
   String _lastWords = "";
   final BehaviorSubject<SpeechInputModel?> currentInput = BehaviorSubject.seeded(null);
 
-
   Future<bool> setUpVoiceInput() async{
-    _isSpeechEnabled = await _speechToText.initialize( onStatus: speechInputStatusListener, onError: speechInputErrorListener );
-    return Future.value(_isSpeechEnabled);
+    if(isSpeechEnabled == false){
+
+      isSpeechEnabled = await _speechToText.initialize( onStatus: speechInputStatusListener, onError: speechInputErrorListener );
+    }
+    _logger.log(_TAG, "is speech enabled ${isSpeechEnabled}");
+    return Future.value(isSpeechEnabled);
   }
 
   /// Each time to start a speech recognition session
@@ -43,10 +51,10 @@ class VisionSpeechInput{
     if(currentInput == SpeechInputEnums.DIFFICULTY_LEVEL){
       currentEnum = SpeechInputEnums.DIFFICULTY_LEVEL;
       await _speechToText.listen(onResult: onSpeechResult);
-
+      _logger.log(_TAG, "Listening for difficulty level in game ${_speechToText.isListening} for enum $currentEnum");
     }
 
-    return Future.value(_isSpeechEnabled);
+    return Future.value(isSpeechEnabled);
   }
 
   /// This is the callback that the SpeechToText plugin calls when
@@ -54,27 +62,28 @@ class VisionSpeechInput{
   void onSpeechResult(SpeechRecognitionResult result) {
     _lastWords = result.recognizedWords;
     _logger.log(_TAG, "Start listening $_lastWords");
-
   }
 
   ///Stop listening for speech input
-  Future<void> stopListening() async{
-    if(currentInput != null){
+  Future<bool> stopListening() async{
+    if(currentEnum != null){
       await _speechToText.stop();
-      _isSpeechEnabled = false;
+      isSpeechEnabled = false;
       _logger.log(_TAG, "Adding data to speech input model");
       SpeechInputModel speechInputModel = SpeechInputModel(textRecognized: _lastWords, speechInputEnums: currentEnum!);
       currentInput.add(speechInputModel);
       currentEnum = null;
+      return Future.value(true);
     }
+    return Future.value(false);
   }
 
   ///In android the speech input is set by device and cannot be changed
   ///Hence whenever the value changes to not listening then we are again forcing the speech to text to
   ///listen to users words
   void speechInputStatusListener(String value) async{
-    //_logger.log(_TAG, "Status changed to value $value");
-    if(value == "notListening" && _isSpeechEnabled){
+    _logger.log(_TAG, "Status changed to value $value and enum ${currentEnum} and speech enabled ${isSpeechEnabled}");
+    if(value == "notListening" && isSpeechEnabled){
       await _speechToText.listen(onResult: onSpeechResult);
     }
   }

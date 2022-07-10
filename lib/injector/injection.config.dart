@@ -26,7 +26,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i4.GameTriggers>(() => registerModule.gameTriggers);
   gh.factory<_i5.LoggerUtils>(() => _i5.LoggerUtils());
   gh.factory<_i6.MyApp>(() => _i6.MyApp());
-  gh.factory<_i7.VisionSpeechInput>(() => _i7.VisionSpeechInput());
+  gh.factory<_i7.VisionSpeechInput>(() => registerModule.visionSpeech);
   gh.factory<_i8.VisionTextToSpeechConverter>(
       () => _i8.VisionTextToSpeechConverter());
   return get;
