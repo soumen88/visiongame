@@ -37,7 +37,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
       state = const HomeScreenViewState.homeView();
       Future.delayed(Duration(seconds: 2),(){
         //startIntroduction();
-        reloadBottomSheet(true);
+        //reloadBottomSheet(true);
       });
     }
   }
@@ -74,9 +74,11 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     }
     else{
       bottomSheetEvent.add(false);
-      await visionSpeechInput.stopListening();
+      await visionTts.speakStop();
+      if(visionSpeechInput.isSpeechEnabled){
+        await visionSpeechInput.stopListening();
+      }
     }
-
   }
 
   ///Whatever the user has spoken will be listened here

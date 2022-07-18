@@ -29,4 +29,16 @@ class VisionTextToSpeechConverter{
     }
   }
 
+  ///When the result from speak is 1 then it indicates that current speak part is complete
+  ///Hence we are sending true only once the sentence is finished
+  Future<bool> speakStop() async{
+    var result = await _textToSpeechConverter.stop();
+    if(result == 1){
+      return Future.value(true);
+    }
+    else{
+      return Future.value(false);
+    }
+  }
+
 }

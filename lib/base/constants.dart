@@ -6,7 +6,7 @@ class ApplicationConstants {
   static int kAnimationLoadTime = 1;//seconds
   static int kTimerLimit = 5;//seconds
   static int kSpeechTimerLimit = 7;//seconds
-  static int kInitialPlayerLifes = 1;//seconds
+  static int kInitialPlayerLifes = 3;//seconds
   static int kGhostTimer  = 5;//seconds
   static String ScreenDifficulty  = "Difficulty";//seconds
   static String ScreenGame  = "GameScreen";//seconds

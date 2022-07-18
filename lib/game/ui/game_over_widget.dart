@@ -12,6 +12,7 @@ import '../../home/start_listening_widget.dart';
 class GameOverWidget extends HookConsumerWidget{
   final _logger = locator<LoggerUtils>();
   final _TAG = "GameOverWidget";
+  bool isBottomSheetDisplayed = false;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameNotifier = ref.watch(gameProvider.notifier);
@@ -37,13 +38,14 @@ class GameOverWidget extends HookConsumerWidget{
 
     if(displaySheet.data != null){
       _logger.log(_TAG, "Display sheet data ${displaySheet.data}");
-      if(displaySheet.data == false){
+      if(displaySheet.data == false && isBottomSheetDisplayed){
         Future.delayed(Duration.zero, (){
           Navigator.pop(context);
         });
       }
       else{
         Future.delayed(Duration.zero, (){
+          isBottomSheetDisplayed = true;
           timerNotifier.startTimer();
           displayBottomSheet();
         });
@@ -52,14 +54,20 @@ class GameOverWidget extends HookConsumerWidget{
 
     return Scaffold(
       backgroundColor: Colors.lightGreen,
-      body: Stack(
-        children: [
-          Align(
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onDoubleTap: (){
+          _logger.log(_TAG, "Restart game");
+          gameNotifier.reloadBottomSheet(false);
+          gameNotifier.restartGame();
+        },
+        child: SizedBox.expand(
+          child: Align(
             alignment: Alignment.center,
             child: // Load a Lottie animation file from your assets
             Lottie.asset('assets/animation/gameover.json'),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

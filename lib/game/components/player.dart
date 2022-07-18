@@ -96,8 +96,8 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     super.onCollisionStart(intersectionPoints, other);
 
     if(other is Ghost){
-      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();
+      /*_gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
+      removeFromParent();*/
     }
 
   }

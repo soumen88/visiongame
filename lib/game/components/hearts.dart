@@ -4,7 +4,9 @@ import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/player.dart';
 import 'package:visiongame/injector/injection.dart';
 
+import '../../audioplayer/game_audio_player.dart';
 import '../../base/logger_utils.dart';
+import '../../enums/game_component_enums.dart';
 import '../triggers/game_triggers.dart';
 
 class Hearts extends SpriteComponent with HasGameRef, CollisionCallbacks{
@@ -12,7 +14,7 @@ class Hearts extends SpriteComponent with HasGameRef, CollisionCallbacks{
   final _TAG = "Hearts";
   final _logger = locator<LoggerUtils>();
   final _gameTriggers = locator<GameTriggers>();
-
+  final _gameAudioPlayer = locator<GameAudioPlayer>();
   Hearts()
       : super(
     size: Vector2.all(50.0),
@@ -30,6 +32,7 @@ class Hearts extends SpriteComponent with HasGameRef, CollisionCallbacks{
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if(other is Player){
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_ADD_LIFE, other.position);
+      _gameAudioPlayer.playGameSound(GameComponentEnums.HEARTS);
       removeFromParent();
     }
   }

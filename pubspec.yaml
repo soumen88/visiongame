@@ -71,6 +71,12 @@ dependencies:
   #Displaying events on screen
   rxdart: ^0.27.4
 
+  #Detect phone shake
+  shake: ^2.1.0
+
+  #Play sounds in game
+  assets_audio_player: ^3.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -97,7 +103,7 @@ dev_dependencies:
   #Generating automatic routes for screen navigation
   auto_route_generator: ^4.0.0
 
-  analyzer: ^3.0.0
+  analyzer: ^4.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -112,6 +118,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animation/
+    - assets/audio/
     - assets/rayworld_collision_map.json
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -35,13 +35,14 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   bool running = true;
   final _gameTriggers = locator<GameTriggers>();
   final _random = Random();
-
+  bool isVoiceEnabled = true;
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
 
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
     listenToGhostMovement();
+    listenToVoiceInputEnabled();
   }
 
   void listenPlayerDead(){
@@ -62,7 +63,18 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         int randomY = next(50, 400);
         _logger.log(_TAG, "Running $running");
         _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
-        await speakMovement(ghostPositionModel);
+        if(isVoiceEnabled){
+          await speakMovement(ghostPositionModel);
+        }
+
+      }
+    });
+  }
+
+  void listenToVoiceInputEnabled(){
+    _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) {
+      if(isInputEnabled != null){
+        isVoiceEnabled = isInputEnabled;
       }
     });
   }

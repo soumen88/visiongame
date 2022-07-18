@@ -211,7 +211,7 @@ class _$_Error implements _Error {
 abstract class _Error implements TimerViewState {
   const factory _Error(final String errorMessage) = _$_Error;
 
-  String get errorMessage => throw _privateConstructorUsedError;
+  String get errorMessage;
   @JsonKey(ignore: true)
   _$$_ErrorCopyWith<_$_Error> get copyWith =>
       throw _privateConstructorUsedError;
@@ -472,8 +472,8 @@ abstract class _DisplayTime implements TimerViewState {
   const factory _DisplayTime(final bool isTimerVisible, final int seconds) =
       _$_DisplayTime;
 
-  bool get isTimerVisible => throw _privateConstructorUsedError;
-  int get seconds => throw _privateConstructorUsedError;
+  bool get isTimerVisible;
+  int get seconds;
   @JsonKey(ignore: true)
   _$$_DisplayTimeCopyWith<_$_DisplayTime> get copyWith =>
       throw _privateConstructorUsedError;

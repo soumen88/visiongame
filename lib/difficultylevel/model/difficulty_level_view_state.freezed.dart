@@ -212,7 +212,7 @@ class _$_Error implements _Error {
 abstract class _Error implements DifficultyLevelViewState {
   const factory _Error(final String errorMessage) = _$_Error;
 
-  String get errorMessage => throw _privateConstructorUsedError;
+  String get errorMessage;
   @JsonKey(ignore: true)
   _$$_ErrorCopyWith<_$_Error> get copyWith =>
       throw _privateConstructorUsedError;

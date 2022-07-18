@@ -82,7 +82,7 @@ class VisionSpeechInput{
   ///Hence whenever the value changes to not listening then we are again forcing the speech to text to
   ///listen to users words
   void speechInputStatusListener(String value) async{
-    _logger.log(_TAG, "Status changed to value $value and enum ${currentEnum} and speech enabled ${isSpeechEnabled}");
+    //_logger.log(_TAG, "Status changed to value $value and enum ${currentEnum} and speech enabled ${isSpeechEnabled}");
     if(value == "notListening" && isSpeechEnabled){
       await _speechToText.listen(onResult: onSpeechResult);
     }

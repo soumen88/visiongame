@@ -19,6 +19,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
 
   final _logger = locator<LoggerUtils>();
   final _TAG = "DifficultyLevel";
+  bool isBottomSheetDisplayed = false;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
@@ -34,7 +35,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
           bool isSpeakingComplete = await difficultyScreenNotifier.askForDifficultyLevel();
           if(isSpeakingComplete){
             _logger.log(_TAG, "Speaking is complete now");
-
           }
         });
       }
@@ -60,14 +60,14 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     }
 
     if(displaySheet.data != null){
-      _logger.log(_TAG, "Bottom sheet data ${displaySheet.data}");
-      if(displaySheet.data == false){
+      if(displaySheet.data == false && isBottomSheetDisplayed){
         Future.delayed(Duration.zero, (){
           Navigator.pop(context);
         });
       }
       else{
         Future.delayed(Duration.zero, (){
+          isBottomSheetDisplayed = true;
           timerNotifier.startTimer();
           displayBottomSheet();
         });
@@ -86,14 +86,17 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 },
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
+                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeRight: (Offset offset){
                   _logger.log(_TAG, "Swipe right");
+                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeUp: (Offset offset){
                   _logger.log(_TAG, "Swipe up");
+                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 child: RobotWaveWidget(),

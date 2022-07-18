@@ -79,10 +79,13 @@ class GameTriggers{
     }
   }
 
-  void toggleVoiceInput({bool isInitial = false}){
+  void toggleVoiceInput({bool isInitial = false, bool stopSpeaking = false}){
     ///Assuming initially voice input will be enabled for the game
     if(isInitial){
       isVoiceInputEnabled.add(true);
+    }
+    else if(stopSpeaking){
+      isVoiceInputEnabled.add(false);
     }
     else{
       bool currentValue = isVoiceInputEnabled.value!;
