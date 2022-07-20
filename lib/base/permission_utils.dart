@@ -1,3 +1,4 @@
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:visiongame/injector/injection.dart';
 
@@ -17,27 +18,18 @@ class PermissionUtils{
       // You can request multiple permissions at once.
       Map<Permission, PermissionStatus> statuses = await [
         Permission.microphone,
-        Permission.bluetooth,
       ].request();
     }
 
-    if (await Permission.microphone.isPermanentlyDenied) {
-      // The user opted to never again see the permission request dialog for this
-      // app. The only way to change the permission's status now is to let the
-      // user manually enable it in the system settings.
-      openAppSettings();
-    }
-
-    isPermissionAvailable =  await Permission.microphone.status.isGranted;
+    isPermissionAvailable =  !status.isDenied;
     return Future.value(isPermissionAvailable);
   }
 
 
-  Future<bool> isBluetoothOn() async{
-    bool isBluetoothOn = false;
-    /*if (await Permission.bl) {
-      // Use location.
-    }*/
-    return Future.value(isBluetoothOn);
+  Future<bool?> isBluetoothOn() async{
+    BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
+    bool? isConnected = await bluetooth.isConnected;
+    _logger.log(_TAG, "Bluetooth $isConnected");
+    return Future.value(isConnected);
   }
 }

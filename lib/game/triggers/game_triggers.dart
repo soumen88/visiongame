@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
+import 'package:visiongame/enums/difficulty_level_enum.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 
@@ -31,6 +32,11 @@ class GameTriggers{
   ///Below variable decides if game can be controlled with voice input
   BehaviorSubject<bool?> isVoiceInputEnabled = BehaviorSubject<bool?>.seeded(null);
 
+  ///Below variable decides what is players walk speed in game
+  BehaviorSubject<int?> playerWalkspeedStream = BehaviorSubject.seeded(null);
+
+  ///Below variable decides what is players walk speed in game
+  BehaviorSubject<DifficultyLevelEnums?> gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
     if(isInitial){
@@ -68,6 +74,10 @@ class GameTriggers{
       currentCoins++;
       playerCoinsStream.add(currentCoins);
     }
+
+    if(playerCoinsStream.value == ApplicationConstants.kLevelOneCompletionCoins){
+      _logger.log(_TAG, "Increase player walkspeed now");
+    }
   }
 
   void addGamePauseOrResume({required bool isGamePaused}){
@@ -92,7 +102,11 @@ class GameTriggers{
       currentValue = !currentValue;
       isVoiceInputEnabled.add(currentValue);
     }
+  }
 
+  void setDifficultyLevel(DifficultyLevelEnums difficultyLevelEnums){
+    _logger.log(_TAG, "Setting difficulty level to $difficultyLevelEnums");
+    gameDifficultyLevelStream.add(difficultyLevelEnums);
   }
 
 }

@@ -7,9 +7,15 @@ class ApplicationConstants {
   static int kTimerLimit = 5;//seconds
   static int kSpeechTimerLimit = 7;//seconds
   static int kInitialPlayerLifes = 3;//seconds
+  //This indicates the number of coins player has to collect in order to complete 1st level
+  static int kLevelOneCompletionCoins = 1;
+  static int kLevelOneWalkSpeed = 100;
+
   static int kGhostTimer  = 5;//seconds
   static String ScreenDifficulty  = "Difficulty";//seconds
   static String ScreenGame  = "GameScreen";//seconds
+  static String PlayerName  = "Stalin";//seconds
+  static String PermissionDeniedMessage  = "Permission Denied. Kindly allow permissions for us to proceed";
 
   static const splashBackgroundColor = Colors.lightGreen;
 }

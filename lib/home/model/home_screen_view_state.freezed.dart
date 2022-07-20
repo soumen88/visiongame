@@ -21,6 +21,7 @@ mixin _$HomeScreenViewState {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$HomeScreenViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$HomeScreenViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$HomeScreenViewState {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$HomeScreenViewState {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$HomeScreenViewState {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -146,6 +152,7 @@ class _$_Error implements _Error {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() permissionDeniedView,
   }) {
     return error(errorMessage);
   }
@@ -156,6 +163,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
   }) {
     return error?.call(errorMessage);
   }
@@ -166,6 +174,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -180,6 +189,7 @@ class _$_Error implements _Error {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return error(this);
   }
@@ -190,6 +200,7 @@ class _$_Error implements _Error {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return error?.call(this);
   }
@@ -200,6 +211,7 @@ class _$_Error implements _Error {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -261,6 +273,7 @@ class _$_Loading implements _Loading {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() permissionDeniedView,
   }) {
     return loading();
   }
@@ -271,6 +284,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
   }) {
     return loading?.call();
   }
@@ -281,6 +295,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -295,6 +310,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return loading(this);
   }
@@ -305,6 +321,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return loading?.call(this);
   }
@@ -315,6 +332,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -372,6 +390,7 @@ class _$_HomeView implements _HomeView {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() permissionDeniedView,
   }) {
     return homeView();
   }
@@ -382,6 +401,7 @@ class _$_HomeView implements _HomeView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
   }) {
     return homeView?.call();
   }
@@ -392,6 +412,7 @@ class _$_HomeView implements _HomeView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (homeView != null) {
@@ -406,6 +427,7 @@ class _$_HomeView implements _HomeView {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return homeView(this);
   }
@@ -416,6 +438,7 @@ class _$_HomeView implements _HomeView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return homeView?.call(this);
   }
@@ -426,6 +449,7 @@ class _$_HomeView implements _HomeView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
     if (homeView != null) {
@@ -437,4 +461,121 @@ class _$_HomeView implements _HomeView {
 
 abstract class _HomeView implements HomeScreenViewState {
   const factory _HomeView() = _$_HomeView;
+}
+
+/// @nodoc
+abstract class _$$_PermissionDeniedViewCopyWith<$Res> {
+  factory _$$_PermissionDeniedViewCopyWith(_$_PermissionDeniedView value,
+          $Res Function(_$_PermissionDeniedView) then) =
+      __$$_PermissionDeniedViewCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_PermissionDeniedViewCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res>
+    implements _$$_PermissionDeniedViewCopyWith<$Res> {
+  __$$_PermissionDeniedViewCopyWithImpl(_$_PermissionDeniedView _value,
+      $Res Function(_$_PermissionDeniedView) _then)
+      : super(_value, (v) => _then(v as _$_PermissionDeniedView));
+
+  @override
+  _$_PermissionDeniedView get _value => super._value as _$_PermissionDeniedView;
+}
+
+/// @nodoc
+
+class _$_PermissionDeniedView implements _PermissionDeniedView {
+  const _$_PermissionDeniedView();
+
+  @override
+  String toString() {
+    return 'HomeScreenViewState.permissionDeniedView()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_PermissionDeniedView);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String errorMessage) error,
+    required TResult Function() loading,
+    required TResult Function() homeView,
+    required TResult Function() permissionDeniedView,
+  }) {
+    return permissionDeniedView();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
+  }) {
+    return permissionDeniedView?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? homeView,
+    TResult Function()? permissionDeniedView,
+    required TResult orElse(),
+  }) {
+    if (permissionDeniedView != null) {
+      return permissionDeniedView();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Error value) error,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_HomeView value) homeView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
+  }) {
+    return permissionDeniedView(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+  }) {
+    return permissionDeniedView?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_HomeView value)? homeView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    required TResult orElse(),
+  }) {
+    if (permissionDeniedView != null) {
+      return permissionDeniedView(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PermissionDeniedView implements HomeScreenViewState {
+  const factory _PermissionDeniedView() = _$_PermissionDeniedView;
 }

@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:visiongame/enums/speech_input_enums.dart';
+import 'package:visiongame/error/error_screen.dart';
 import 'package:visiongame/home/start_listening_widget.dart';
 import 'package:visiongame/home/viewmodel/robot_wave_widget.dart';
 import 'package:visiongame/injector/injection.dart';
@@ -102,6 +103,9 @@ class HomeScreenPage extends HookConsumerWidget{
               )
             ),
           );
+        },
+        permissionDeniedView: (){
+          return ErrorScreen(errorMessage: ApplicationConstants.PermissionDeniedMessage);
         },
         orElse: (){
           return LoadingWidget();
