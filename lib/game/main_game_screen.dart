@@ -8,10 +8,13 @@ import 'package:visiongame/base/empty_widget.dart';
 import 'package:visiongame/game/components/collidable_animation_example.dart';
 import 'package:visiongame/game/helpers/direction.dart';
 import 'package:visiongame/game/helpers/swipe_detector.dart';
+import 'package:visiongame/game/triggers/game_tutorial_triggers.dart';
 import 'package:visiongame/game/ui/game_over_widget.dart';
 import 'package:visiongame/game/ui/game_tracker_widget.dart';
 import 'package:visiongame/game/ui/game_volume_widget.dart';
+import 'package:visiongame/home/viewmodel/robot_wave_widget.dart';
 import 'package:visiongame/injector/injection.dart';
+import 'package:visiongame/tutorial/tutorial_game.dart';
 import '../audioplayer/game_audio_player.dart';
 import '../base/logger_utils.dart';
 import '../loading/loading_widget.dart';
@@ -21,7 +24,7 @@ import 'vision_game.dart';
 class MainGamePage extends HookConsumerWidget {
   final _logger = locator<LoggerUtils>();
   final _TAG = "MainGamePage";
-  //final _gameAudioPlayer = locator<GameAudioPlayer>();
+  final _gameTutorialTrigger = locator<GameTutorialTriggers>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
@@ -47,6 +50,14 @@ class MainGamePage extends HookConsumerWidget {
       });
     }, const []);
 
+    gameProviderState.whenOrNull(
+      displayRobotView: () async{
+        ///Starting tutorial with step one
+        _gameTutorialTrigger.setTutorialInProgress(true);
+        gameNotifier.listenToGameSteps();
+        bool isStepComplete = await gameNotifier.startStepOneInTutorial();
+      }
+    );
 
     return gameProviderState.maybeWhen(
         displayGameOver: (){
@@ -91,6 +102,43 @@ class MainGamePage extends HookConsumerWidget {
                   ],
                 ),
               )
+          );
+        },
+        displayTutorialView: (){
+          _logger.log(_TAG, "Displaying tutorial view");
+          TutorialGame game = TutorialGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+          return Scaffold(
+              backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+              body: SwipeDetector(
+                onSwipeDown: (Offset offset){
+                  //_logger.log(_TAG, "Swipe down");
+                  game.onArrowKeyChanged(Direction.down);
+                },
+                onSwipeLeft: (Offset offset){
+                  //_logger.log(_TAG, "Swipe left");
+                  game.onArrowKeyChanged(Direction.left);
+                },
+                onSwipeRight: (Offset offset){
+                  //_logger.log(_TAG, "Swipe right");
+                  game.onArrowKeyChanged(Direction.right);
+                },
+                onSwipeUp: (Offset offset){
+                  //_logger.log(_TAG, "Swipe up");
+                  game.onArrowKeyChanged(Direction.up);
+                },
+                child: Stack(
+                  children: [
+                    GameWidget(game: game),
+                    GameTrackerWidget(),
+                    GameVolumeWidget()
+                  ],
+                ),
+              )
+          );
+        },
+        displayRobotView: (){
+          return Scaffold(
+            body: RobotWaveWidget(),
           );
         },
         loading: (){

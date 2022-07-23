@@ -21,7 +21,7 @@ mixin _$DifficultyLevelViewState {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) =>
       throw _privateConstructorUsedError;
@@ -30,7 +30,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) =>
       throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) =>
@@ -158,7 +158,7 @@ class _$_Error implements _Error {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) {
     return error(errorMessage);
@@ -170,7 +170,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) {
     return error?.call(errorMessage);
@@ -182,7 +182,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) {
@@ -285,7 +285,7 @@ class _$_Loading implements _Loading {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) {
     return loading();
@@ -297,7 +297,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) {
     return loading?.call();
@@ -309,7 +309,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) {
@@ -408,7 +408,7 @@ class _$_LevelView implements _LevelView {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) {
     return homeView();
@@ -420,7 +420,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) {
     return homeView?.call();
@@ -432,7 +432,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) {
@@ -492,7 +492,6 @@ abstract class _$$_displayLevelCopyWith<$Res> {
   factory _$$_displayLevelCopyWith(
           _$_displayLevel value, $Res Function(_$_displayLevel) then) =
       __$$_displayLevelCopyWithImpl<$Res>;
-  $Res call({int levelNumber});
 }
 
 /// @nodoc
@@ -505,50 +504,26 @@ class __$$_displayLevelCopyWithImpl<$Res>
 
   @override
   _$_displayLevel get _value => super._value as _$_displayLevel;
-
-  @override
-  $Res call({
-    Object? levelNumber = freezed,
-  }) {
-    return _then(_$_displayLevel(
-      levelNumber == freezed
-          ? _value.levelNumber
-          : levelNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$_displayLevel implements _displayLevel {
-  const _$_displayLevel(this.levelNumber);
-
-  @override
-  final int levelNumber;
+  const _$_displayLevel();
 
   @override
   String toString() {
-    return 'DifficultyLevelViewState.displayLevel(levelNumber: $levelNumber)';
+    return 'DifficultyLevelViewState.displayLevel()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_displayLevel &&
-            const DeepCollectionEquality()
-                .equals(other.levelNumber, levelNumber));
+        (other.runtimeType == runtimeType && other is _$_displayLevel);
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(levelNumber));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_displayLevelCopyWith<_$_displayLevel> get copyWith =>
-      __$$_displayLevelCopyWithImpl<_$_displayLevel>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
@@ -556,10 +531,10 @@ class _$_displayLevel implements _displayLevel {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) {
-    return displayLevel(levelNumber);
+    return displayLevel();
   }
 
   @override
@@ -568,10 +543,10 @@ class _$_displayLevel implements _displayLevel {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) {
-    return displayLevel?.call(levelNumber);
+    return displayLevel?.call();
   }
 
   @override
@@ -580,12 +555,12 @@ class _$_displayLevel implements _displayLevel {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) {
     if (displayLevel != null) {
-      return displayLevel(levelNumber);
+      return displayLevel();
     }
     return orElse();
   }
@@ -632,12 +607,7 @@ class _$_displayLevel implements _displayLevel {
 }
 
 abstract class _displayLevel implements DifficultyLevelViewState {
-  const factory _displayLevel(final int levelNumber) = _$_displayLevel;
-
-  int get levelNumber;
-  @JsonKey(ignore: true)
-  _$$_displayLevelCopyWith<_$_displayLevel> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _displayLevel() = _$_displayLevel;
 }
 
 /// @nodoc
@@ -684,7 +654,7 @@ class _$_ReadTutorial implements _ReadTutorial {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
-    required TResult Function(int levelNumber) displayLevel,
+    required TResult Function() displayLevel,
     required TResult Function() readTutorial,
   }) {
     return readTutorial();
@@ -696,7 +666,7 @@ class _$_ReadTutorial implements _ReadTutorial {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
   }) {
     return readTutorial?.call();
@@ -708,7 +678,7 @@ class _$_ReadTutorial implements _ReadTutorial {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
-    TResult Function(int levelNumber)? displayLevel,
+    TResult Function()? displayLevel,
     TResult Function()? readTutorial,
     required TResult orElse(),
   }) {

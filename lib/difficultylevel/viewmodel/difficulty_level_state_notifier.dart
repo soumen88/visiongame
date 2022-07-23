@@ -128,7 +128,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   
   Future<bool> displayDifficulty() async{
     bool isDifficultyDisplayedSpeakingComplete = false;
-    state = DifficultyLevelViewState.displayLevel(1);
+    state = DifficultyLevelViewState.displayLevel();
     String lineOne = "";
     return Future.value(isDifficultyDisplayedSpeakingComplete);
   }

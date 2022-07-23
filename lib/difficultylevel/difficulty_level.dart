@@ -86,7 +86,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     }
 
     difficultyScreenState.whenOrNull(
-      displayLevel: (int level) {
+      displayLevel: () {
         _logger.log(_TAG, "Starting animation");
         _animationController.repeat(reverse: true);
         _animationController.forward();
@@ -129,7 +129,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
             )
           );
         },
-        displayLevel: (int level){
+        displayLevel: (){
           return Scaffold(
             backgroundColor: Colors.white,
             body: Center(
@@ -153,7 +153,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                         opacity: _animation,
                         child: Column(
                           children: [
-                            Text("Level $level",style: TextStyle(
+                            Text("Level",style: TextStyle(
                                 fontSize: 60,
                                 fontWeight: FontWeight.bold),),
                             Text("Difficulty Medium",style: TextStyle(
