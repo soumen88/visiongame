@@ -79,14 +79,14 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
           inputModel.speechInputEnums == SpeechInputEnums.DIFFICULTY_LEVEL){
 
         if(inputModel.textRecognized.contains("easy")){
-          _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
+          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
           
         }
         else if(inputModel.textRecognized.contains("medium")){
-          _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
+          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
         }
         else if(inputModel.textRecognized.contains("hard")){
-          _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
+          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
         }
 
         
@@ -145,7 +145,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     bool isLineThreeComplete = await visionTts.speakText(lineThree);
     String lineFour = "Well, this is not easy as ${ApplicationConstants.PlayerName} would be meeting a Ghost.";
     bool isLineFourComplete = await visionTts.speakText(lineFour);
-    String lineFive = "You have to save ${ApplicationConstants.PlayerName} by collecting ${ApplicationConstants.kLevelOneCompletionCoins} coins.";
+    String lineFive = "You have to save ${ApplicationConstants.PlayerName} by collecting ${ApplicationConstants.kLevelEasyCompletionCoins} coins.";
     bool isLineFiveComplete = await visionTts.speakText(lineFive);
     String lineSix = "You can move ${ApplicationConstants.PlayerName} by Swiping left, right, up and down in order to collect coins.";
     bool isLineSixComplete = await visionTts.speakText(lineSix);

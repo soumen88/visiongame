@@ -59,7 +59,7 @@ class GameTriggers{
     if(event == PlayerLifeStatusEnums.PLAYER_ADD_LIFE){
       var playerMotionModel = playerLifeEventNotifier.value!;
       int remainingLivesLeft = playerMotionModel.playerLivesLeft + 1;
-      PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_NEW_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
+      PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_ADD_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
       playerLifeEventNotifier.add(newPlayerModel);
     }
   }
@@ -74,9 +74,18 @@ class GameTriggers{
       currentCoins++;
       playerCoinsStream.add(currentCoins);
     }
+    checkForVaryingDifficulty();
+  }
 
-    if(playerCoinsStream.value == ApplicationConstants.kLevelOneCompletionCoins){
-      _logger.log(_TAG, "Increase player walkspeed now");
+  void checkForVaryingDifficulty(){
+    DifficultyLevelEnums? currentDifficultLevel = gameDifficultyLevelStream.value;
+    if(currentDifficultLevel != null){
+      if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
+        gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
+      }
+      else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
+        gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
+      }
     }
   }
 

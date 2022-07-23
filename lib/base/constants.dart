@@ -8,8 +8,9 @@ class ApplicationConstants {
   static int kSpeechTimerLimit = 7;//seconds
   static int kInitialPlayerLifes = 3;//seconds
   //This indicates the number of coins player has to collect in order to complete 1st level
-  static int kLevelOneCompletionCoins = 1;
-  static int kLevelOneWalkSpeed = 100;
+  static int kLevelEasyCompletionCoins = 1;
+  static int kLevelMediumCompletionCoins = 2;
+  static int kLevelEasyWalkSpeed = 100;
 
   static int kGhostTimer  = 5;//seconds
   static String ScreenDifficulty  = "Difficulty";//seconds

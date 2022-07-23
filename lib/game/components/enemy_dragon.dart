@@ -36,7 +36,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     super.onLoad();
     _logger.log(_TAG, "Adding dragon");
     direction = Direction.right;
-    _loadAnimations().then((_) => {animation = _runDownAnimation});
+    await _loadAnimations().then((_) => {animation = _standingAnimation});
     add(ScreenHitbox());
   }
 

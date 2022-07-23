@@ -36,4 +36,8 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
       removeFromParent();
     }
   }
+
+  void removeCoin(){
+    removeFromParent();
+  }
 }

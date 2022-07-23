@@ -36,4 +36,5 @@ class Hearts extends SpriteComponent with HasGameRef, CollisionCallbacks{
       removeFromParent();
     }
   }
+
 }

@@ -1,19 +1,20 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 
-
-class AnimatedComponent extends SpriteAnimationComponent with CollisionCallbacks, HasGameRef {
+class Moth extends SpriteAnimationComponent
+    with CollisionCallbacks, HasGameRef {
   final Vector2 velocity;
 
-  AnimatedComponent(
+  Moth(
       this.velocity,
       Vector2 position,
       Vector2 size, {
-        double angle = -pi / 4,
+        double angle = -(3*pi) / 4,
       }) : super(
     position: position,
     size: size,

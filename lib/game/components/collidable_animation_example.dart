@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 
-import 'ninja_girl.dart';
+import 'animated_component.dart';
 
 class CollidableAnimationExample extends FlameGame with HasCollisionDetection {
   static const description = '''

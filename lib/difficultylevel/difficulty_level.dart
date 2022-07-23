@@ -109,19 +109,18 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 },
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
-                  _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeRight: (Offset offset){
                   _logger.log(_TAG, "Swipe right");
-                  _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
+                  //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeUp: (Offset offset){
                   _logger.log(_TAG, "Swipe up");
-                  _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.HARD);
+                  //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.HARD);
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },

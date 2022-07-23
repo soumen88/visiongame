@@ -67,7 +67,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     ///Start with initial lives as 3
-    _gameTriggers.addPlayerCoins(isInitial: true, addCoins: false);
     _logger.log(_TAG, "Inside load function");
   }
 
@@ -80,9 +79,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollision(intersectionPoints, other);
-    //
+    //_logger.log(_TAG, "Inside on collision");
     if (other is ScreenHitbox) {
-      _logger.log(_TAG, "Inside on collision");
+
       if (!_hasCollided) {
         _hasCollided = true;
         _collisionDirection = direction;
