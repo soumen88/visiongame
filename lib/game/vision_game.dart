@@ -7,8 +7,11 @@ import 'package:flame/game.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
+import 'package:visiongame/game/components/collidable_animation_example.dart';
+import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
+import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
@@ -26,7 +29,11 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   final _logger = locator<LoggerUtils>();
   final _TAG = "VisionGame";
   final Player _player = Player();
+  final EnemyDragon _dragon = EnemyDragon();
+  final componentSize = Vector2(150, 100);
+
   final Ghost _ghostPlayer = Ghost();
+  late AnimatedComponent collidableAnimationExample;
   final Hearts _hearts = Hearts();
   final VisionWorld _world = VisionWorld();
   final Coins _coins = Coins();
@@ -83,16 +90,23 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   Future<void> onLoad() async {
     super.onLoad();
     _logger.log(_TAG, "inside on load");
+    final componentSize = Vector2(150, 100);
     await add(_world);
     await add(_player);
-    await add(_ghostPlayer);
-    addWorldCollision();
     _player.position = _world.size / 1.5;
+    addWorldCollision();
+
     _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_INIT, _player.position, isInitial: true);
     camera.followComponent(_player,
         worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
-
+    await add(_ghostPlayer);
     _ghostPlayer.position = _world.size / 1.6;
+
+    collidableAnimationExample = AnimatedComponent(Vector2.all(200), Vector2.all(100), componentSize);
+    await add(collidableAnimationExample);
+    collidableAnimationExample.position = _world.size / 1.4;
+    /*await add(_dragon);
+    _dragon.position = _world.size / 1.6;*/
 
     final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
       return count;
@@ -102,7 +116,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       return count;
     }).takeWhile((element) => running);
 
-    _coinPositionStream.listen((int event)  async{
+    /*_coinPositionStream.listen((int event)  async{
       int randomX = next(50, 100);
       int randomY = next(50, 500);
       if(!_coins.isMounted){
@@ -118,7 +132,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         await add(_hearts);
         _hearts.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
       }
-    });
+    });*/
   }
 
   onArrowKeyChanged(Direction direction){

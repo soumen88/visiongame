@@ -25,6 +25,9 @@ class GameAudioPlayer{
     else if(gameComponentEnums == GameComponentEnums.HEARTS){
       audioasset = 'assets/audio/collectheart.mp3';
     }
+    else if(gameComponentEnums == GameComponentEnums.DRAGON){
+      audioasset = 'assets/audio/dragon_breathing.mp3';
+    }
     if(audioasset.isNotEmpty){
       final Audio audio = Audio(audioasset);
       AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();

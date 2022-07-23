@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shake/shake.dart';
 import 'package:visiongame/base/empty_widget.dart';
+import 'package:visiongame/game/components/collidable_animation_example.dart';
 import 'package:visiongame/game/helpers/direction.dart';
 import 'package:visiongame/game/helpers/swipe_detector.dart';
 import 'package:visiongame/game/ui/game_over_widget.dart';
@@ -55,6 +56,7 @@ class MainGamePage extends HookConsumerWidget {
         displayGameView: (){
           _logger.log(_TAG, "Displaying game view");
           VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+          //CollidableAnimationExample game = CollidableAnimationExample();
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(

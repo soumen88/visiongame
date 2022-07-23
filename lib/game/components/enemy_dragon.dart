@@ -1,35 +1,5 @@
-/** Copyright (c) 2021 Razeware LLC
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
-    distribute, sublicense, create a derivative work, and/or sell copies of the
-    Software in any work that is designed, intended, or marketed for pedagogical or
-    instructional purposes related to programming, coding, application development,
-    or information technology.  Permission for such use, copying, modification,
-    merger, publication, distribution, sublicensing, creation of derivative works,
-    or sale is expressly withheld.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE. **/
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:visiongame/enums/player_life_status_enums.dart';
-import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
@@ -38,9 +8,9 @@ import 'package:flame/sprite.dart';
 
 import '../triggers/game_triggers.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
+class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
-  final _TAG = "Player";
+  final _TAG = "EnemyDragon";
   final _gameTriggers = locator<GameTriggers>();
 
   final double _playerSpeed = 100.0;
@@ -56,19 +26,18 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
-  Player()
+  EnemyDragon()
       : super(
-    size: Vector2.all(50.0),
+    size: Vector2.all(100.0),
   );
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    _loadAnimations().then((_) => {animation = _standingAnimation});
-    add(RectangleHitbox());
-    ///Start with initial lives as 3
-    _gameTriggers.addPlayerCoins(isInitial: true, addCoins: false);
-    _logger.log(_TAG, "Inside load function");
+    _logger.log(_TAG, "Adding dragon");
+    direction = Direction.right;
+    _loadAnimations().then((_) => {animation = _runDownAnimation});
+    add(ScreenHitbox());
   }
 
   @override
@@ -80,9 +49,8 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollision(intersectionPoints, other);
-    //
+    //_logger.log(_TAG, "Inside on collision");
     if (other is ScreenHitbox) {
-      _logger.log(_TAG, "Inside on collision");
       if (!_hasCollided) {
         _hasCollided = true;
         _collisionDirection = direction;
@@ -111,22 +79,22 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   Future<void> _loadAnimations() async {
     final spriteSheet = SpriteSheet(
-      image: await gameRef.images.load('player_spritesheet.png'),
+      image: await gameRef.images.load('dragon_sprite_sheet.png'),
       ///First parameter is width and second is height
-      srcSize: Vector2(29.0, 32.0),
+      srcSize: Vector2(192, 192),
     );
 
     _runDownAnimation =
-        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 3);
 
     _runLeftAnimation =
-        spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 4);
-
-    _runUpAnimation =
-        spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 3);
 
     _runRightAnimation =
-        spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 3);
+
+    _runUpAnimation =
+        spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 3);
 
     _standingAnimation =
         spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);
