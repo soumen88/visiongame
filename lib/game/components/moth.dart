@@ -14,7 +14,7 @@ class Moth extends SpriteAnimationComponent
       this.velocity,
       Vector2 position,
       Vector2 size, {
-        double angle = -(3*pi) / 4,
+        double angle = (3*pi) / 4,
       }) : super(
     position: position,
     size: size,
@@ -46,7 +46,7 @@ class Moth extends SpriteAnimationComponent
         parentSize: size,
       )
         ..paint = hitboxPaint
-        ..renderShape = true,
+        ..renderShape = false,
     );
   }
 

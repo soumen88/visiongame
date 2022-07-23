@@ -15,6 +15,7 @@ class GameAudioPlayer{
 
   GameAudioPlayer._init();
 
+  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
 
   Future<void> playGameSound(GameComponentEnums gameComponentEnums) async{
     _logger.log(_TAG, "Play coin collect sound");
@@ -30,11 +31,18 @@ class GameAudioPlayer{
     }
     if(audioasset.isNotEmpty){
       final Audio audio = Audio(audioasset);
-      AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+
       await assetsAudioPlayer.open(audio);
       await assetsAudioPlayer.play();
-    }
 
+    }
   }
 
+  bool isAudioPlayerPlaying(){
+    //retrieve directly the current player state
+    final bool playing = assetsAudioPlayer.isPlaying.value;
+
+    //will follow the AssetsAudioPlayer playing state
+    return playing;
+  }
 }

@@ -5,9 +5,13 @@ import 'package:flame/components.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/base/logger_utils.dart';
+import 'package:visiongame/enums/difficulty_level_enum.dart';
+import 'package:visiongame/enums/game_component_enums.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
+import '../../audioplayer/game_audio_player.dart';
 import '../../injector/injection.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
+import '../triggers/game_triggers.dart';
 
 class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
@@ -30,6 +34,8 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   double _motionFactor = 0.25;
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
+  final _gameTriggers = locator<GameTriggers>();
+  final _gameAudioPlayer = locator<GameAudioPlayer>();
 
   Ghost()
       : super(
@@ -68,6 +74,12 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
       }
       /*_logger.log(_TAG, "Changing direction Xaxis $isLeft and Yaxis $isDown");
       _logger.log(_TAG, "Changing movement Xaxis $isXAxisMovement and Yaxis $isYAxisMovement");*/
+      DifficultyLevelEnums? currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value;
+      if(currentDifficultyLevel != null && _gameAudioPlayer.isAudioPlayerPlaying() == false){
+        if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
+          await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
+        }
+      }
       GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
       ghostPositionNotifier.add(ghostPositionModel);
     });
