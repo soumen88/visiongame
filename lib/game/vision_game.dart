@@ -48,6 +48,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
 
+  late String enemyName;
+  int counter = 0;
+
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
     listenToGhostMovement();
@@ -100,26 +103,33 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   void listenToDifficultyLevelChanges() async{
     _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
       if(currentDifficultyLevel != null){
-        _gameTriggers.addPlayerCoins(isInitial: true, addCoins: false);
+        ///Once difficulty level changes give player new life and coins
+        _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_INIT, _player.position, isInitial: true);
         if(currentDifficultyLevel == DifficultyLevelEnums.EASY){
           _logger.log(_TAG, "Received event for easy level");
+          enemyName = "Ghost";
+
           await add(_ghostPlayer);
           _ghostPlayer.position = _world.size / 1.6;
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
           _logger.log(_TAG, "Received event for medium level");
           _ghostPlayer.removeFromParent();
-
+          enemyName = "Dragon";
+          await _visionTts.speakStop();
+          await _visionTts.speakText("Enemy changes to Dragon");
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
           _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
+          enemyName = "Giant Moth";
           final componentSize = Vector2(150, 100);
           _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);
           int randomX = next(50, 400);
           int randomY = next(50, 400);
+          await _visionTts.speakText("Enemy changes to Giant moth");
           await add(_moth);
           _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         }
@@ -138,12 +148,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     addWorldCollision();
 
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
-    _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_INIT, _player.position, isInitial: true);
+
 
     camera.followComponent(_player,
         worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
 
-    final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
+    /*final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
       return count;
     }).takeWhile((element) => running);
 
@@ -151,32 +161,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       return count;
     }).takeWhile((element) => running);
 
-    _coinPositionStream.listen((int event) {
-      int randomX = next(50, 100);
-      int randomY = next(50, 500);
-      //Remove current coin and add another one
-      _coins.removeFromParent();
-      Future.delayed(Duration.zero, () async{
-        if(running &&  !_coins.isMounted){
-          await add(_coins);
-          _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
-        }
-      });
+    _heartPositionStream.listen((int event) async{
 
-    });
-
-    _heartPositionStream.listen((int event) {
-      int randomX = next(50, 400);
-      int randomY = next(50, 1000);
-      //Remove current heart and add another one
-      _hearts.removeFromParent();
-      Future.delayed(Duration.zero,() async{
-        if(running && !_hearts.isMounted){
-          await add(_hearts);
-          _hearts.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
-        }
-      });
-    });
+    });*/
   }
 
   onArrowKeyChanged(Direction direction){
@@ -186,6 +173,18 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   Player get getPlayer {
     return _player;
+  }
+
+  Future<void> addCoinInGame() async{
+    int randomX = next(50, 100);
+    int randomY = next(50, 500);
+    //Remove current coin and add another one
+    _coins.removeFromParent();
+
+    if(running &&  !_coins.isMounted){
+      await add(_coins);
+      _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
+    }
   }
 
   void addWorldCollision() async =>
@@ -220,28 +219,33 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     bool isRight = _ghostPlayer.position.x > _player.position.x;
     if(ghostPositionModel.isXAxisMovement){
       if(isRight){
-        speakString = "Enemy coming from right";
+        speakString = "$enemyName coming from right";
       }
       else{
-        speakString = "Enemy coming from left";
+        speakString = "$enemyName coming from left";
       }
     }
     else{
       if(ghostPositionModel.isDown && isRight){
-        speakString = "Enemy coming from right and walking down";
+        speakString = "$enemyName coming from right and walking down";
       }
       else if(ghostPositionModel.isDown && !isRight){
-        speakString = "Enemy coming from left and walking down";
+        speakString = "$enemyName coming from left and walking down";
       }
       else if(!ghostPositionModel.isDown && isRight){
-        speakString = "Enemy coming from right and walking up";
+        speakString = "$enemyName coming from right and walking up";
       }
       else if(!ghostPositionModel.isDown && !isRight){
-        speakString = "Enemy coming from left and walking up";
+        speakString = "$enemyName coming from left and walking up";
       }
     }
+    counter++;
     _logger.log(_TAG, "Speak String $speakString");
-    //await _visionTts.speakText(speakString);
+    bool isSpeakComplete = await _visionTts.speakText(speakString);
+    if(isSpeakComplete){
+      await addCoinInGame();
+    }
+
   }
 
 

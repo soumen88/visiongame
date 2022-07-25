@@ -20,7 +20,7 @@ class PermissionUtils{
         Permission.microphone,
       ].request();
     }
-
+    status = await Permission.microphone.status;
     isPermissionAvailable =  !status.isDenied;
     return Future.value(isPermissionAvailable);
   }

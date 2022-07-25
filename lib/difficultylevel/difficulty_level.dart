@@ -30,6 +30,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     final difficultyScreenNotifier = ref.watch(difficultyScreenProviders.notifier);
     final difficultyScreenState = ref.watch(difficultyScreenProviders);
     final timerNotifier = ref.watch(timerProvider.notifier);
+    final gameNotifier = ref.watch(gameProvider.notifier);
     final displaySheet = useStream(difficultyScreenNotifier.difficultyScreenBottomSheetEvent.stream);
     final startNextScreen = useStream(difficultyScreenNotifier.startNextScreenEvent.stream);
 
@@ -103,27 +104,29 @@ class DifficultyLevelScreen extends HookConsumerWidget{
             body: SizedBox.expand(
               child: SwipeDetector(
                 behavior: HitTestBehavior.opaque,
-                onSwipeDown: (Offset offset){
+                /*onSwipeDown: (Offset offset){
                   _logger.log(_TAG, "Swipe down");
 
-                },
+                },*/
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
+                  gameNotifier.isTutorialView = true;
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeRight: (Offset offset){
                   _logger.log(_TAG, "Swipe right");
                   //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
+                  gameNotifier.isTutorialView = false;
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
-                onSwipeUp: (Offset offset){
+               /* onSwipeUp: (Offset offset){
                   _logger.log(_TAG, "Swipe up");
                   //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.HARD);
                   difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
-                },
+                },*/
                 child: RobotWaveWidget(),
               ),
             )

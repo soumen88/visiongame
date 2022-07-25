@@ -49,19 +49,15 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
       bool isSpeakComplete1 = await visionTts.speakText(lineOne);
       String lineTwo = "Now we move to our next part.";
       bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
-      /*String lineThree = "What would be the difficulty for this game? You have three choices";
+      String lineThree = "Swipe left to understand this game with the help of a tutorial";
       bool isSpeakComplete3 = await visionTts.speakText(lineThree);
-      String lineFour = "Would you want your game to be easy, medium or hard?";
+      String lineFour = "This tutorial is recommended for first time users.";
       bool isSpeakComplete4 = await visionTts.speakText(lineFour);
-      String lineFive = "Swipe left or say easy";
+      String lineFive = "You can Swipe right to begin a fresh game";
       bool isSpeakComplete5 = await visionTts.speakText(lineFive);
-      String lineSix = "Or Swipe right or say medium";
-      bool isSpeakComplete6 = await visionTts.speakText(lineSix);
-      String lineSeven = "And you can Swipe up or say hard for selecting hard";
-      bool isSpeakComplete7 = await visionTts.speakText(lineSeven);*/
-      if( isSpeakComplete1 && isSpeakComplete2){
-      /*if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4 &&
-          isSpeakComplete5 && isSpeakComplete6 && isSpeakComplete7 ){*/
+      //if( isSpeakComplete1 && isSpeakComplete2){
+      if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4
+         && isSpeakComplete5){
         _logger.log(_TAG, "All speak completed");
         isSpeakingComplete = true;
         reloadDifficultyBottomSheet(true);
@@ -78,18 +74,15 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
       if(inputModel != null && inputModel.textRecognized.isNotEmpty &&
           inputModel.speechInputEnums == SpeechInputEnums.DIFFICULTY_LEVEL){
 
-        if(inputModel.textRecognized.contains("easy")){
-          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
-          
-        }
-        else if(inputModel.textRecognized.contains("medium")){
-          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
-        }
-        else if(inputModel.textRecognized.contains("hard")){
-          //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
-        }
+        if(inputModel.textRecognized.contains("start")){
 
-        
+        }
+        else if(inputModel.textRecognized.contains("tutorial")){
+
+        }
+        else if(inputModel.textRecognized.contains("tuto")){
+
+        }
 
       }
     });
@@ -149,7 +142,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     bool isLineFiveComplete = await visionTts.speakText(lineFive);
     String lineSix = "You can move ${ApplicationConstants.PlayerName} by Swiping left, right, up and down in order to collect coins.";
     bool isLineSixComplete = await visionTts.speakText(lineSix);
-    String lineSeven = "Do not forget to collect hearts to Save ${ApplicationConstants.PlayerName}'s life from Angry Monster.";
+    String lineSeven = "Do your best to Save ${ApplicationConstants.PlayerName}'s life from Angry Monsters.";
     bool isLineSevenComplete = await visionTts.speakText(lineSeven);
     String lineEight = "Swipe Right to Continue or swipe left to read the instructions again.";
     bool isLineEightComplete = await visionTts.speakText(lineEight);

@@ -32,7 +32,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   BehaviorSubject<bool?> gameOverbottomSheetNotifier = BehaviorSubject<bool?>.seeded(null);
 
   ///If this flag is passed as true then game will be opened for tutorial view
-  bool isTutorialView = true;
+  bool isTutorialView = false;
 
   GameViewStateNotifier() : super(const GameScreenViewState.loading()) {
     listenPlayerEvents();
@@ -129,7 +129,15 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
           }
           break;
           case 4:{
-
+            startStepThreeInTutorial();
+          }
+          break;
+          case 5:{
+            startStepFourInTutorial();
+          }
+          break;
+          case 6:{
+            startStepFiveInTutorial();
           }
           break;
           default:{
@@ -145,14 +153,14 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineOneComplete = await visionTts.speakText(lineOne);
     String lineTwo = "In a moment I will show you our game";
     bool isLineTwoComplete = await visionTts.speakText(lineTwo);
-    bool isAllComplete = isLineOneComplete && isLineTwoComplete;
-    if(isAllComplete){
-      _gameTutorialTriggers.addStepCounter(1);
-    }
     String lineThree = "At center of screen you will see our game hero and his name is ${ApplicationConstants.PlayerName}";
     bool isLineThreeComplete = await visionTts.speakText(lineThree);
     String lineFour = "Now swipe left to see ${ApplicationConstants.PlayerName} walking";
     bool isLineFourComplete = await visionTts.speakText(lineFour);
+    bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
+    if(isAllComplete){
+      _gameTutorialTriggers.addStepCounter(1);
+    }
     return Future.value(isAllComplete);
   }
 
@@ -163,21 +171,51 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineTwoComplete = await visionTts.speakText(lineTwo);
     String lineThree = "In your screen you will now see a coin.";
     bool isLineThreeComplete = await visionTts.speakText(lineThree);
-    bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete;
+    String lineFour = "Swipe on your screen and make ${ApplicationConstants.PlayerName} walk over coin to collect it";
+    bool isLineFourComplete = await visionTts.speakText(lineFour);
+    bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
       _gameTutorialTriggers.addStepCounter(3);
     }
-    String lineFour = "Swipe on your screen and make ${ApplicationConstants.PlayerName} walk over coin to collect it";
-    bool isLineFourComplete = await visionTts.speakText(lineFour);
   }
 
   void startStepThreeInTutorial() async{
+    String lineOne = "In a similar way you will also see hearts in the game";
+    bool isLineOneComplete = await visionTts.speakText(lineOne);
+    String lineTwo = "When ${ApplicationConstants.PlayerName} collects a heart he would have more lives to fight";
+    bool isLineTwoComplete = await visionTts.speakText(lineTwo);
+    bool isComplete = isLineOneComplete && isLineTwoComplete;
+    if(isComplete){
+      _gameTutorialTriggers.addStepCounter(5);
+    }
+  }
+
+  void startStepFourInTutorial() async{
     String lineOne = "Well as you know every story has a villain";
     bool isLineOneComplete = await visionTts.speakText(lineOne);
     String lineTwo = "In this game villain is a group of monsters";
     bool isLineTwoComplete = await visionTts.speakText(lineTwo);
     String lineThree = "In a moment you will see a monster";
-    String lineThree = "${ApplicationConstants.PlayerName} has to avoid coming in contact with this monsters.";
+    bool isLineThreeComplete = await visionTts.speakText(lineThree);
+    String lineFour = "${ApplicationConstants.PlayerName} has to avoid coming in contact with this monsters to save his life.";
+    bool isLineFourComplete = await visionTts.speakText(lineFour);
+    bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
+    if(isComplete){
+      _gameTutorialTriggers.addStepCounter(6);
+    }
+
+  }
+
+  void startStepFiveInTutorial() async{
+    String lineOne = "Now I am going to take you to our Actual game";
+    bool isLineOneComplete = await visionTts.speakText(lineOne);
+    String lineTwo = "I believe you would love to play it";
+    bool isLineTwoComplete = await visionTts.speakText(lineTwo);
+    bool isAllComplete = isLineOneComplete && isLineTwoComplete;
+    _gameTutorialTriggers.setTutorialInProgress(false);
+    if(isAllComplete){
+      state = GameScreenViewState.displayGameView();
+    }
   }
 
   void setTutorialView(bool value){

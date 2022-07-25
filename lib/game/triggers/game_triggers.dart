@@ -81,9 +81,11 @@ class GameTriggers{
     DifficultyLevelEnums? currentDifficultLevel = gameDifficultyLevelStream.value;
     if(currentDifficultLevel != null){
       if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
+        addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
+        addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
     }
@@ -115,6 +117,7 @@ class GameTriggers{
 
   void setDifficultyLevel(DifficultyLevelEnums difficultyLevelEnums){
     _logger.log(_TAG, "Setting difficulty level to $difficultyLevelEnums");
+    addPlayerCoins(isInitial: true, addCoins: false);
     gameDifficultyLevelStream.add(difficultyLevelEnums);
   }
 

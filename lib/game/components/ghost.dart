@@ -47,7 +47,7 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
     sprite = await gameRef.loadSprite('ghost.png');
     position = gameRef.size / 2;
     add(RectangleHitbox());
-    final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 5), (int count) {
+    final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
       return count;
     });
 
@@ -77,7 +77,7 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
       DifficultyLevelEnums? currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value;
       if(currentDifficultyLevel != null && _gameAudioPlayer.isAudioPlayerPlaying() == false){
         if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
-          await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
+          //await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
         }
       }
       GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);

@@ -126,13 +126,7 @@ class MainGamePage extends HookConsumerWidget {
                   //_logger.log(_TAG, "Swipe up");
                   game.onArrowKeyChanged(Direction.up);
                 },
-                child: Stack(
-                  children: [
-                    GameWidget(game: game),
-                    GameTrackerWidget(),
-                    GameVolumeWidget()
-                  ],
-                ),
+                child: GameWidget(game: game),
               )
           );
         },
