@@ -30,7 +30,9 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
+import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
+import 'package:visiongame/game/components/moth.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
 import '../helpers/direction.dart';
@@ -95,9 +97,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollisionStart(intersectionPoints, other);
 
-    if(other is Ghost){
-      /*_gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();*/
+    if((other is EnemyDragon) || (other is Moth ) || (other is Ghost)){
+      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
+      removeFromParent();
     }
 
   }

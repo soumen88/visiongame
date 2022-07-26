@@ -122,16 +122,10 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   void startNextScreen(String value){
     startNextScreenEvent.add(value);
   }
-  
-  Future<bool> displayDifficulty() async{
-    bool isDifficultyDisplayedSpeakingComplete = false;
-    state = DifficultyLevelViewState.displayLevel();
-    String lineOne = "";
-    return Future.value(isDifficultyDisplayedSpeakingComplete);
-  }
+
 
   ///Below function would read tutorial for player for understanding this game
-  Future<bool> readTutorial() async{
+  Future<bool> readGameInstructions() async{
     //state = DifficultyLevelViewState.readTutorial();
     isReadingTutorial = true;
     String lineOne = "Now Amaze would let you know about instructions for playing this game.";
@@ -148,12 +142,14 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     bool isLineSixComplete = await visionTts.speakText(lineSix);
     String lineSeven = "Do your best to Save ${ApplicationConstants.PlayerName}'s life from Angry Monsters.";
     bool isLineSevenComplete = await visionTts.speakText(lineSeven);
-    String lineEight = "Swipe Right to Continue or swipe left to read the instructions again.";
-    bool isLineEightComplete = await visionTts.speakText(lineEight);
-    if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete &&
-        isLineFiveComplete && isLineSixComplete && isLineSevenComplete && isLineEightComplete){
-      isReadingTutorial = false;
-    }
+    /*String lineEight = "Swipe Right to Continue or swipe left to read the instructions again.";
+    bool isLineEightComplete = await visionTts.speakText(lineEight);*/
+    startNextScreen(ApplicationConstants.ScreenGame);
+    isReadingTutorial = false;
+    /*if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete &&
+        isLineFiveComplete && isLineSixComplete && isLineSevenComplete){
+      _logger.log(_TAG, "All speak complete start new screen");
+    }*/
     return Future.value(isReadingTutorial);
   }
 }

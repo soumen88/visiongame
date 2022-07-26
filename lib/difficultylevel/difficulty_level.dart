@@ -87,42 +87,26 @@ class DifficultyLevelScreen extends HookConsumerWidget{
       }
     }
 
-    difficultyScreenState.whenOrNull(
-      displayLevel: () {
-        _logger.log(_TAG, "Starting animation");
-        _animationController.repeat(reverse: true);
-        _animationController.forward();
-
-      },
-      readTutorial: () async{
-        await difficultyScreenNotifier.readTutorial();
-      }
-    );
-
     return difficultyScreenState.maybeWhen(
         homeView: (){
           return Scaffold(
             body: SizedBox.expand(
               child: SwipeDetector(
                 behavior: HitTestBehavior.opaque,
-                /*onSwipeDown: (Offset offset){
-                  _logger.log(_TAG, "Swipe down");
-
-                },*/
+                //Start tutorial
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
                   gameNotifier.isTutorialView = true;
-                  //difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
-                  difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
+                //Begin a fresh game
                 onSwipeRight: (Offset offset){
                   _logger.log(_TAG, "Swipe right");
                   //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
                   gameNotifier.isTutorialView = false;
                   //difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
                   difficultyScreenNotifier.stopSpeaking();
-                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                  difficultyScreenNotifier.readGameInstructions();
                 },
                /* onSwipeUp: (Offset offset){
                   _logger.log(_TAG, "Swipe up");
@@ -133,73 +117,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 child: RobotWaveWidget(),
               ),
             )
-          );
-        },
-        displayLevel: (){
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: SizedBox.expand(
-                child: SwipeDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onSwipeRight: (Offset offset){
-                    _logger.log(_TAG, "Swipe right to continue");
-                  },
-                  onSwipeLeft: (Offset offset){
-                    _logger.log(_TAG, "Swipe left to read tutorial");
-                    if(difficultyScreenNotifier.isReadingTutorial == false){
-                      difficultyScreenNotifier.readTutorial();
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RobotWaveWidget(),
-                      FadeTransition(
-                        opacity: _animation,
-                        child: Column(
-                          children: [
-                            Text("Level",style: TextStyle(
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold),),
-                            Text("Difficulty Medium",style: TextStyle(
-                              fontSize: 20,),),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-        readTutorial: (){
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: SizedBox.expand(
-                child: SwipeDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onSwipeRight: (Offset offset){
-                    _logger.log(_TAG, "Swipe right to continue");
-                  },
-                  onSwipeLeft: (Offset offset){
-                    _logger.log(_TAG, "Swipe left to read tutorial");
-                    if(difficultyScreenNotifier.isReadingTutorial == false){
-                      difficultyScreenNotifier.readTutorial();
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RobotWaveWidget(),
-                      GameTrackerWidget(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           );
         },
         orElse: (){

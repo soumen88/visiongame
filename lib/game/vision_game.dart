@@ -256,6 +256,20 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   }
 
+  void speakCollectablePosition() async{
+    _logger.log(_TAG, "Speak collectable position");
+    bool isRight = _coins.x > _player.position.x;
+    bool isUp = _coins.y > _player.position.y;
+    String coinPositionText = "";
+    if(isUp){
+      coinPositionText = "${_coins.currentCollectable} is upwards";
+    }
+    else{
+      coinPositionText = "${_coins.currentCollectable} is downwards";
+    }
+    await _visionTts.speakStop();
+    await _visionTts.speakText(coinPositionText);
+  }
 
   /**
    * Generates a positive random integer uniformly distributed on the range

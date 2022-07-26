@@ -31,12 +31,13 @@ class MainGamePage extends HookConsumerWidget {
     double height = MediaQuery.of(context).size.height;
     final gameProviderState = ref.watch(gameProvider);
     final gameNotifier = ref.watch(gameProvider.notifier);
-
+    VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
     void listenForPhoneShakes(){
       _logger.log(_TAG, "Listen for phone shakes");
       ShakeDetector detector = ShakeDetector.autoStart(
-          onPhoneShake: () {
+          onPhoneShake: () async{
             _logger.log(_TAG, "Detected phone shake");
+            game.speakCollectablePosition();
           }
       );
     }
@@ -66,7 +67,7 @@ class MainGamePage extends HookConsumerWidget {
         },
         displayGameView: (){
           _logger.log(_TAG, "Displaying game view");
-          VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+
           //CollidableAnimationExample game = CollidableAnimationExample();
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
@@ -106,27 +107,27 @@ class MainGamePage extends HookConsumerWidget {
         },
         displayTutorialView: (){
           _logger.log(_TAG, "Displaying tutorial view");
-          TutorialGame game = TutorialGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+          TutorialGame tutorialGame = TutorialGame(screenWidth: width.toInt(), screenHeight: height.toInt());
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(
                 onSwipeDown: (Offset offset){
                   //_logger.log(_TAG, "Swipe down");
-                  game.onArrowKeyChanged(Direction.down);
+                  tutorialGame.onArrowKeyChanged(Direction.down);
                 },
                 onSwipeLeft: (Offset offset){
                   //_logger.log(_TAG, "Swipe left");
-                  game.onArrowKeyChanged(Direction.left);
+                  tutorialGame.onArrowKeyChanged(Direction.left);
                 },
                 onSwipeRight: (Offset offset){
                   //_logger.log(_TAG, "Swipe right");
-                  game.onArrowKeyChanged(Direction.right);
+                  tutorialGame.onArrowKeyChanged(Direction.right);
                 },
                 onSwipeUp: (Offset offset){
                   //_logger.log(_TAG, "Swipe up");
-                  game.onArrowKeyChanged(Direction.up);
+                  tutorialGame.onArrowKeyChanged(Direction.up);
                 },
-                child: GameWidget(game: game),
+                child: GameWidget(game: tutorialGame),
               )
           );
         },

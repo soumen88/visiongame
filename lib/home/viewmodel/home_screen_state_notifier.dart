@@ -36,8 +36,8 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     if(isPermissionGranted && isSpeechInputInitialized){
       state = const HomeScreenViewState.homeView();
       Future.delayed(Duration(seconds: 2),(){
-        //startIntroduction();
-        reloadBottomSheet(true);
+        startIntroduction();
+        //reloadBottomSheet(true);
       });
     }
     else{

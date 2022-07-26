@@ -29,7 +29,7 @@ class GameTrackerWidget extends HookConsumerWidget{
             child: Row(
               children: [
                 Image.asset(
-                  "assets/images/coin.png",
+                  "assets/images/shopping_bag.png",
                   width: 30,
                   height: 30,
                 ),
