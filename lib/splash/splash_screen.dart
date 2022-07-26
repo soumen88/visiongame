@@ -17,8 +17,8 @@ class SplashScreenPage extends HookWidget {
     //Start home screen whenever timer is over
     useEffect((){
       Future.delayed(Duration(seconds: ApplicationConstants.kSplashScreenTime), () {
-        context.router.replace(HomeScreenRoute());
-        //context.router.replace(MainGameRoute());
+        //context.router.replace(HomeScreenRoute());
+        context.router.replace(MainGameRoute());
       });
     });
 

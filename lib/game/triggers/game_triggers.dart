@@ -83,6 +83,7 @@ class GameTriggers{
       if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
+        //gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
         addPlayerCoins(isInitial: true, addCoins: false);

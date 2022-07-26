@@ -23,11 +23,12 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
+  bool isRunning = true;
 
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
 
-  var _random = Random();
+  final _random = Random();
 
   bool isMicOn = true;
 
@@ -49,11 +50,12 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
     add(RectangleHitbox());
     final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
       return count;
-    });
+    }).takeWhile((element) => isRunning);
 
     await speakMovement();
 
     _ghostDirectionStream.listen((int event) async{
+      _logger.log(_TAG, "Changing direction of ghost");
       var randomNumber1 = next(1, 100);
       var randomNumber2 = next(7, 500);
       if(randomNumber1 % 2 == 0){

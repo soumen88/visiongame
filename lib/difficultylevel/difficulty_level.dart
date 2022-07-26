@@ -72,6 +72,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     }
 
     if(displaySheet.data != null){
+      _logger.log(_TAG, "Display sheet data ${displaySheet.data}");
       if(displaySheet.data == false && isBottomSheetDisplayed){
         Future.delayed(Duration.zero, (){
           Navigator.pop(context);
@@ -111,14 +112,16 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
                   gameNotifier.isTutorialView = true;
-                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
+                  //difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
+                  difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 onSwipeRight: (Offset offset){
                   _logger.log(_TAG, "Swipe right");
                   //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
                   gameNotifier.isTutorialView = false;
-                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
+                  //difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
+                  difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                /* onSwipeUp: (Offset offset){

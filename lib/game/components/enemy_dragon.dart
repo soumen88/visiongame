@@ -1,11 +1,13 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
+import '../models/ghost_position_model.dart';
 import '../triggers/game_triggers.dart';
 
 class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
@@ -26,6 +28,16 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
+  ///By default in X Axis movement player would move to the left
+  bool isLeft = true;
+  ///By default in Y Axis movement player would move to the left
+  bool isDown = false;
+  bool isXAxisMovement = false;
+  bool isYAxisMovement = true;
+  bool isRunning = true;
+
+  final BehaviorSubject<GhostPositionModel?> dragonPositionNotifier = BehaviorSubject.seeded(null);
+
   EnemyDragon()
       : super(
     size: Vector2.all(100.0),
@@ -35,15 +47,49 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   Future<void> onLoad() async {
     super.onLoad();
     _logger.log(_TAG, "Adding dragon");
-    direction = Direction.right;
+    direction = DirectionEnumsExt.generateRandomUniqueDirection();
     await _loadAnimations().then((_) => {animation = _standingAnimation});
     add(ScreenHitbox());
+    final Stream<int> _dragonDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
+      return count;
+    }).takeWhile((element) => isRunning);
+
+    _dragonDirectionStream.listen((int event) {
+
+      direction = DirectionEnumsExt.generateRandomUniqueDirection();
+      if(direction == Direction.up || direction == Direction.down){
+        isYAxisMovement = true;
+        isXAxisMovement = false;
+        isLeft = false;
+        if(direction == Direction.down){
+          isDown = true;
+        }
+        else{
+          isDown = false;
+        }
+      }
+      else if(direction == Direction.left || direction == Direction.right) {
+        isXAxisMovement = true;
+        isYAxisMovement = false;
+        if(direction == Direction.left){
+          isLeft = true;
+        }
+        else{
+          isLeft = false;
+        }
+      }
+      //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
+      GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
+      dragonPositionNotifier.add(dragonPositionModel);
+    });
   }
 
   @override
   void update(double delta) {
     super.update(delta);
-    movePlayer(delta);
+    if(isRunning){
+      movePlayer(delta);
+    }
   }
 
   @override

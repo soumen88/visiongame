@@ -75,16 +75,20 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       if(ghostPositionModel != null && running){
         int randomX = next(50, 400);
         int randomY = next(50, 400);
-        DifficultyLevelEnums currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value!;
-        if(currentDifficultyLevel == DifficultyLevelEnums.EASY){
-          _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
-        }
-        else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
-          _dragon.direction = DirectionEnumsExt.generateRandomUniqueDirection();
-          _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
-        }
+        _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         if(isVoiceEnabled){
-          await speakMovement(ghostPositionModel);
+          await speakMovement(ghostPositionModel, _ghostPlayer.position);
+        }
+      }
+    });
+
+    _dragon.dragonPositionNotifier.listen((GhostPositionModel? dragonPositionModel) async{
+      if(dragonPositionModel != null && running){
+        int randomX = next(50, 400);
+        int randomY = next(50, 400);
+        _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if(isVoiceEnabled){
+          await speakMovement(dragonPositionModel, _dragon.position);
         }
       }
     });
@@ -115,6 +119,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
           _logger.log(_TAG, "Received event for medium level");
           _ghostPlayer.removeFromParent();
+          _ghostPlayer.isRunning = false;
           enemyName = "Dragon";
           await _visionTts.speakStop();
           await _visionTts.speakText("Enemy changes to Dragon");
@@ -127,11 +132,14 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           enemyName = "Giant Moth";
           final componentSize = Vector2(150, 100);
           _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);
+          _dragon.isRunning = false;
+
           int randomX = next(50, 400);
           int randomY = next(50, 400);
+          await _visionTts.speakStop();
           await _visionTts.speakText("Enemy changes to Giant moth");
-          await add(_moth);
-          _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          /*await add(_moth);
+          _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);*/
         }
       }
     });
@@ -178,7 +186,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   Future<void> addCoinInGame() async{
     int randomX = next(50, 100);
     int randomY = next(50, 500);
-    //Remove current coin and add another one
     _coins.removeFromParent();
 
     if(running &&  !_coins.isMounted){
@@ -214,9 +221,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
 
-  Future<void> speakMovement(GhostPositionModel ghostPositionModel) async{
+  Future<void> speakMovement(GhostPositionModel ghostPositionModel, NotifyingVector2 enemyPosition ) async{
     String speakString = "";
-    bool isRight = _ghostPlayer.position.x > _player.position.x;
+    bool isRight = enemyPosition.x > _player.position.x;
     if(ghostPositionModel.isXAxisMovement){
       if(isRight){
         speakString = "$enemyName coming from right";
@@ -241,7 +248,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     }
     counter++;
     _logger.log(_TAG, "Speak String $speakString");
-    bool isSpeakComplete = await _visionTts.speakText(speakString);
+    //bool isSpeakComplete = await _visionTts.speakText(speakString);
+    bool isSpeakComplete = true;
     if(isSpeakComplete){
       await addCoinInGame();
     }

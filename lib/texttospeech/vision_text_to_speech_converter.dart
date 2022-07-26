@@ -8,9 +8,10 @@ import '../base/logger_utils.dart';
 class VisionTextToSpeechConverter{
   final _TAG = "VisionTextToSpeechConverter";
   final _logger = locator<LoggerUtils>();
-  final FlutterTts _textToSpeechConverter = FlutterTts();
+  FlutterTts _textToSpeechConverter = FlutterTts();
 
   Future<void> setUpTTs() async{
+    _textToSpeechConverter = FlutterTts();
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
     await _textToSpeechConverter.setLanguage('en');

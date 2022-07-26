@@ -60,7 +60,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
          && isSpeakComplete5){
         _logger.log(_TAG, "All speak completed");
         isSpeakingComplete = true;
-        reloadDifficultyBottomSheet(true);
+        //reloadDifficultyBottomSheet(true);
         return Future.value(isSpeakingComplete);
       }
     }
@@ -113,6 +113,10 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
       }
 
     }
+  }
+
+  void stopSpeaking() async{
+    await visionTts.speakStop();
   }
 
   void startNextScreen(String value){
