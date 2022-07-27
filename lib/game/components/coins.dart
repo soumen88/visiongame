@@ -35,53 +35,66 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
     sprite = await gameRef.loadSprite('coin.png');
     position = gameRef.size / 2;
     add(RectangleHitbox());
-    final Stream<int> _fruitChangeStream = Stream.periodic(const Duration(seconds: 5), (int count) {
-      return count;
-    }).takeWhile((element) => isRunning);
+    ///Once this timer elapses then collectible image would be changed in game
+    add(
+        TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await generateRandomCollectible();
+          },
+        )
+    );
+  }
 
-    _fruitChangeStream.listen((int event) async{
-      int randomNumberGenerated = next(0, 110);
-      if(randomNumberGenerated > 0 && randomNumberGenerated < 10 ){
-        currentCollectable = "Bell Pepper";
-        sprite = await gameRef.loadSprite('bell_pepper.png');
-      }
-      else if(randomNumberGenerated > 10 && randomNumberGenerated < 20){
-        currentCollectable = "Cabbage";
-        sprite = await gameRef.loadSprite('cabbage.png');
-      }
-      else if(randomNumberGenerated > 30 && randomNumberGenerated < 40){
-        currentCollectable = "Carrot";
-        sprite = await gameRef.loadSprite('carrot.png');
-      }
-      else if(randomNumberGenerated > 40 && randomNumberGenerated < 50){
-        currentCollectable = "Corn";
-        sprite = await gameRef.loadSprite('corn.png');
-      }
-      else if(randomNumberGenerated > 50 && randomNumberGenerated < 60){
-        currentCollectable = "Egg plant";
-        sprite = await gameRef.loadSprite('eggplant.png');
-      }
-      else if(randomNumberGenerated > 60 && randomNumberGenerated < 70){
-        currentCollectable = "Mushroom";
-        sprite = await gameRef.loadSprite('mushroom.png');
-      }
-      else if(randomNumberGenerated > 70 && randomNumberGenerated < 80){
-        currentCollectable = "Carrot";
-        sprite = await gameRef.loadSprite('carrot.png');
-      }
-      else if(randomNumberGenerated > 80 && randomNumberGenerated < 90){
-        currentCollectable = "Strawberry";
-        sprite = await gameRef.loadSprite('strawberry.png');
-      }
-      else if(randomNumberGenerated > 90 && randomNumberGenerated < 100){
-        currentCollectable = "Tomato";
-        sprite = await gameRef.loadSprite('tomato.png');
-      }
-      else{
-        currentCollectable = "Watermelon";
-        sprite = await gameRef.loadSprite('watermelon.png');
-      }
-    });
+  Future<void> generateRandomCollectible() async{
+    int randomNumberGenerated = next(0, 110);
+    if(randomNumberGenerated > 0 && randomNumberGenerated < 10 ){
+      currentCollectable = "Bell Pepper";
+      sprite = await gameRef.loadSprite('bell_pepper.png');
+    }
+    else if(randomNumberGenerated > 10 && randomNumberGenerated < 20){
+      currentCollectable = "Cabbage";
+      sprite = await gameRef.loadSprite('cabbage.png');
+    }
+    else if(randomNumberGenerated > 30 && randomNumberGenerated < 40){
+      currentCollectable = "Carrot";
+      sprite = await gameRef.loadSprite('carrot.png');
+    }
+    else if(randomNumberGenerated > 40 && randomNumberGenerated < 50){
+      currentCollectable = "Corn";
+      sprite = await gameRef.loadSprite('corn.png');
+    }
+    else if(randomNumberGenerated > 50 && randomNumberGenerated < 60){
+      currentCollectable = "Egg plant";
+      sprite = await gameRef.loadSprite('eggplant.png');
+    }
+    else if(randomNumberGenerated > 60 && randomNumberGenerated < 70){
+      currentCollectable = "Mushroom";
+      sprite = await gameRef.loadSprite('mushroom.png');
+    }
+    else if(randomNumberGenerated > 70 && randomNumberGenerated < 80){
+      currentCollectable = "Carrot";
+      sprite = await gameRef.loadSprite('carrot.png');
+    }
+    else if(randomNumberGenerated > 80 && randomNumberGenerated < 90){
+      currentCollectable = "Strawberry";
+      sprite = await gameRef.loadSprite('strawberry.png');
+    }
+    else if(randomNumberGenerated > 90 && randomNumberGenerated < 100){
+      currentCollectable = "Tomato";
+      sprite = await gameRef.loadSprite('tomato.png');
+    }
+    else{
+      currentCollectable = "Watermelon";
+      sprite = await gameRef.loadSprite('watermelon.png');
+    }
+  }
+
+  @override
+  void onMount() {
+    // Runs every time that the component is added to the component tree.
+    print(gameRef.size.y);
   }
 
   @override
@@ -100,13 +113,8 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
         await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
         _gameTriggers.addPlayerCoins(addCoins: true);
       }
-
       removeFromParent();
     }
-  }
-
-  void removeCoin(){
-    removeFromParent();
   }
 
   /**

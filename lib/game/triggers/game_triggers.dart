@@ -38,6 +38,9 @@ class GameTriggers{
   ///Below variable decides what is players walk speed in game
   BehaviorSubject<DifficultyLevelEnums?> gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
+  bool isRunning = true;
+  late Stream<int> ghostDirectionStream;
+
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
     if(isInitial){
       PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
@@ -81,11 +84,13 @@ class GameTriggers{
     DifficultyLevelEnums? currentDifficultLevel = gameDifficultyLevelStream.value;
     if(currentDifficultLevel != null){
       if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
+        _logger.log(_TAG, "Updating difficulty level to medium");
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
         //gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
+        _logger.log(_TAG, "Updating difficulty level to Hard");
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
@@ -120,6 +125,12 @@ class GameTriggers{
     _logger.log(_TAG, "Setting difficulty level to $difficultyLevelEnums");
     addPlayerCoins(isInitial: true, addCoins: false);
     gameDifficultyLevelStream.add(difficultyLevelEnums);
+  }
+
+  void startGhostDirectionStream(){
+    ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
+      return count;
+    }).takeWhile((element) => isRunning);
   }
 
 }

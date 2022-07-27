@@ -47,9 +47,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   bool isVoiceEnabled = true;
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
-
   late String enemyName;
-  int counter = 0;
 
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
@@ -104,16 +102,14 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   }
 
   ///Depending upon difficulty level enemy is added in game
-  void listenToDifficultyLevelChanges() async{
+  Future<void> listenToDifficultyLevelChanges() async{
     _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
       if(currentDifficultyLevel != null){
         ///Once difficulty level changes give player new life and coins
         _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_INIT, _player.position, isInitial: true);
         if(currentDifficultyLevel == DifficultyLevelEnums.EASY){
-          _logger.log(_TAG, "Received event for easy level");
+          _logger.log(_TAG, "Received event for easy level with ${_ghostPlayer.isMounted}");
           enemyName = "Ghost";
-
-          await add(_ghostPlayer);
           _ghostPlayer.position = _world.size / 1.6;
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
@@ -129,6 +125,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
+          _logger.log(_TAG, "Received event for hard level");
           enemyName = "Giant Moth";
           final componentSize = Vector2(150, 100);
           _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);
@@ -153,10 +150,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await add(_world);
     await add(_player);
     _player.position = _world.size / 1.5;
-    addWorldCollision();
-
+    await addWorldCollision();
+    await add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
-
 
     camera.followComponent(_player,
         worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
@@ -172,35 +168,43 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _heartPositionStream.listen((int event) async{
 
     });*/
+    //await _ghostPlayer.addGhostMotion();
   }
 
   onArrowKeyChanged(Direction direction){
     _player.direction = direction;
-    //collidableAnimationExample.direction = direction;
   }
 
   Player get getPlayer {
     return _player;
   }
 
-  Future<void> addCoinInGame() async{
+  Future<bool> addCoinInGame() async{
+    bool isCoinRemoved = false;
     int randomX = next(50, 100);
     int randomY = next(50, 500);
-    _coins.removeFromParent();
-
+    if(_coins.isMounted){
+      _logger.log(_TAG, "remove coin on purpose");
+      isCoinRemoved = true;
+      _coins.removeFromParent();
+    }
     if(running &&  !_coins.isMounted){
+      isCoinRemoved = false;
       await add(_coins);
       _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
     }
+    return Future.value(isCoinRemoved);
   }
 
-  void addWorldCollision() async =>
-      (await MapLoader.readRayWorldCollisionMap()).forEach((rect) {
-        add(WorldCollidable()
-          ..position = Vector2(rect.left, rect.top)
-          ..width = rect.width
-          ..height = rect.height);
-      });
+  Future<void> addWorldCollision() async {
+    (await MapLoader.readRayWorldCollisionMap()).forEach((rect) {
+      add(WorldCollidable()
+        ..position = Vector2(rect.left, rect.top)
+        ..width = rect.width
+        ..height = rect.height);
+    });
+  }
+
 
   RectangleHitbox createWorldCollidable(Rect rect) {
     final collidable = RectangleHitbox();
@@ -246,28 +250,43 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         speakString = "$enemyName coming from left and walking up";
       }
     }
-    counter++;
     _logger.log(_TAG, "Speak String $speakString");
-    //bool isSpeakComplete = await _visionTts.speakText(speakString);
-    bool isSpeakComplete = true;
+    bool isSpeakComplete = await _visionTts.speakText(speakString);
+    //bool isSpeakComplete = true;
     if(isSpeakComplete){
-      await addCoinInGame();
-    }
+      //await _coins.generateRandomCollectible();
+      bool isCoinRemoved = await addCoinInGame();
+      if(isCoinRemoved == false){
+        await speakCollectablePosition();
+      }
 
+    }
   }
 
-  void speakCollectablePosition() async{
+  ///Position for collectable is only spoken when it is added in game
+  Future<void> speakCollectablePosition() async{
     _logger.log(_TAG, "Speak collectable position");
-    bool isRight = _coins.x > _player.position.x;
-    bool isUp = _coins.y > _player.position.y;
+    bool isLeft = _player.position.x > _coins.x ;
+    bool isUp = _player.position.y > _coins.y ;
     String coinPositionText = "";
     if(isUp){
-      coinPositionText = "${_coins.currentCollectable} is upwards";
+      if(isLeft){
+        coinPositionText = "Collectable is to your left and upwards";
+      }
+      else{
+        coinPositionText = "Collectable is to your right and upwards";
+      }
     }
     else{
-      coinPositionText = "${_coins.currentCollectable} is downwards";
+      if(isLeft){
+        coinPositionText = "Collectable is to your left and downwards";
+      }
+      else{
+        coinPositionText = "Collectable is to your right and downwards";
+      }
     }
-    await _visionTts.speakStop();
+
+    //await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
   }
 

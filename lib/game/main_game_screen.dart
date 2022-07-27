@@ -37,7 +37,7 @@ class MainGamePage extends HookConsumerWidget {
       ShakeDetector detector = ShakeDetector.autoStart(
           onPhoneShake: () async{
             _logger.log(_TAG, "Detected phone shake");
-            game.speakCollectablePosition();
+            //game.speakCollectablePosition();
           }
       );
     }

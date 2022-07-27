@@ -69,7 +69,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     ///Start with initial lives as 3
-    _logger.log(_TAG, "Inside load function");
+    //_logger.log(_TAG, "Loading player sprite now");
   }
 
   @override
@@ -97,10 +97,10 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollisionStart(intersectionPoints, other);
 
-    if((other is EnemyDragon) || (other is Moth ) || (other is Ghost)){
+    /*if((other is EnemyDragon) || (other is Moth ) || (other is Ghost)){
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
       removeFromParent();
-    }
+    }*/
 
   }
 

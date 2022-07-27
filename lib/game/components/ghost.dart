@@ -31,60 +31,79 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   final _random = Random();
 
   bool isMicOn = true;
-
+  bool isMotionListenerAdded = false;
   double _motionFactor = 0.25;
+  int previousEvent = -1;
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
   final _gameTriggers = locator<GameTriggers>();
   final _gameAudioPlayer = locator<GameAudioPlayer>();
 
   Ghost()
-      : super(
-    size: Vector2.all(50.0),
-  );
+      : super(size: Vector2.all(50.0));
 
   @override
   Future<void> onLoad() async {
+    _logger.log(_TAG, "Loading ghost sprite now");
     sprite = await gameRef.loadSprite('ghost.png');
     position = gameRef.size / 2;
     add(RectangleHitbox());
-    final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
+    ///Once this timer elapses then ghost position would be changed in game
+    add(
+        TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await addGhostMotion();
+          },
+        )
+    );
+    /*final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
       return count;
-    }).takeWhile((element) => isRunning);
-
-    await speakMovement();
-
-    _ghostDirectionStream.listen((int event) async{
-      _logger.log(_TAG, "Changing direction of ghost");
-      var randomNumber1 = next(1, 100);
-      var randomNumber2 = next(7, 500);
-      if(randomNumber1 % 2 == 0){
-        isXAxisMovement = true;
-        isYAxisMovement = false;
-      }
-      else{
-        isXAxisMovement = false;
-        isYAxisMovement = true;
-      }
-      if(randomNumber2 % 2 == 0){
-        isLeft = true;
-        isDown = true;
-      }
-      else{
-        isLeft = false;
-        isDown = false;
-      }
-      /*_logger.log(_TAG, "Changing direction Xaxis $isLeft and Yaxis $isDown");
-      _logger.log(_TAG, "Changing movement Xaxis $isXAxisMovement and Yaxis $isYAxisMovement");*/
-      DifficultyLevelEnums? currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value;
-      if(currentDifficultyLevel != null && _gameAudioPlayer.isAudioPlayerPlaying() == false){
-        if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
-          //await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
-        }
-      }
-      GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
-      ghostPositionNotifier.add(ghostPositionModel);
     });
+
+    _ghostDirectionStream.listen((int event) {
+      if(previousEvent != event){
+        previousEvent = event;
+        _logger.log(_TAG, "Change ghost position $event");
+      }
+
+    });*/
+  }
+  
+  void displayTimer(){
+    _logger.log(_TAG, "Changing Timer");
+  }
+
+  Future<void> addGhostMotion() async{
+    _logger.log(_TAG, "Changing direction of ghost");
+    var randomNumber1 = next(1, 100);
+    var randomNumber2 = next(7, 500);
+    if(randomNumber1 % 2 == 0){
+      isXAxisMovement = true;
+      isYAxisMovement = false;
+    }
+    else{
+      isXAxisMovement = false;
+      isYAxisMovement = true;
+    }
+    if(randomNumber2 % 2 == 0){
+      isLeft = true;
+      isDown = true;
+    }
+    else{
+      isLeft = false;
+      isDown = false;
+    }
+
+    DifficultyLevelEnums? currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value;
+    if(currentDifficultyLevel != null && _gameAudioPlayer.isAudioPlayerPlaying() == false){
+      if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
+        //await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
+      }
+    }
+    GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
+    ghostPositionNotifier.add(ghostPositionModel);
 
   }
 
