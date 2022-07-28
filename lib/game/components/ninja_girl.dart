@@ -1,50 +1,20 @@
-/** Copyright (c) 2021 Razeware LLC
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
-    distribute, sublicense, create a derivative work, and/or sell copies of the
-    Software in any work that is designed, intended, or marketed for pedagogical or
-    instructional purposes related to programming, coding, application development,
-    or information technology.  Permission for such use, copying, modification,
-    merger, publication, distribution, sublicensing, creation of derivative works,
-    or sale is expressly withheld.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE. **/
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:visiongame/enums/player_life_status_enums.dart';
-import 'package:visiongame/game/components/coins.dart';
-import 'package:visiongame/game/components/enemy_dragon.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:visiongame/game/components/ghost.dart';
-import 'package:visiongame/game/components/moth.dart';
-import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
+import '../models/ghost_position_model.dart';
 import '../triggers/game_triggers.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
+class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
-  final _TAG = "Player";
-  final _gameTriggers = locator<GameTriggers>();
+  final _TAG = "EnemyDragon";
 
   final double _playerSpeed = 100.0;
   final double _animationSpeed = 0.15;
@@ -59,18 +29,82 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
 
-  Player()
+  ///By default in X Axis movement player would move to the left
+  bool isLeft = true;
+  ///By default in Y Axis movement player would move to the left
+  bool isDown = false;
+  bool isXAxisMovement = false;
+  bool isYAxisMovement = true;
+
+  final BehaviorSubject<GhostPositionModel?> ninjaPositionNotifier = BehaviorSubject.seeded(null);
+
+  NinjaGirl()
       : super(
-    size: Vector2.all(50.0),
+    size: Vector2.all(100.0),
   );
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    _loadAnimations().then((_) => {animation = _standingAnimation});
-    add(RectangleHitbox());
-    ///Start with initial lives as 3
-    //_logger.log(_TAG, "Loading player sprite now");
+    _logger.log(_TAG, "Adding dragon");
+    direction = DirectionEnumsExt.generateRandomUniqueDirection();
+    await _loadAnimations().then((_) => {animation = _standingAnimation});
+    final hitboxPaint = BasicPalette.white.paint()
+      ..style = PaintingStyle.stroke
+      ..color = Color.fromARGB(10, 102, 0, 204);
+    add(
+      PolygonHitbox.relative(
+        [
+          Vector2(0.0, -1.0),
+          Vector2(-1.0, -0.1),
+          Vector2(-0.2, 0.4),
+          Vector2(0.2, 0.4),
+          Vector2(1.0, -0.1),
+        ],
+        parentSize: size,
+      )
+        ..paint = hitboxPaint
+        ..renderShape = false,
+    );
+    add(ScreenHitbox());
+    ///Once this timer elapses then dragon position would be changed in game
+    add(
+        TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await addNinjaMotion();
+          },
+        )
+    );
+  }
+
+  Future<void> addNinjaMotion() async{
+    direction = DirectionEnumsExt.generateRandomUniqueDirection();
+    if(direction == Direction.up || direction == Direction.down){
+      isYAxisMovement = true;
+      isXAxisMovement = false;
+      isLeft = false;
+      if(direction == Direction.down){
+        isDown = true;
+      }
+      else{
+        isDown = false;
+      }
+    }
+    else if(direction == Direction.left || direction == Direction.right) {
+      isXAxisMovement = true;
+      isYAxisMovement = false;
+      if(direction == Direction.left){
+        isLeft = true;
+      }
+      else{
+        isLeft = false;
+      }
+    }
+    //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
+    GhostPositionModel ninjaPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
+    ninjaPositionNotifier.add(ninjaPositionModel);
   }
 
   @override
@@ -91,19 +125,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   }
 
-
-  @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) {
-    super.onCollisionStart(intersectionPoints, other);
-
-    if((other is EnemyDragon) || (other is NinjaGirl ) || (other is Ghost)){
-      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();
-    }
-
-  }
-
-
   @override
   void onCollisionEnd(PositionComponent  other) {
     _hasCollided = false;
@@ -111,22 +132,22 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   Future<void> _loadAnimations() async {
     final spriteSheet = SpriteSheet(
-      image: await gameRef.images.load('player_spritesheet.png'),
+      image: await gameRef.images.load('ninja_girl_sprite_sheet.png'),
       ///First parameter is width and second is height
-      srcSize: Vector2(29.0, 32.0),
+      srcSize: Vector2(180, 180),
     );
 
     _runDownAnimation =
-        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 3);
 
     _runLeftAnimation =
-        spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 4);
-
-    _runUpAnimation =
-        spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 1, stepTime: _animationSpeed, to: 3);
 
     _runRightAnimation =
-        spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 4);
+        spriteSheet.createAnimation(row: 2, stepTime: _animationSpeed, to: 3);
+
+    _runUpAnimation =
+        spriteSheet.createAnimation(row: 3, stepTime: _animationSpeed, to: 3);
 
     _standingAnimation =
         spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);

@@ -1,17 +1,10 @@
 import 'dart:math';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/base/logger_utils.dart';
-import 'package:visiongame/enums/difficulty_level_enum.dart';
-import 'package:visiongame/enums/game_component_enums.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
-import '../../audioplayer/game_audio_player.dart';
 import '../../injector/injection.dart';
-import '../../texttospeech/vision_text_to_speech_converter.dart';
-import '../triggers/game_triggers.dart';
 
 class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
@@ -23,21 +16,12 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-  bool isRunning = true;
-
-  ///Below variable is used for speaking about ghost position in the game
-  final _visionTts = locator<VisionTextToSpeechConverter>();
 
   final _random = Random();
 
-  bool isMicOn = true;
-  bool isMotionListenerAdded = false;
   double _motionFactor = 0.25;
-  int previousEvent = -1;
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
-  final _gameTriggers = locator<GameTriggers>();
-  final _gameAudioPlayer = locator<GameAudioPlayer>();
 
   Ghost()
       : super(size: Vector2.all(50.0));
@@ -58,21 +42,6 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
           },
         )
     );
-    /*final Stream<int> _ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
-      return count;
-    });
-
-    _ghostDirectionStream.listen((int event) {
-      if(previousEvent != event){
-        previousEvent = event;
-        _logger.log(_TAG, "Change ghost position $event");
-      }
-
-    });*/
-  }
-  
-  void displayTimer(){
-    _logger.log(_TAG, "Changing Timer");
   }
 
   Future<void> addGhostMotion() async{
@@ -96,12 +65,6 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
       isDown = false;
     }
 
-    DifficultyLevelEnums? currentDifficultyLevel = _gameTriggers.gameDifficultyLevelStream.value;
-    if(currentDifficultyLevel != null && _gameAudioPlayer.isAudioPlayerPlaying() == false){
-      if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
-        //await _gameAudioPlayer.playGameSound(GameComponentEnums.DRAGON);
-      }
-    }
     GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
     ghostPositionNotifier.add(ghostPositionModel);
 

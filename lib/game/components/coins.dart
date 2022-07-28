@@ -103,6 +103,7 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
       _logger.log(_TAG, "Now playing sound");
       if(_gameTutorialTriggers.isTutorialInProgress){
         int? currentStep = _gameTutorialTriggers.stepCounter.value;
+        await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
         if(currentStep != null && currentStep == 3){
           _gameTutorialTriggers.addStepCounter(4);
         }

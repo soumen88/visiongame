@@ -94,6 +94,10 @@ class GameTriggers{
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
+      else if(currentDifficultLevel == DifficultyLevelEnums.HARD && playerCoinsStream.value == ApplicationConstants.kLevelHardCompletionCoins){
+        PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_WIN, position: null, playerLivesLeft: 0);
+        playerLifeEventNotifier.add(newPlayerModel);
+      }
     }
   }
 

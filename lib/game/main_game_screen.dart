@@ -3,19 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shake/shake.dart';
 import 'package:visiongame/base/empty_widget.dart';
-import 'package:visiongame/game/components/collidable_animation_example.dart';
 import 'package:visiongame/game/helpers/direction.dart';
 import 'package:visiongame/game/helpers/swipe_detector.dart';
 import 'package:visiongame/game/triggers/game_tutorial_triggers.dart';
-import 'package:visiongame/game/ui/game_over_widget.dart';
+import 'package:visiongame/game/ui/game_conclusion_widget.dart';
 import 'package:visiongame/game/ui/game_tracker_widget.dart';
 import 'package:visiongame/game/ui/game_volume_widget.dart';
 import 'package:visiongame/home/viewmodel/robot_wave_widget.dart';
 import 'package:visiongame/injector/injection.dart';
 import 'package:visiongame/tutorial/tutorial_game.dart';
-import '../audioplayer/game_audio_player.dart';
 import '../base/logger_utils.dart';
 import '../loading/loading_widget.dart';
 import '../providers/provider.dart';
@@ -32,19 +29,9 @@ class MainGamePage extends HookConsumerWidget {
     final gameProviderState = ref.watch(gameProvider);
     final gameNotifier = ref.watch(gameProvider.notifier);
     VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
-    void listenForPhoneShakes(){
-      _logger.log(_TAG, "Listen for phone shakes");
-      ShakeDetector detector = ShakeDetector.autoStart(
-          onPhoneShake: () async{
-            _logger.log(_TAG, "Detected phone shake");
-            //game.speakCollectablePosition();
-          }
-      );
-    }
 
     useEffect(() {
       _logger.log(_TAG, "Inside use effect");
-      listenForPhoneShakes();
       Future.delayed(Duration.zero, () async{
         _logger.log(_TAG, "Starting game view");
         gameNotifier.init();
@@ -52,23 +39,30 @@ class MainGamePage extends HookConsumerWidget {
     }, const []);
 
     gameProviderState.whenOrNull(
-      displayRobotView: () async{
-        ///Starting tutorial with step one
-        _gameTutorialTrigger.setTutorialInProgress(true);
-        gameNotifier.listenToGameSteps();
-        bool isStepComplete = await gameNotifier.startStepOneInTutorial();
-      }
+        displayRobotView: () async{
+          ///Starting tutorial with step one
+          _gameTutorialTrigger.setTutorialInProgress(true);
+          gameNotifier.listenToGameSteps();
+          bool isStepComplete = await gameNotifier.startStepOneInTutorial();
+        },
+        displayGameWin: (){
+          gameNotifier.startGameWinScript();
+        },
+        displayGameOver: (){
+          gameNotifier.startGameOverScript();
+        }
     );
 
     return gameProviderState.maybeWhen(
         displayGameOver: (){
           _logger.log(_TAG, "Displaying game over view");
-          return GameOverWidget();
+          return GameConclusionWidget();
+        },
+        displayGameWin: (){
+          _logger.log(_TAG, "Displaying game over view");
+          return GameConclusionWidget();
         },
         displayGameView: (){
-          _logger.log(_TAG, "Displaying game view");
-
-          //CollidableAnimationExample game = CollidableAnimationExample();
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(
@@ -91,13 +85,13 @@ class MainGamePage extends HookConsumerWidget {
                 child: Stack(
                   children: [
                     GameWidget(game: game),
-                    Positioned(
+                    /*Positioned(
                       top: 100,
                       left: 100,
                       child: ElevatedButton(onPressed: () async{
                           //await _gameAudioPlayer.playCollectCoin();
                       }, child: Text("Test")),
-                    ),
+                    ),*/
                     GameTrackerWidget(),
                     GameVolumeWidget()
                   ],
@@ -106,7 +100,6 @@ class MainGamePage extends HookConsumerWidget {
           );
         },
         displayTutorialView: (){
-          _logger.log(_TAG, "Displaying tutorial view");
           TutorialGame tutorialGame = TutorialGame(screenWidth: width.toInt(), screenHeight: height.toInt());
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),

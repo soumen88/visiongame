@@ -6,7 +6,7 @@ class PlayerMotionModel{
 
   PlayerLifeStatusEnums event;
   ///Saving position of the player when it was alive and when it was dead
-  Vector2 position;
+  Vector2? position;
   ///Track how many lives player has in the game
   int playerLivesLeft;
 

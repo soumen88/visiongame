@@ -1,5 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
@@ -13,7 +15,6 @@ import '../triggers/game_triggers.dart';
 class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
   final _TAG = "EnemyDragon";
-  final _gameTriggers = locator<GameTriggers>();
 
   final double _playerSpeed = 100.0;
   final double _animationSpeed = 0.15;
@@ -34,7 +35,6 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-  bool isRunning = true;
 
   final BehaviorSubject<GhostPositionModel?> dragonPositionNotifier = BehaviorSubject.seeded(null);
 
@@ -49,47 +49,68 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     _logger.log(_TAG, "Adding dragon");
     direction = DirectionEnumsExt.generateRandomUniqueDirection();
     await _loadAnimations().then((_) => {animation = _standingAnimation});
+    final hitboxPaint = BasicPalette.white.paint()
+      ..style = PaintingStyle.stroke
+      ..color = Color.fromARGB(10, 102, 0, 204);
+    add(
+      PolygonHitbox.relative(
+        [
+          Vector2(0.0, -1.0),
+          Vector2(-1.0, -0.1),
+          Vector2(-0.2, 0.4),
+          Vector2(0.2, 0.4),
+          Vector2(1.0, -0.1),
+        ],
+        parentSize: size,
+      )
+        ..paint = hitboxPaint
+        ..renderShape = false,
+    );
     add(ScreenHitbox());
-    final Stream<int> _dragonDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
-      return count;
-    }).takeWhile((element) => isRunning);
+    ///Once this timer elapses then dragon position would be changed in game
+    add(
+        TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await addDragonMotion();
+          },
+        )
+    );
+  }
 
-    _dragonDirectionStream.listen((int event) {
-
-      direction = DirectionEnumsExt.generateRandomUniqueDirection();
-      if(direction == Direction.up || direction == Direction.down){
-        isYAxisMovement = true;
-        isXAxisMovement = false;
+  Future<void> addDragonMotion() async{
+    direction = DirectionEnumsExt.generateRandomUniqueDirection();
+    if(direction == Direction.up || direction == Direction.down){
+      isYAxisMovement = true;
+      isXAxisMovement = false;
+      isLeft = false;
+      if(direction == Direction.down){
+        isDown = true;
+      }
+      else{
+        isDown = false;
+      }
+    }
+    else if(direction == Direction.left || direction == Direction.right) {
+      isXAxisMovement = true;
+      isYAxisMovement = false;
+      if(direction == Direction.left){
+        isLeft = true;
+      }
+      else{
         isLeft = false;
-        if(direction == Direction.down){
-          isDown = true;
-        }
-        else{
-          isDown = false;
-        }
       }
-      else if(direction == Direction.left || direction == Direction.right) {
-        isXAxisMovement = true;
-        isYAxisMovement = false;
-        if(direction == Direction.left){
-          isLeft = true;
-        }
-        else{
-          isLeft = false;
-        }
-      }
-      //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
-      GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
-      dragonPositionNotifier.add(dragonPositionModel);
-    });
+    }
+    //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
+    GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
+    dragonPositionNotifier.add(dragonPositionModel);
   }
 
   @override
   void update(double delta) {
     super.update(delta);
-    if(isRunning){
-      movePlayer(delta);
-    }
+    movePlayer(delta);
   }
 
   @override
@@ -102,21 +123,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
         _collisionDirection = direction;
       }
     }
-
   }
-
-
-  @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) {
-    super.onCollisionStart(intersectionPoints, other);
-
-    if(other is Ghost){
-      /*_gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();*/
-    }
-
-  }
-
 
   @override
   void onCollisionEnd(PositionComponent  other) {

@@ -22,6 +22,7 @@ mixin _$GameScreenViewState {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) =>
@@ -32,6 +33,7 @@ mixin _$GameScreenViewState {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) =>
@@ -42,6 +44,7 @@ mixin _$GameScreenViewState {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -53,6 +56,7 @@ mixin _$GameScreenViewState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) =>
@@ -63,6 +67,7 @@ mixin _$GameScreenViewState {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) =>
@@ -73,6 +78,7 @@ mixin _$GameScreenViewState {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -165,6 +171,7 @@ class _$_Error implements _Error {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -178,6 +185,7 @@ class _$_Error implements _Error {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -191,6 +199,7 @@ class _$_Error implements _Error {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -208,6 +217,7 @@ class _$_Error implements _Error {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -221,6 +231,7 @@ class _$_Error implements _Error {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -234,6 +245,7 @@ class _$_Error implements _Error {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -298,6 +310,7 @@ class _$_Loading implements _Loading {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -311,6 +324,7 @@ class _$_Loading implements _Loading {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -324,6 +338,7 @@ class _$_Loading implements _Loading {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -341,6 +356,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -354,6 +370,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -367,6 +384,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -427,6 +445,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -440,6 +459,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -453,6 +473,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -470,6 +491,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -483,6 +505,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -496,6 +519,7 @@ class _$_DisplayGameView implements _DisplayGameView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -556,6 +580,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -569,6 +594,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -582,6 +608,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -599,6 +626,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -612,6 +640,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -625,6 +654,7 @@ class _$_DisplayGameOver implements _DisplayGameOver {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -638,6 +668,141 @@ class _$_DisplayGameOver implements _DisplayGameOver {
 
 abstract class _DisplayGameOver implements GameScreenViewState {
   const factory _DisplayGameOver() = _$_DisplayGameOver;
+}
+
+/// @nodoc
+abstract class _$$_DisplayGameWinCopyWith<$Res> {
+  factory _$$_DisplayGameWinCopyWith(
+          _$_DisplayGameWin value, $Res Function(_$_DisplayGameWin) then) =
+      __$$_DisplayGameWinCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_DisplayGameWinCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res>
+    implements _$$_DisplayGameWinCopyWith<$Res> {
+  __$$_DisplayGameWinCopyWithImpl(
+      _$_DisplayGameWin _value, $Res Function(_$_DisplayGameWin) _then)
+      : super(_value, (v) => _then(v as _$_DisplayGameWin));
+
+  @override
+  _$_DisplayGameWin get _value => super._value as _$_DisplayGameWin;
+}
+
+/// @nodoc
+
+class _$_DisplayGameWin implements _DisplayGameWin {
+  const _$_DisplayGameWin();
+
+  @override
+  String toString() {
+    return 'GameScreenViewState.displayGameWin()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_DisplayGameWin);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String errorMessage) error,
+    required TResult Function() loading,
+    required TResult Function() displayGameView,
+    required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
+    required TResult Function() displayTutorialView,
+    required TResult Function() displayRobotView,
+  }) {
+    return displayGameWin();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? displayGameView,
+    TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
+    TResult Function()? displayTutorialView,
+    TResult Function()? displayRobotView,
+  }) {
+    return displayGameWin?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? displayGameView,
+    TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
+    TResult Function()? displayTutorialView,
+    TResult Function()? displayRobotView,
+    required TResult orElse(),
+  }) {
+    if (displayGameWin != null) {
+      return displayGameWin();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Error value) error,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_DisplayGameView value) displayGameView,
+    required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
+    required TResult Function(_DisplayTutorialView value) displayTutorialView,
+    required TResult Function(_DisplayRobotView value) displayRobotView,
+  }) {
+    return displayGameWin(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_DisplayGameView value)? displayGameView,
+    TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
+    TResult Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult Function(_DisplayRobotView value)? displayRobotView,
+  }) {
+    return displayGameWin?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_DisplayGameView value)? displayGameView,
+    TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
+    TResult Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult Function(_DisplayRobotView value)? displayRobotView,
+    required TResult orElse(),
+  }) {
+    if (displayGameWin != null) {
+      return displayGameWin(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DisplayGameWin implements GameScreenViewState {
+  const factory _DisplayGameWin() = _$_DisplayGameWin;
 }
 
 /// @nodoc
@@ -685,6 +850,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -698,6 +864,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -711,6 +878,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -728,6 +896,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -741,6 +910,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -754,6 +924,7 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),
@@ -814,6 +985,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     required TResult Function() loading,
     required TResult Function() displayGameView,
     required TResult Function() displayGameOver,
+    required TResult Function() displayGameWin,
     required TResult Function() displayTutorialView,
     required TResult Function() displayRobotView,
   }) {
@@ -827,6 +999,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
   }) {
@@ -840,6 +1013,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     TResult Function()? loading,
     TResult Function()? displayGameView,
     TResult Function()? displayGameOver,
+    TResult Function()? displayGameWin,
     TResult Function()? displayTutorialView,
     TResult Function()? displayRobotView,
     required TResult orElse(),
@@ -857,6 +1031,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     required TResult Function(_Loading value) loading,
     required TResult Function(_DisplayGameView value) displayGameView,
     required TResult Function(_DisplayGameOver value) displayGameOver,
+    required TResult Function(_DisplayGameWin value) displayGameWin,
     required TResult Function(_DisplayTutorialView value) displayTutorialView,
     required TResult Function(_DisplayRobotView value) displayRobotView,
   }) {
@@ -870,6 +1045,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
   }) {
@@ -883,6 +1059,7 @@ class _$_DisplayRobotView implements _DisplayRobotView {
     TResult Function(_Loading value)? loading,
     TResult Function(_DisplayGameView value)? displayGameView,
     TResult Function(_DisplayGameOver value)? displayGameOver,
+    TResult Function(_DisplayGameWin value)? displayGameWin,
     TResult Function(_DisplayTutorialView value)? displayTutorialView,
     TResult Function(_DisplayRobotView value)? displayRobotView,
     required TResult orElse(),

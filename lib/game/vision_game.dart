@@ -11,6 +11,7 @@ import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
 import 'package:visiongame/game/components/animated_component.dart';
 import 'package:visiongame/game/components/moth.dart';
+import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
@@ -32,7 +33,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   final EnemyDragon _dragon = EnemyDragon();
   final Ghost _ghostPlayer = Ghost();
-  late Moth _moth;
+  final NinjaGirl _ninjaGirl = NinjaGirl();
 
   final VisionWorld _world = VisionWorld();
   ///Game Collectables
@@ -60,7 +61,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
       if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE){
         Future.delayed(Duration(seconds: 2), () async{
-          _player.position = playerMotionModel.position;
+          _player.position = playerMotionModel.position!;
           await add(_player);
         });
       }
@@ -90,6 +91,17 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         }
       }
     });
+
+   _ninjaGirl.ninjaPositionNotifier.listen((GhostPositionModel? ninjaPositionModel) async{
+     if(ninjaPositionModel != null && running){
+       int randomX = next(50, 400);
+       int randomY = next(50, 400);
+       _ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+       if(isVoiceEnabled){
+         await speakMovement(ninjaPositionModel, _ninjaGirl.position);
+       }
+     }
+   });
   }
 
   ///Once mike icon is set to turn off position the speaking for enemy position would stop
@@ -115,10 +127,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
           _logger.log(_TAG, "Received event for medium level");
           _ghostPlayer.removeFromParent();
-          _ghostPlayer.isRunning = false;
           enemyName = "Dragon";
           await _visionTts.speakStop();
-          await _visionTts.speakText("Enemy changes to Dragon");
+          await _visionTts.speakText("Enemy changes to $enemyName");
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
@@ -126,17 +137,19 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
           _logger.log(_TAG, "Received event for hard level");
-          enemyName = "Giant Moth";
-          final componentSize = Vector2(150, 100);
-          _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);
-          _dragon.isRunning = false;
-
+          _dragon.removeFromParent();
+          enemyName = "Ninja Girl";
+          /*final componentSize = Vector2(150, 100);
+          _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);*/
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
-          await _visionTts.speakText("Enemy changes to Giant moth");
+          await _visionTts.speakText("Enemy changes to $enemyName");
+          //listenToMothMovement();
           /*await add(_moth);
           _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);*/
+          await add(_ninjaGirl);
+          _ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         }
       }
     });
@@ -265,7 +278,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   ///Position for collectable is only spoken when it is added in game
   Future<void> speakCollectablePosition() async{
-    _logger.log(_TAG, "Speak collectable position");
     bool isLeft = _player.position.x > _coins.x ;
     bool isUp = _player.position.y > _coins.y ;
     String coinPositionText = "";

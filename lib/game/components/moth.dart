@@ -5,10 +5,12 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:rxdart/rxdart.dart';
 
-class Moth extends SpriteAnimationComponent
-    with CollisionCallbacks, HasGameRef {
+class Moth extends SpriteAnimationComponent with CollisionCallbacks, HasGameRef {
   final Vector2 velocity;
+
+  BehaviorSubject<bool> mothPositionNotifier = BehaviorSubject.seeded(true);
 
   Moth(
       this.velocity,
@@ -33,7 +35,8 @@ class Moth extends SpriteAnimationComponent
       ),
     );
     final hitboxPaint = BasicPalette.white.paint()
-      ..style = PaintingStyle.stroke;
+      ..style = PaintingStyle.stroke
+    ..color = Color.fromARGB(10, 102, 0, 204);
     add(
       PolygonHitbox.relative(
         [
@@ -66,6 +69,9 @@ class Moth extends SpriteAnimationComponent
       PositionComponent other,
       ) {
     super.onCollisionStart(intersectionPoints, other);
+    /*bool currentValue = mothPositionNotifier.value;
+    currentValue = !currentValue;
+    mothPositionNotifier.add(currentValue);*/
     velocity.negate();
     flipVertically();
   }
