@@ -8,15 +8,12 @@ import '../../timer/timer_container.dart';
 class RobotWaveWidget extends HookWidget{
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        Positioned(
-          top: 50,
-          child: Container(
-            width: 100,
-            height: 100,
-            child: TimerContainer(timerLabel: "Secs", durationLabel: "00",),
-          ),
+        Container(
+          width: 100,
+          height: 100,
+          child: TimerContainer(timerLabel: "Secs", durationLabel: "00",),
         ),
         Align(
           alignment: Alignment.center,

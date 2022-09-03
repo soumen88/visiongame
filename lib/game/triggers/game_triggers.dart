@@ -1,11 +1,9 @@
 import 'package:flame/game.dart';
-import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/difficulty_level_enum.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
-
 import '../../base/logger_utils.dart';
 import '../../injector/injection.dart';
 
@@ -38,22 +36,28 @@ class GameTriggers{
   ///Below variable decides what is players walk speed in game
   BehaviorSubject<DifficultyLevelEnums?> gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
+  ///Below variable would not kill player if it is true
+  BehaviorSubject<bool?> isPlayerImmutable = BehaviorSubject.seeded(null);
+
   bool isRunning = true;
   late Stream<int> ghostDirectionStream;
 
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
+
     if(isInitial){
       PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
       playerLifeEventNotifier.add(playerMotionModel);
     }
     if(event == PlayerLifeStatusEnums.PLAYER_DEAD){
       var playerMotionModel = playerLifeEventNotifier.value!;
+
       if(playerMotionModel.playerLivesLeft > 0){
         int remainingLivesLeft = playerMotionModel.playerLivesLeft - 1;
         PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_NEW_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
         playerLifeEventNotifier.add(newPlayerModel);
       }
       else{
+        _logger.log(_TAG, "Game is ovver now");
         PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_OVER, position: playerPosition, playerLivesLeft: 0);
         playerLifeEventNotifier.add(newPlayerModel);
       }
@@ -83,14 +87,17 @@ class GameTriggers{
   void checkForVaryingDifficulty(){
     DifficultyLevelEnums? currentDifficultLevel = gameDifficultyLevelStream.value;
     if(currentDifficultLevel != null){
+      _logger.log(_TAG, "Current difficulty level $currentDifficultLevel");
       if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
-        _logger.log(_TAG, "Updating difficulty level to medium");
+
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
+        /*PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_WIN, position: null, playerLivesLeft: 0);
+        playerLifeEventNotifier.add(newPlayerModel);*/
         //gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
-        _logger.log(_TAG, "Updating difficulty level to Hard");
+
         addPlayerCoins(isInitial: true, addCoins: false);
         gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
@@ -135,6 +142,34 @@ class GameTriggers{
     ghostDirectionStream = Stream.periodic(Duration(seconds: 8), (int count) {
       return count;
     }).takeWhile((element) => isRunning);
+  }
+
+
+  void setImmutability(){
+    _logger.log(_TAG, "Making player immutable for 5 seconds");
+    isPlayerImmutable.value = true;
+    ///Keeping immutability time to be slightly higher because timer widget take some time to show on screen
+    Future.delayed(Duration(seconds: ApplicationConstants.kTimerLimit), (){
+      isPlayerImmutable.value = false;
+    });
+  }
+
+  void resetGame(){
+
+    playerCoinsStream = BehaviorSubject.seeded(null);
+
+    playerLifeEventNotifier = BehaviorSubject.seeded(null);
+
+    isGamePausedNotifer = BehaviorSubject.seeded(null);
+
+    isVoiceInputEnabled = BehaviorSubject<bool?>.seeded(null);
+
+    playerWalkspeedStream = BehaviorSubject.seeded(null);
+
+    gameDifficultyLevelStream = BehaviorSubject.seeded(null);
+
+    isPlayerImmutable = BehaviorSubject.seeded(null);
+
   }
 
 }

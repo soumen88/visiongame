@@ -4,7 +4,9 @@ import 'package:flame/components.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/logger_utils.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
+import '../../enums/difficulty_level_enum.dart';
 import '../../injector/injection.dart';
+import '../triggers/game_triggers.dart';
 
 class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
@@ -16,10 +18,11 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-
+  bool _isEnabled = false;
   final _random = Random();
 
   double _motionFactor = 0.25;
+  final _gameTriggers = locator<GameTriggers>();
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
 
@@ -42,7 +45,21 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
           },
         )
     );
+    //listenToDifficultyLevelChanges();
   }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> listenToDifficultyLevelChanges() async{
+    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
+      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.EASY){
+        _isEnabled = true;
+      }
+      else{
+        _isEnabled = false;
+      }
+    });
+  }
+
 
   Future<void> addGhostMotion() async{
     _logger.log(_TAG, "Changing direction of ghost");

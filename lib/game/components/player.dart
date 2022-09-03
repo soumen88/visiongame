@@ -36,9 +36,11 @@ import 'package:visiongame/game/components/moth.dart';
 import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
+import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
+import '../models/player_motion_model.dart';
 import '../triggers/game_triggers.dart';
 
 class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
@@ -58,6 +60,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   Direction direction = Direction.none;
   Direction _collisionDirection = Direction.none;
   bool _hasCollided = false;
+  bool isVoiceEnabled = true;
+  bool isPlayerImmutable = false;
+  final _visionTts = locator<VisionTextToSpeechConverter>();
 
   Player()
       : super(
@@ -67,6 +72,9 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    listenToVoiceInputEnabled();
+    listenPlayerDead();
+    listenPlayerImmutability();
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     ///Start with initial lives as 3
@@ -93,12 +101,16 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
 
   @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) {
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) async{
     super.onCollisionStart(intersectionPoints, other);
-
-    if((other is EnemyDragon) || (other is NinjaGirl ) || (other is Ghost)){
+    ///Player would not die if it is immutable
+    if(isPlayerImmutable == false && ((other is EnemyDragon) || (other is NinjaGirl ) || (other is Ghost)) ){
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
       removeFromParent();
+      await _visionTts.speakStop();
+      await _visionTts.speakText("Oh no! You Died");
+
+
     }
 
   }
@@ -107,6 +119,36 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   @override
   void onCollisionEnd(PositionComponent  other) {
     _hasCollided = false;
+  }
+
+  ///Once mike icon is set to turn off position the speaking for enemy position would stop
+  void listenToVoiceInputEnabled(){
+    _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) {
+      if(isInputEnabled != null){
+        isVoiceEnabled = isInputEnabled;
+      }
+    });
+  }
+
+  void listenPlayerDead(){
+    _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) async{
+      _logger.log(_TAG, "Player got dead $isVoiceEnabled");
+      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE && playerMotionModel.playerLivesLeft > 0){
+        if(isVoiceEnabled){
+          String playerDead = "Oh no! You just lost a life as you touched a monster";
+          await _visionTts.speakStop();
+          await _visionTts.speakText(playerDead);
+        }
+      }
+    });
+  }
+
+  void listenPlayerImmutability(){
+    _gameTriggers.isPlayerImmutable.listen((bool? playerImmutability) async{
+      if(playerImmutability != null){
+        isPlayerImmutable = playerImmutability;
+      }
+    });
   }
 
   Future<void> _loadAnimations() async {

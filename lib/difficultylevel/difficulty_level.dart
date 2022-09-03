@@ -29,7 +29,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
 
     final difficultyScreenNotifier = ref.watch(difficultyScreenProviders.notifier);
     final difficultyScreenState = ref.watch(difficultyScreenProviders);
-    final timerNotifier = ref.watch(timerProvider.notifier);
     final gameNotifier = ref.watch(gameProvider.notifier);
     final displaySheet = useStream(difficultyScreenNotifier.difficultyScreenBottomSheetEvent.stream);
     final startNextScreen = useStream(difficultyScreenNotifier.startNextScreenEvent.stream);
@@ -81,7 +80,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
       else{
         Future.delayed(Duration.zero, (){
           isBottomSheetDisplayed = true;
-          timerNotifier.startTimer();
           displayBottomSheet();
         });
       }
@@ -90,6 +88,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     return difficultyScreenState.maybeWhen(
         homeView: (){
           return Scaffold(
+            backgroundColor: Colors.lightGreen,
             body: SizedBox.expand(
               child: SwipeDetector(
                 behavior: HitTestBehavior.opaque,
@@ -97,6 +96,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 onSwipeLeft: (Offset offset){
                   _logger.log(_TAG, "Swipe left");
                   gameNotifier.isTutorialView = true;
+                  difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 //Begin a fresh game

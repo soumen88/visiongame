@@ -64,13 +64,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.0"
-  blue_thermal_printer:
-    dependency: "direct main"
-    description:
-      name: blue_thermal_printer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -540,14 +533,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.0.0"
+    version: "9.2.0"
   permission_handler_android:
     dependency: transitive
     description:
       name: permission_handler_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.0.0"
+    version: "9.0.2+1"
   permission_handler_apple:
     dependency: transitive
     description:
@@ -618,13 +611,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  rflutter_alert:
-    dependency: "direct main"
-    description:
-      name: rflutter_alert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.4"
   riverpod:
     dependency: transitive
     description:

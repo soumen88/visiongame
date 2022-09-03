@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:visiongame/base/constants.dart';
 
 import '../providers/provider.dart';
@@ -21,47 +20,6 @@ class ErrorScreen extends HookConsumerWidget {
 
     final homeNotifier = ref.watch(homeScreenProviders.notifier);
 
-    var alertStyle = AlertStyle(
-      animationType: AnimationType.fromTop,
-      isCloseButton: false,
-      isOverlayTapDismiss: false,
-      descTextAlign: TextAlign.center,
-      animationDuration: Duration(milliseconds: 400),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0.0),
-        side: BorderSide(
-          color: Colors.grey,
-        ),
-      ),
-      titleStyle: TextStyle(
-        color: Colors.red,
-      ),
-      alertAlignment: Alignment.center,
-    );
-
-    void displayError(){
-      Alert(
-        context: context,
-        style: alertStyle,
-        type: AlertType.info,
-        title: ApplicationConstants.APP_NAME,
-        desc: errorMessage,
-        buttons: [
-          DialogButton(
-            child: Text(
-              "Okay",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-
-            },
-            color: Color.fromRGBO(0, 179, 134, 1.0),
-            radius: BorderRadius.circular(0.0),
-          ),
-        ],
-      ).show();
-    }
 
     useEffect((){
       Future.delayed(Duration(seconds: 1),(){

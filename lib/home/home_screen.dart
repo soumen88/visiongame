@@ -75,7 +75,7 @@ class HomeScreenPage extends HookConsumerWidget{
 
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenDifficulty){
       _logger.log(_TAG, "Start next screen now");
-      context.router.replace(DifficultyLevelScreen());
+      context.router.replace(const DifficultyLevelScreen());
     }
 
 
@@ -85,6 +85,7 @@ class HomeScreenPage extends HookConsumerWidget{
             behavior: HitTestBehavior.opaque,
             onDoubleTap: (){
               _logger.log(_TAG, 'Double tap event received');
+              timerNotifier.hideTimerView();
               homeScreenNotifier.reloadBottomSheet(false);
               homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
             },

@@ -6,6 +6,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
+import '../../enums/difficulty_level_enum.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
@@ -35,6 +36,8 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
+  bool _isEnabled = false;
+  final _gameTriggers = locator<GameTriggers>();
 
   final BehaviorSubject<GhostPositionModel?> ninjaPositionNotifier = BehaviorSubject.seeded(null);
 
@@ -77,6 +80,8 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
           },
         )
     );
+
+    //listenToDifficultyLevelChanges();
   }
 
   Future<void> addNinjaMotion() async{
@@ -102,10 +107,24 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
         isLeft = false;
       }
     }
-    //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
+    _logger.log(_TAG, "Changing position of ninja");
+
     GhostPositionModel ninjaPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
     ninjaPositionNotifier.add(ninjaPositionModel);
   }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> listenToDifficultyLevelChanges() async{
+    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
+      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.HARD){
+        _isEnabled = true;
+      }
+      else{
+        _isEnabled = false;
+      }
+    });
+  }
+
 
   @override
   void update(double delta) {

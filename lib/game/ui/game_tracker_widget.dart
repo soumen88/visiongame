@@ -52,7 +52,7 @@ class GameTrackerWidget extends HookConsumerWidget{
                         fontSize: 24
                     ),),
                 if(gameDifficultyStream.data != null && gameDifficultyStream.data == DifficultyLevelEnums.HARD)
-                  Text("/${ApplicationConstants.kLevelEasyCompletionCoins}",
+                  Text("/${ApplicationConstants.kLevelHardCompletionCoins}",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 24
@@ -62,7 +62,7 @@ class GameTrackerWidget extends HookConsumerWidget{
         ),
         Positioned(
             top: 30,
-            right: 80,
+            right: 90,
             child: Row(
               children: [
                 Image.asset(

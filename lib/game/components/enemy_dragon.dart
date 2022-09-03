@@ -6,10 +6,13 @@ import 'package:rxdart/subjects.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
+import '../../enums/difficulty_level_enum.dart';
+import '../../enums/player_life_status_enums.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
 import '../models/ghost_position_model.dart';
+import '../models/player_motion_model.dart';
 import '../triggers/game_triggers.dart';
 
 class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
@@ -35,8 +38,10 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-
+  bool _isEnabled = false;
+  TimerComponent? _dragonTimerComponent;
   final BehaviorSubject<GhostPositionModel?> dragonPositionNotifier = BehaviorSubject.seeded(null);
+  final _gameTriggers = locator<GameTriggers>();
 
   EnemyDragon()
       : super(
@@ -69,7 +74,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     add(ScreenHitbox());
     ///Once this timer elapses then dragon position would be changed in game
     add(
-        TimerComponent(
+        _dragonTimerComponent = TimerComponent(
           period: 10,
           repeat: true,
           onTick: () async{
@@ -77,6 +82,8 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
           },
         )
     );
+    //listenToDifficultyLevelChanges();
+    //listenPlayerDead();
   }
 
   Future<void> addDragonMotion() async{
@@ -102,7 +109,8 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
         isLeft = false;
       }
     }
-    //_logger.log(_TAG, "Is x axis $isXAxisMovement or is y axis $isYAxisMovement and direction $direction");
+
+    _logger.log(_TAG, "Dragon changing position now ${_dragonTimerComponent?.timer.isRunning()}");
     GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
     dragonPositionNotifier.add(dragonPositionModel);
   }
@@ -183,6 +191,36 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
         animation = _standingAnimation;
         break;
     }
+  }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> listenToDifficultyLevelChanges() async{
+    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
+      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
+        _isEnabled = true;
+        _dragonTimerComponent?.timer.start();
+      }
+      else{
+        _isEnabled = false;
+        _dragonTimerComponent?.timer.pause();
+      }
+    });
+  }
+
+  void listenPlayerDead(){
+    _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
+      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_GAME_OVER){
+          _logger.log(_TAG, "Removing dragon on player game over");
+          _dragonTimerComponent?.timer.pause();
+          removeFromParent();
+      }
+    });
+  }
+
+
+  void checkisenabled(){
+    _logger.log(_TAG, "Check is enabled ${_isEnabled}");
+    _dragonTimerComponent?.timer.pause();
   }
 
   bool canPlayerMoveUp() {

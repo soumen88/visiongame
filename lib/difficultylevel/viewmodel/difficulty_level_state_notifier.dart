@@ -22,7 +22,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   final visionTts = locator<VisionTextToSpeechConverter>();
 
   ///Below variable is used for taking speech input from user
-  final visionSpeechInput = locator<VisionSpeechInput>();
+  //final visionSpeechInput = locator<VisionSpeechInput>();
 
   ///Below variable will show bottom sheet on the difficulty selection screen
   BehaviorSubject<bool?> difficultyScreenBottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
@@ -35,85 +35,32 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
 
   final _gameTriggers = locator<GameTriggers>();
 
-  DifficultyLevelStateNotifier() : super(const DifficultyLevelViewState.loading()){
-    listenToSpeechInput();
-  }
-
+  DifficultyLevelStateNotifier() : super(const DifficultyLevelViewState.loading());
   ///Below function asks for difficulty level in the game
   Future<bool> askForDifficultyLevel() async{
     state = const DifficultyLevelViewState.homeView();
-    bool isSpeechInputInitializationComplete = await visionSpeechInput.setUpVoiceInput();
-    if(isSpeechInputInitializationComplete){
+    //reloadDifficultyBottomSheet(true);
+    String lineOne = "Nice!";
+    bool isSpeakComplete1 = await visionTts.speakText(lineOne);
+    String lineTwo = "Now we move to our next part.";
+    bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
+    String lineThree = "Swipe left to understand this game with the help of a tutorial";
+    bool isSpeakComplete3 = await visionTts.speakText(lineThree);
+    String lineFour = "This tutorial is recommended for first time users.";
+    bool isSpeakComplete4 = await visionTts.speakText(lineFour);
+    String lineFive = "You can Swipe right to begin a fresh game";
+    bool isSpeakComplete5 = await visionTts.speakText(lineFive);
+    //if( isSpeakComplete1 && isSpeakComplete2){
+    if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4
+        && isSpeakComplete5){
+      _logger.log(_TAG, "All speak completed");
+      isSpeakingComplete = true;
       //reloadDifficultyBottomSheet(true);
-      String lineOne = "Nice!";
-      bool isSpeakComplete1 = await visionTts.speakText(lineOne);
-      String lineTwo = "Now we move to our next part.";
-      bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
-      String lineThree = "Swipe left to understand this game with the help of a tutorial";
-      bool isSpeakComplete3 = await visionTts.speakText(lineThree);
-      String lineFour = "This tutorial is recommended for first time users.";
-      bool isSpeakComplete4 = await visionTts.speakText(lineFour);
-      String lineFive = "You can Swipe right to begin a fresh game";
-      bool isSpeakComplete5 = await visionTts.speakText(lineFive);
-      //if( isSpeakComplete1 && isSpeakComplete2){
-      if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4
-         && isSpeakComplete5){
-        _logger.log(_TAG, "All speak completed");
-        isSpeakingComplete = true;
-        //reloadDifficultyBottomSheet(true);
-        return Future.value(isSpeakingComplete);
-      }
+      return Future.value(isSpeakingComplete);
     }
     return Future.value(false);
   }
 
-  ///Whatever the user has spoken will be listened here
-  void listenToSpeechInput(){
-    visionSpeechInput.currentInput.listen((SpeechInputModel? inputModel) {
-      _logger.log(_TAG, "Input model $inputModel");
-      if(inputModel != null && inputModel.textRecognized.isNotEmpty &&
-          inputModel.speechInputEnums == SpeechInputEnums.DIFFICULTY_LEVEL){
-
-        if(inputModel.textRecognized.contains("start")){
-
-        }
-        else if(inputModel.textRecognized.contains("tutorial")){
-
-        }
-        else if(inputModel.textRecognized.contains("tuto")){
-
-        }
-
-      }
-    });
-  }
-
-  ///When this function is loaded with value as true then bottom sheet is displayed on home screen
-  ///for 5 seconds and then closed
-  ///For this duration the speech input is also invoked for capturing what user is saying in difficulty screen
-  void reloadDifficultyBottomSheet(bool value) async{
-    if(value){
-      difficultyScreenBottomSheetEvent.add(true);
-      _logger.log(_TAG, "Beginning to listen again");
-      bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.DIFFICULTY_LEVEL);
-      if(isListening){
-        Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
-          if(visionSpeechInput.isSpeechEnabled){
-            difficultyScreenBottomSheetEvent.add(false);
-            await visionSpeechInput.stopListening();
-          }
-        });
-      }
-    }
-    else{
-      await visionTts.speakStop();
-      difficultyScreenBottomSheetEvent.add(false);
-      if(visionSpeechInput.isSpeechEnabled){
-        await visionSpeechInput.stopListening();
-      }
-
-    }
-  }
 
   void stopSpeaking() async{
     await visionTts.speakStop();

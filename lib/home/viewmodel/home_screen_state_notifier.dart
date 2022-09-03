@@ -23,25 +23,34 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   BehaviorSubject<bool?> bottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
   BehaviorSubject<String?> startNextScreenEvent = BehaviorSubject<String?>.seeded(null);
 
+  bool isSpeechInputEnabled = false;
+
   HomeScreenStateNotifer() : super(const HomeScreenViewState.loading()){
     listenToSpeechInput();
   }
 
   ///Step 1 - Display the loading animation for displaying hi robot on home screen
   void init() async{
-    state = const HomeScreenViewState.loading();
-    PermissionUtils permissionUtils = PermissionUtils();
-    bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
-    bool isSpeechInputInitialized = await visionSpeechInput.setUpVoiceInput();
-    if(isPermissionGranted && isSpeechInputInitialized){
-      state = const HomeScreenViewState.homeView();
-      Future.delayed(Duration(seconds: 2),(){
+    if(isSpeechInputEnabled){
+      state = const HomeScreenViewState.loading();
+      PermissionUtils permissionUtils = PermissionUtils();
+      bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
+      bool isSpeechInputInitialized = await visionSpeechInput.setUpVoiceInput();
+      if(isPermissionGranted && isSpeechInputInitialized){
+        state = const HomeScreenViewState.homeView();
         startIntroduction();
-        //reloadBottomSheet(true);
-      });
+        /*Future.delayed(Duration(seconds: 2),(){
+        startIntroduction();
+
+      });*/
+      }
+      else{
+        state = const HomeScreenViewState.permissionDeniedView();
+      }
     }
     else{
-      state = const HomeScreenViewState.permissionDeniedView();
+      state = const HomeScreenViewState.homeView();
+      startIntroduction();
     }
   }
 
@@ -50,7 +59,13 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     await visionTts.speakText(lineOne);
     String lineTwo = "I would be assisting you to play this Amazing game.";
     await visionTts.speakText(lineTwo);
-    String lineThree = "To Continue playing, Please speak ready or double tap any where on the screen";
+    String lineThree;
+    if(isSpeechInputEnabled){
+      lineThree = "To Continue playing, Please speak ready or double tap any where on the screen";
+    }
+    else{
+      lineThree = "To Continue playing, double tap any where on the screen";
+    }
     await visionTts.speakText(lineThree);
     reloadBottomSheet(true);
   }
@@ -60,27 +75,38 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   ///for 5 seconds and then closed
   ///For this duration the speech input is also invoked for capturing what user is saying
   void reloadBottomSheet(bool value) async{
+    await visionTts.speakStop();
     if(value){
       bottomSheetEvent.add(true);
-      bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
-      if(isListening){
+      if(isSpeechInputEnabled){
+        bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
+        if(isListening){
+          Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
+            _logger.log(_TAG, "Stop bottom sheet now");
+            if(visionSpeechInput.isSpeechEnabled){
+              bool isStopped = await visionSpeechInput.stopListening();
+              if(isStopped){
+                bottomSheetEvent.add(false);
+              }
+            }
+          });
+        }
+      }
+      else{
         Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
           _logger.log(_TAG, "Stop bottom sheet now");
-          if(visionSpeechInput.isSpeechEnabled){
-            bool isStopped = await visionSpeechInput.stopListening();
-            if(isStopped){
-              bottomSheetEvent.add(false);
-            }
-          }
+          bottomSheetEvent.add(false);
         });
       }
     }
     else{
       bottomSheetEvent.add(false);
-      await visionTts.speakStop();
-      if(visionSpeechInput.isSpeechEnabled){
-        await visionSpeechInput.stopListening();
+      if(isSpeechInputEnabled){
+        if(visionSpeechInput.isSpeechEnabled){
+          await visionSpeechInput.stopListening();
+        }
       }
+
     }
   }
 

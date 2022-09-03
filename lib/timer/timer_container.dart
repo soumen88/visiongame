@@ -22,7 +22,7 @@ class TimerContainer extends HookConsumerWidget{
 
     return timerStateProvider.maybeWhen(
         displayTime: (bool isTimerVisible, int seconds){
-          //_logger.log(_TAG, "Is timer visible $isTimerVisible and seconds $seconds ");
+          ///_logger.log(_TAG, "Is timer visible $isTimerVisible and seconds $seconds ");
           if(isTimerVisible){
             return Container(
               padding: EdgeInsets.all(10),

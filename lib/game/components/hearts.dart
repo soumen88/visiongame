@@ -31,9 +31,9 @@ class Hearts extends SpriteComponent with HasGameRef, CollisionCallbacks{
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if(other is Player){
-      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_ADD_LIFE, other.position);
+      /*_gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_ADD_LIFE, other.position);
       _gameAudioPlayer.playGameSound(GameComponentEnums.HEARTS);
-      removeFromParent();
+      removeFromParent();*/
     }
   }
 

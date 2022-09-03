@@ -17,18 +17,23 @@ class TimerStateNotifier extends StateNotifier<TimerViewState> {
 
 
   void startTimer(){
+    _logger.log(_TAG, "Starting time now");
     secondsPassed = 0;
     final Stream<int> _timerStream = Stream.periodic(const Duration(seconds: 1), (int count) {
       return count;
     }).takeWhile((element) => secondsPassed < ApplicationConstants.kTimerLimit);
 
     _timerStream.listen((int event) {
-        _logger.log(_TAG, "Event $event");
+        //_logger.log(_TAG, "Event $event");
         secondsPassed = event;
         state = TimerViewState.displayTime(true, secondsPassed);
         if(secondsPassed == ApplicationConstants.kTimerLimit){
           state = TimerViewState.displayTime(false, secondsPassed);
         }
     });
+  }
+
+  void hideTimerView(){
+    state = const TimerViewState.displayTime(false, 0);
   }
 }

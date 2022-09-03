@@ -60,9 +60,34 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   void listenPlayerDead(){
     _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
       if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE){
-        Future.delayed(Duration(seconds: 2), () async{
+        Future.delayed(Duration(seconds: 4), () async{
           _player.position = playerMotionModel.position!;
+          ///Reversing the direction of player when he spawns again into game
+          switch(_player.direction){
+            case Direction.down:{
+              _player.direction = Direction.up;
+            }
+            break;
+            case Direction.up :{
+              _player.direction = Direction.down;
+            }
+            break;
+            case Direction.right :{
+              _player.direction = Direction.left;
+            }
+            break;
+            case Direction.left :{
+              _player.direction = Direction.right;
+            }
+            break;
+            case Direction.none :{
+              _player.direction = Direction.right;
+            }
+            break;
+          }
+
           await add(_player);
+          _gameTriggers.setImmutability();
         });
       }
     });
@@ -74,6 +99,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       if(ghostPositionModel != null && running){
         int randomX = next(50, 400);
         int randomY = next(50, 400);
+        _logger.log(_TAG, "Dragon position ${_dragon.position}");
         _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         if(isVoiceEnabled){
           await speakMovement(ghostPositionModel, _ghostPlayer.position);
@@ -122,6 +148,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         if(currentDifficultyLevel == DifficultyLevelEnums.EASY){
           _logger.log(_TAG, "Received event for easy level with ${_ghostPlayer.isMounted}");
           enemyName = "Ghost";
+          _dragon.removeFromParent();
+          _ninjaGirl.removeFromParent();
           _ghostPlayer.position = _world.size / 1.6;
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
@@ -129,7 +157,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _ghostPlayer.removeFromParent();
           enemyName = "Dragon";
           await _visionTts.speakStop();
-          await _visionTts.speakText("Enemy changes to $enemyName");
+          await _visionTts.speakText("You have moved to Level Medium.Enemy changes to $enemyName");
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
@@ -144,7 +172,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
-          await _visionTts.speakText("Enemy changes to $enemyName");
+          await _visionTts.speakText("You have moved to Level Hard.Enemy changes to $enemyName");
           //listenToMothMovement();
           /*await add(_moth);
           _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);*/
@@ -218,6 +246,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     });
   }
 
+  void check(){
+    _dragon.checkisenabled();
+  }
 
   RectangleHitbox createWorldCollidable(Rect rect) {
     final collidable = RectangleHitbox();
@@ -298,7 +329,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       }
     }
 
-    //await _visionTts.speakStop();
+    await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
   }
 

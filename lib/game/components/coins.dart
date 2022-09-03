@@ -22,6 +22,9 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
   final _visionTts = locator<VisionTextToSpeechConverter>();
   bool isRunning = true;
   String currentCollectable = "";
+  String collectableIconName = "";///PNG file name
+  bool isVoiceEnabled = true;
+
   final _random = Random();
   Coins()
       : super(
@@ -41,54 +44,73 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
           period: 10,
           repeat: true,
           onTick: () async{
-            await generateRandomCollectible();
+            await spawnNewCollectible();
           },
         )
     );
   }
 
-  Future<void> generateRandomCollectible() async{
+  ///Once mike icon is set to turn off position the speaking for enemy position would stop
+  void listenToVoiceInputEnabled(){
+    _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) {
+      if(isInputEnabled != null){
+        isVoiceEnabled = isInputEnabled;
+      }
+    });
+  }
+
+
+  Future<void> spawnNewCollectible() async{
+    String collectibleName = await generateRandomCollectible();
+    _logger.log(_TAG, "Adding collectible as $collectibleName");
+    sprite = await gameRef.loadSprite(collectableIconName);
+  }
+
+  Future<String> generateRandomCollectible() async{
+
     int randomNumberGenerated = next(0, 110);
     if(randomNumberGenerated > 0 && randomNumberGenerated < 10 ){
       currentCollectable = "Bell Pepper";
-      sprite = await gameRef.loadSprite('bell_pepper.png');
+      collectableIconName = "bell_pepper.png";
     }
     else if(randomNumberGenerated > 10 && randomNumberGenerated < 20){
       currentCollectable = "Cabbage";
-      sprite = await gameRef.loadSprite('cabbage.png');
+      collectableIconName = "cabbage.png";
     }
     else if(randomNumberGenerated > 30 && randomNumberGenerated < 40){
       currentCollectable = "Carrot";
-      sprite = await gameRef.loadSprite('carrot.png');
+      collectableIconName = "carrot.png";
     }
     else if(randomNumberGenerated > 40 && randomNumberGenerated < 50){
       currentCollectable = "Corn";
-      sprite = await gameRef.loadSprite('corn.png');
+      collectableIconName = "corn.png";
     }
     else if(randomNumberGenerated > 50 && randomNumberGenerated < 60){
-      currentCollectable = "Egg plant";
-      sprite = await gameRef.loadSprite('eggplant.png');
+      currentCollectable = "Lentil";
+      collectableIconName = "lentil.png";
     }
     else if(randomNumberGenerated > 60 && randomNumberGenerated < 70){
       currentCollectable = "Mushroom";
-      sprite = await gameRef.loadSprite('mushroom.png');
+      collectableIconName = "mushroom.png";
     }
     else if(randomNumberGenerated > 70 && randomNumberGenerated < 80){
       currentCollectable = "Carrot";
-      sprite = await gameRef.loadSprite('carrot.png');
+      collectableIconName = "carrot.png";
     }
     else if(randomNumberGenerated > 80 && randomNumberGenerated < 90){
       currentCollectable = "Strawberry";
-      sprite = await gameRef.loadSprite('strawberry.png');
+      collectableIconName = "strawberry.png";
     }
     else if(randomNumberGenerated > 90 && randomNumberGenerated < 100){
       currentCollectable = "Tomato";
-      sprite = await gameRef.loadSprite('tomato.png');
+      collectableIconName = "tomato.png";
     }
     else{
       currentCollectable = "Watermelon";
-      sprite = await gameRef.loadSprite('watermelon.png');
+      collectableIconName = "watermelon.png";
     }
+
+    return Future.value(currentCollectable);
   }
 
   @override
@@ -109,9 +131,18 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
         }
       }
       else{
-        await _visionTts.speakStop();
-        await _visionTts.speakText("You collected $currentCollectable");
-        await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
+        if(isVoiceEnabled){
+
+          await _visionTts.speakStop()
+              .then((value) {
+                  _visionTts.speakText("Yay! You collected $currentCollectable");
+              }).then((value){
+                  _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
+              }).then((value) {
+                spawnNewCollectible();
+          });
+        }
+
         _gameTriggers.addPlayerCoins(addCoins: true);
       }
       removeFromParent();

@@ -28,7 +28,7 @@ class MainGamePage extends HookConsumerWidget {
     double height = MediaQuery.of(context).size.height;
     final gameProviderState = ref.watch(gameProvider);
     final gameNotifier = ref.watch(gameProvider.notifier);
-    VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+
 
     useEffect(() {
       _logger.log(_TAG, "Inside use effect");
@@ -63,6 +63,9 @@ class MainGamePage extends HookConsumerWidget {
           return GameConclusionWidget();
         },
         displayGameView: (){
+          VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
+          gameNotifier.listenPlayerEvents();
+          gameNotifier.listenToSpeechInput();
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(
@@ -89,7 +92,8 @@ class MainGamePage extends HookConsumerWidget {
                       top: 100,
                       left: 100,
                       child: ElevatedButton(onPressed: () async{
-                          //await _gameAudioPlayer.playCollectCoin();
+                        _logger.log(_TAG, "Test button was clicked");
+                          game.check();
                       }, child: Text("Test")),
                     ),*/
                     GameTrackerWidget(),
