@@ -77,6 +77,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     listenPlayerImmutability();
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
+    add(ScreenHitbox());
     ///Start with initial lives as 3
     //_logger.log(_TAG, "Loading player sprite now");
   }
@@ -109,8 +110,13 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
       removeFromParent();
       await _visionTts.speakStop();
       await _visionTts.speakText("Oh no! You Died");
+    }
 
+    if (other is ScreenHitbox) {
 
+      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position);
+
+      return;
     }
 
   }
@@ -248,5 +254,30 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   void moveRight(double delta) {
     position.add(Vector2(delta * _playerSpeed, 0));
+  }
+
+  void changeDirectionOnCollision(){
+    switch(direction){
+      case Direction.down:{
+        direction = Direction.up;
+      }
+      break;
+      case Direction.up :{
+        direction = Direction.down;
+      }
+      break;
+      case Direction.right :{
+        direction = Direction.left;
+      }
+      break;
+      case Direction.left :{
+        direction = Direction.right;
+      }
+      break;
+      case Direction.none :{
+        direction = Direction.right;
+      }
+      break;
+    }
   }
 }

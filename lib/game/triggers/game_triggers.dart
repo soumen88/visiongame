@@ -43,7 +43,6 @@ class GameTriggers{
   late Stream<int> ghostDirectionStream;
 
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
-
     if(isInitial){
       PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
       playerLifeEventNotifier.add(playerMotionModel);
@@ -63,10 +62,10 @@ class GameTriggers{
       }
     }
 
-    if(event == PlayerLifeStatusEnums.PLAYER_ADD_LIFE){
+    if(event == PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION){
       var playerMotionModel = playerLifeEventNotifier.value!;
-      int remainingLivesLeft = playerMotionModel.playerLivesLeft + 1;
-      PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_ADD_LIFE, position: playerPosition, playerLivesLeft: remainingLivesLeft);
+      int remainingLivesLeft = playerMotionModel.playerLivesLeft;
+      PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position: playerPosition, playerLivesLeft: remainingLivesLeft);
       playerLifeEventNotifier.add(newPlayerModel);
     }
   }
@@ -146,7 +145,7 @@ class GameTriggers{
 
 
   void setImmutability(){
-    _logger.log(_TAG, "Making player immutable for 5 seconds");
+    //_logger.log(_TAG, "Making player immutable for 5 seconds");
     isPlayerImmutable.value = true;
     ///Keeping immutability time to be slightly higher because timer widget take some time to show on screen
     Future.delayed(Duration(seconds: ApplicationConstants.kTimerLimit), (){

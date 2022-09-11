@@ -36,7 +36,11 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   ///If this flag is passed as true then game will be opened for tutorial view
   bool isTutorialView = false;
 
-  GameViewStateNotifier() : super(const GameScreenViewState.loading());
+  //GameViewStateNotifier() : super(const GameScreenViewState.loading());
+  GameViewStateNotifier() : super(const GameScreenViewState.loading()){
+    listenPlayerEvents();
+    listenToSpeechInput();
+  }
 
   void init(){
     _gameTriggers.toggleVoiceInput(isInitial: true);
@@ -282,6 +286,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   void restartGame(){
     _gameTriggers.resetGame();
     _gameTriggers.toggleVoiceInput(isInitial: true);
+    //listenPlayerEvents();
     state = const GameScreenViewState.displayGameView();
   }
 

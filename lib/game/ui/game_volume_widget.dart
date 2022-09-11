@@ -18,7 +18,6 @@ class GameVolumeWidget extends HookConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     final timerNotifier = ref.watch(timerProvider.notifier);
     final voiceInputActiveStream = useStream(_gameTrigger.isVoiceInputEnabled.stream);
-    final playerLifeStream = useStream(_gameTrigger.playerLifeEventNotifier.stream);
     bool isVoiceInputEnabled = voiceInputActiveStream.data != null && voiceInputActiveStream.data!;
     final playerImmutableStream = useStream(_gameTrigger.isPlayerImmutable.stream);
     if(playerImmutableStream.data != null){

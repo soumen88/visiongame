@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
@@ -61,36 +62,62 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
       if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE){
         Future.delayed(Duration(seconds: 4), () async{
-          _player.position = playerMotionModel.position!;
-          ///Reversing the direction of player when he spawns again into game
-          switch(_player.direction){
-            case Direction.down:{
-              _player.direction = Direction.up;
-            }
-            break;
-            case Direction.up :{
-              _player.direction = Direction.down;
-            }
-            break;
-            case Direction.right :{
-              _player.direction = Direction.left;
-            }
-            break;
-            case Direction.left :{
-              _player.direction = Direction.right;
-            }
-            break;
-            case Direction.none :{
-              _player.direction = Direction.right;
-            }
-            break;
-          }
-
+          changePlayerWalkDirection();
           await add(_player);
           _gameTriggers.setImmutability();
         });
       }
+      else if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION){
+        changePlayerWalkDirection(shouldSpeakDirection: true);
+      }
     });
+  }
+
+  void changePlayerWalkDirection({bool shouldSpeakDirection = false}) async{
+    ///Reversing the direction of player when he spawns again into game
+    switch(_player.direction){
+      case Direction.down:{
+        _player.direction = Direction.up;
+        if(shouldSpeakDirection){
+          await _visionTts.speakStop();
+          await _visionTts.speakText("${ApplicationConstants.edgeMessage} upwards.");
+        }
+      }
+      break;
+      case Direction.up :{
+        _player.direction = Direction.down;
+        if(shouldSpeakDirection){
+          await _visionTts.speakStop();
+          await _visionTts.speakText("${ApplicationConstants.edgeMessage} downwards.");
+        }
+      }
+      break;
+      case Direction.right :{
+        _player.direction = Direction.left;
+        if(shouldSpeakDirection){
+          await _visionTts.speakStop();
+          await _visionTts.speakText("${ApplicationConstants.edgeMessage} left.");
+        }
+      }
+      break;
+      case Direction.left :{
+        _player.direction = Direction.right;
+        if(shouldSpeakDirection){
+          await _visionTts.speakStop();
+          await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
+        }
+      }
+      break;
+      case Direction.none :{
+        _player.direction = Direction.right;
+        if(shouldSpeakDirection){
+          await _visionTts.speakStop();
+          await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
+        }
+      }
+      break;
+    }
+
   }
 
   ///This function would work with all types of villains like ghost, dragon and moth

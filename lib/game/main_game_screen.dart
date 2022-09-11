@@ -64,8 +64,7 @@ class MainGamePage extends HookConsumerWidget {
         },
         displayGameView: (){
           VisionGame game = VisionGame(screenWidth: width.toInt(), screenHeight: height.toInt());
-          gameNotifier.listenPlayerEvents();
-          gameNotifier.listenToSpeechInput();
+
           return Scaffold(
               backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               body: SwipeDetector(
