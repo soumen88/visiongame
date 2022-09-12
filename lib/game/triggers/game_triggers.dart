@@ -157,7 +157,7 @@ class GameTriggers{
 
     playerCoinsStream = BehaviorSubject.seeded(null);
 
-    playerLifeEventNotifier = BehaviorSubject.seeded(null);
+    //playerLifeEventNotifier = BehaviorSubject.seeded(null);
 
     isGamePausedNotifer = BehaviorSubject.seeded(null);
 
@@ -167,7 +167,7 @@ class GameTriggers{
 
     gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
-    isPlayerImmutable = BehaviorSubject.seeded(null);
+    //isPlayerImmutable = BehaviorSubject.seeded(null);
 
   }
 

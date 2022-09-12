@@ -62,7 +62,6 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
 
   Future<void> spawnNewCollectible() async{
     String collectibleName = await generateRandomCollectible();
-    _logger.log(_TAG, "Adding collectible as $collectibleName");
     sprite = await gameRef.loadSprite(collectableIconName);
   }
 
@@ -122,7 +121,6 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) async{
     if(other is Player){
-      _logger.log(_TAG, "Now playing sound");
       if(_gameTutorialTriggers.isTutorialInProgress){
         int? currentStep = _gameTutorialTriggers.stepCounter.value;
         await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
@@ -132,7 +130,6 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
       }
       else{
         if(isVoiceEnabled){
-
           await _visionTts.speakStop()
               .then((value) {
                   _visionTts.speakText("Yay! You collected $currentCollectable");

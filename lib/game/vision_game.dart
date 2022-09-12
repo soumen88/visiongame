@@ -50,6 +50,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
   late String enemyName;
+  ///If collectible is not picked within this counter time then it would be removed
+  ///and then a new collectible will be added
+  int collectibleCounter = 3;
 
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
@@ -222,25 +225,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
 
-    camera.followComponent(_player,
-        worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
-
-    /*final Stream<int> _coinPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
-      return count;
-    }).takeWhile((element) => running);
-
-    final Stream<int> _heartPositionStream = Stream.periodic(const Duration(seconds: 5), (int count) {
-      return count;
-    }).takeWhile((element) => running);
-
-    _heartPositionStream.listen((int event) async{
-
-    });*/
-    //await _ghostPlayer.addGhostMotion();
+    camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
   }
 
   onArrowKeyChanged(Direction direction){
     _player.direction = direction;
+    _player.updatePosition();
   }
 
   Player get getPlayer {
@@ -249,32 +239,41 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   Future<bool> addCoinInGame() async{
     bool isCoinRemoved = false;
-    int randomX = next(50, 100);
-    int randomY = next(50, 500);
     if(_coins.isMounted){
-      _logger.log(_TAG, "remove coin on purpose");
-      isCoinRemoved = true;
-      _coins.removeFromParent();
+      collectibleCounter--;
+      _logger.log(_TAG, "Collectible counter $collectibleCounter");
+      if(collectibleCounter == 0){
+        _logger.log(_TAG, "remove coin on purpose");
+        isCoinRemoved = true;
+        collectibleCounter = 3;
+        _coins.removeFromParent();
+      }
     }
     if(running &&  !_coins.isMounted){
+      int randomX = next(1, 5);
+      int randomY = next(1, 8);
+      int randomNumber = next(-10, 10);
       isCoinRemoved = false;
       await add(_coins);
-      _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
+      if(randomNumber > 0){
+        _coins.position = Vector2(_player.position.x + (randomX * ApplicationConstants.deltaValue), _player.position.y + (randomY * ApplicationConstants.deltaValue)) ;
+      }
+      else{
+        _coins.position = Vector2(_player.position.x + (randomX * -ApplicationConstants.deltaValue), _player.position.y + (randomY * -ApplicationConstants.deltaValue)) ;
+      }
+
     }
     return Future.value(isCoinRemoved);
   }
 
   Future<void> addWorldCollision() async {
     (await MapLoader.readRayWorldCollisionMap()).forEach((rect) {
+      _logger.log(_TAG, "Added collidable at $rect");
       add(WorldCollidable()
         ..position = Vector2(rect.left, rect.top)
         ..width = rect.width
         ..height = rect.height);
     });
-  }
-
-  void check(){
-    _dragon.checkisenabled();
   }
 
   RectangleHitbox createWorldCollidable(Rect rect) {
@@ -338,21 +337,24 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   Future<void> speakCollectablePosition() async{
     bool isLeft = _player.position.x > _coins.x ;
     bool isUp = _player.position.y > _coins.y ;
-    String coinPositionText = "";
+    ///Below variables calculate how many places player has to move to reach to collectible
+    int xPlaces =((_player.position.x - _coins.position.x) ~/ (ApplicationConstants.deltaValue)).abs() ;
+    int yPlaces =(((_player.position.y - _coins.position.y) ~/ (ApplicationConstants.deltaValue)) - 1).abs() ;
+    String coinPositionText;
     if(isUp){
       if(isLeft){
-        coinPositionText = "Collectable is to your left and upwards";
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} upwards";
       }
       else{
-        coinPositionText = "Collectable is to your right and upwards";
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} upwards";
       }
     }
     else{
       if(isLeft){
-        coinPositionText = "Collectable is to your left and downwards";
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} downwards";
       }
       else{
-        coinPositionText = "Collectable is to your right and downwards";
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
       }
     }
 

@@ -28,12 +28,14 @@
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/moth.dart';
 import 'package:visiongame/game/components/ninja_girl.dart';
+import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
@@ -49,7 +51,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   final _gameTriggers = locator<GameTriggers>();
 
   final double _playerSpeed = 100.0;
-  final double _animationSpeed = 0.15;
+  final double _animationSpeed = 0.30;
 
   late final SpriteAnimation _runDownAnimation;
   late final SpriteAnimation _runLeftAnimation;
@@ -63,7 +65,8 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   bool isVoiceEnabled = true;
   bool isPlayerImmutable = false;
   final _visionTts = locator<VisionTextToSpeechConverter>();
-
+  bool isPlayerMoving = false;
+  TimerComponent? _oneTimeTimer;
   Player()
       : super(
     size: Vector2.all(50.0),
@@ -77,7 +80,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     listenPlayerImmutability();
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
-    add(ScreenHitbox());
+    //add(ScreenHitbox());
     ///Start with initial lives as 3
     //_logger.log(_TAG, "Loading player sprite now");
   }
@@ -97,7 +100,12 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
         _collisionDirection = direction;
       }
     }
-
+    if (other is WorldCollidable) {
+      if (!_hasCollided) {
+        _hasCollided = true;
+        _collisionDirection = direction;
+      }
+    }
   }
 
 
@@ -108,14 +116,10 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     if(isPlayerImmutable == false && ((other is EnemyDragon) || (other is NinjaGirl ) || (other is Ghost)) ){
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
       removeFromParent();
-      await _visionTts.speakStop();
-      await _visionTts.speakText("Oh no! You Died");
     }
 
     if (other is ScreenHitbox) {
-
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position);
-
       return;
     }
 
@@ -138,10 +142,10 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   void listenPlayerDead(){
     _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) async{
-      _logger.log(_TAG, "Player got dead $isVoiceEnabled");
-      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE && playerMotionModel.playerLivesLeft > 0){
+      _logger.log(_TAG, "Player got dead $playerMotionModel");
+      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE && playerMotionModel.playerLivesLeft >= 0){
         if(isVoiceEnabled){
-          String playerDead = "Oh no! You just lost a life as you touched a monster";
+          String playerDead = "Oh no! You Died";
           await _visionTts.speakStop();
           await _visionTts.speakText(playerDead);
         }
@@ -183,27 +187,31 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   void movePlayer(double delta) {
     switch (direction) {
       case Direction.up:
-        if (canPlayerMoveUp()) {
+        if (canPlayerMoveUp() && isPlayerMoving == false) {
           animation = _runUpAnimation;
           moveUp(delta);
+          //isPlayerMoving = true;
         }
         break;
       case Direction.down:
-        if (canPlayerMoveDown()) {
+        if (canPlayerMoveDown() && isPlayerMoving == false) {
           animation = _runDownAnimation;
           moveDown(delta);
+          //isPlayerMoving = true;
         }
         break;
       case Direction.left:
-        if (canPlayerMoveLeft()) {
+        if (canPlayerMoveLeft() && isPlayerMoving == false) {
           animation = _runLeftAnimation;
           moveLeft(delta);
+          //isPlayerMoving = true;
         }
         break;
       case Direction.right:
-        if (canPlayerMoveRight()) {
+        if (canPlayerMoveRight() && isPlayerMoving == false) {
           animation = _runRightAnimation;
           moveRight(delta);
+          //isPlayerMoving = true;
         }
         break;
       case Direction.none:
@@ -238,6 +246,21 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
       return false;
     }
     return true;
+  }
+
+  void updatePosition(){
+    isPlayerMoving = false;
+    add(
+        _oneTimeTimer = TimerComponent(
+          period: ApplicationConstants.playerDeltaValue,
+          repeat: false,
+          onTick: () async{
+            isPlayerMoving = true;
+            _oneTimeTimer?.removeFromParent();
+          },
+        )
+    );
+
   }
 
   void moveUp(double delta) {
