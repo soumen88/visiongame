@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:visiongame/base/constants.dart';
+import 'package:visiongame/enums/collectible_quadrant_enums.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
@@ -248,20 +250,73 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         collectibleCounter = 3;
         _coins.removeFromParent();
       }
+      else{
+        bool isLeft = _player.position.x > _coins.x ;
+        bool isUp = _player.position.y > _coins.y ;
+        _logger.log(_TAG, "Is left $isLeft, or up is $isUp");
+        if(isLeft && isUp){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.SECOND;
+        }
+        else if(isLeft == false && isUp){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FIRST;
+        }
+        else if(isLeft && isUp == false){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.THIRD;
+        }
+        else if(isLeft == false && isUp == false){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FOURTH;
+        }
+      }
     }
     if(running &&  !_coins.isMounted){
       int randomX = next(1, 5);
+      //int randomX = 2;
       int randomY = next(1, 8);
-      int randomNumber = next(-10, 10);
+      //int randomY = 3;
+      int randomNumberOne = next(-10, 10);
+      int randomNumberTwo = next(-10, 10);
       isCoinRemoved = false;
       await add(_coins);
-      if(randomNumber > 0){
-        _coins.position = Vector2(_player.position.x + (randomX * ApplicationConstants.deltaValue), _player.position.y + (randomY * ApplicationConstants.deltaValue)) ;
-      }
-      else{
-        _coins.position = Vector2(_player.position.x + (randomX * -ApplicationConstants.deltaValue), _player.position.y + (randomY * -ApplicationConstants.deltaValue)) ;
-      }
 
+      if(randomNumberOne > 0){
+        if(randomNumberTwo > 0){
+          ///This will make coin appear in 4th quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FOURTH;
+        }
+        else{
+          ///This will make coin appear in 3rd quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.THIRD;
+        }
+      }
+      else {
+        if(randomNumberTwo > 0){
+          ///This will make coin appear in 2nd quadrant
+          _coins.position = Vector2(
+              _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+              _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+          );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.SECOND;
+        }
+        else{
+          ///This will make coin appear in 1st quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FIRST;
+        }
+      }
     }
     return Future.value(isCoinRemoved);
   }
@@ -338,8 +393,22 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     bool isLeft = _player.position.x > _coins.x ;
     bool isUp = _player.position.y > _coins.y ;
     ///Below variables calculate how many places player has to move to reach to collectible
-    int xPlaces =((_player.position.x - _coins.position.x) ~/ (ApplicationConstants.deltaValue)).abs() ;
-    int yPlaces =(((_player.position.y - _coins.position.y) ~/ (ApplicationConstants.deltaValue)) - 1).abs() ;
+    int xPlaces =((_player.position.x - _coins.position.x) / (ApplicationConstants.deltaValue)).abs().round();
+    int yPlaces =(((_player.position.y - _coins.position.y) / (ApplicationConstants.deltaValue))).abs().round();
+    if(_coins.currentQuadrant == CollectibleQuadrantEnums.SECOND){
+        if(xPlaces > 0){
+          xPlaces = xPlaces - 1;
+        }
+        if(yPlaces > 0){
+          yPlaces = yPlaces - 1;
+        }
+    }
+    if(_coins.currentQuadrant == CollectibleQuadrantEnums.FIRST){
+      if(yPlaces > 0){
+        yPlaces = yPlaces - 1;
+      }
+    }
+    //_logger.log(_TAG, "X places $xPlaces and y places $yPlaces");
     String coinPositionText;
     if(isUp){
       if(isLeft){
@@ -357,7 +426,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
       }
     }
-
+    _logger.log(_TAG, "Next collectible at $coinPositionText");
     await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
   }

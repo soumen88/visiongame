@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:visiongame/enums/collectible_quadrant_enums.dart';
 import 'package:visiongame/enums/game_component_enums.dart';
 import 'package:visiongame/game/components/player.dart';
+import 'package:visiongame/game/components/tutorial_player.dart';
 import 'package:visiongame/injector/injection.dart';
 
 import '../../audioplayer/game_audio_player.dart';
@@ -24,6 +26,7 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
   String currentCollectable = "";
   String collectableIconName = "";///PNG file name
   bool isVoiceEnabled = true;
+  CollectibleQuadrantEnums currentQuadrant = CollectibleQuadrantEnums.NONE;
 
   final _random = Random();
   Coins()
@@ -121,28 +124,29 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) async{
     if(other is Player){
-      if(_gameTutorialTriggers.isTutorialInProgress){
-        int? currentStep = _gameTutorialTriggers.stepCounter.value;
-        await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
-        if(currentStep != null && currentStep == 3){
-          _gameTutorialTriggers.addStepCounter(4);
-        }
+      if(isVoiceEnabled){
+        await _visionTts.speakStop()
+            .then((value) {
+          _visionTts.speakText("Yay! You collected $currentCollectable");
+        }).then((value){
+          _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
+        }).then((value) {
+          spawnNewCollectible();
+        });
       }
-      else{
-        if(isVoiceEnabled){
-          await _visionTts.speakStop()
-              .then((value) {
-                  _visionTts.speakText("Yay! You collected $currentCollectable");
-              }).then((value){
-                  _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
-              }).then((value) {
-                spawnNewCollectible();
-          });
-        }
 
-        _gameTriggers.addPlayerCoins(addCoins: true);
-      }
+      _gameTriggers.addPlayerCoins(addCoins: true);
+
       removeFromParent();
+    }
+
+    if(other is TutorialPlayer && _gameTutorialTriggers.isTutorialInProgress){
+      int? currentStep = _gameTutorialTriggers.stepCounter.value;
+      await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
+      removeFromParent();
+      if(currentStep != null && currentStep == 3){
+        _gameTutorialTriggers.addStepCounter(4);
+      }
     }
   }
 

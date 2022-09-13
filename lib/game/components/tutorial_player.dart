@@ -45,7 +45,7 @@ import 'package:flame/sprite.dart';
 import '../models/player_motion_model.dart';
 import '../triggers/game_triggers.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
+class TutorialPlayer extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
   final _TAG = "Player";
   final _gameTriggers = locator<GameTriggers>();
@@ -67,17 +67,15 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   final _visionTts = locator<VisionTextToSpeechConverter>();
   bool isPlayerMoving = false;
   TimerComponent? _oneTimeTimer;
-  Player()
+  TutorialPlayer()
       : super(
-    size: Vector2.all(45.0),
+    size: Vector2.all(50.0),
   );
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
     listenToVoiceInputEnabled();
-    listenPlayerDead();
-    listenPlayerImmutability();
     _loadAnimations().then((_) => {animation = _standingAnimation});
     add(RectangleHitbox());
     //add(ScreenHitbox());
@@ -113,11 +111,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) async{
     super.onCollisionStart(intersectionPoints, other);
     ///Player would not die if it is immutable
-    if(isPlayerImmutable == false && ((other is EnemyDragon) || (other is NinjaGirl ) || (other is Ghost)) ){
-      _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_DEAD, position);
-      removeFromParent();
-    }
-
     if (other is ScreenHitbox) {
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position);
       return;
@@ -140,26 +133,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     });
   }
 
-  void listenPlayerDead(){
-    _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) async{
-      _logger.log(_TAG, "Player got dead $playerMotionModel");
-      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE && playerMotionModel.playerLivesLeft >= 0){
-        if(isVoiceEnabled){
-          String playerDead = "Oh no! You Died";
-          await _visionTts.speakStop();
-          await _visionTts.speakText(playerDead);
-        }
-      }
-    });
-  }
-
-  void listenPlayerImmutability(){
-    _gameTriggers.isPlayerImmutable.listen((bool? playerImmutability) async{
-      if(playerImmutability != null){
-        isPlayerImmutable = playerImmutability;
-      }
-    });
-  }
 
   Future<void> _loadAnimations() async {
     final spriteSheet = SpriteSheet(
@@ -250,7 +223,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
 
   void updatePosition(){
     isPlayerMoving = false;
-    //_logger.log(_TAG, "Before position ${position}");
     add(
         _oneTimeTimer = TimerComponent(
           period: ApplicationConstants.playerDeltaValue,
@@ -258,7 +230,6 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
           onTick: () async{
             isPlayerMoving = true;
             _oneTimeTimer?.removeFromParent();
-            //_logger.log(_TAG, "After position ${position}");
           },
         )
     );

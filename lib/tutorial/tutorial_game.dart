@@ -9,12 +9,14 @@ import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
 import 'package:visiongame/game/components/moth.dart';
+import 'package:visiongame/game/components/tutorial_player.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
+import '../base/constants.dart';
 import '../base/logger_utils.dart';
 import '../enums/difficulty_level_enum.dart';
 import '../game/components/player.dart';
@@ -27,7 +29,7 @@ import '../texttospeech/vision_text_to_speech_converter.dart';
 class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetector{
   final _logger = locator<LoggerUtils>();
   final _TAG = "VisionGame";
-  final Player _player = Player();
+  final TutorialPlayer _player = TutorialPlayer();
 
   final EnemyDragon _dragon = EnemyDragon();
   final Ghost _ghostPlayer = Ghost();
@@ -70,14 +72,15 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
       if(stepValue != null){
         switch(stepValue){
           case 3:{
-            int randomX = next(50, 100);
-            int randomY = next(50, 500);
+            int randomX = 3;
+            int randomY = 5;
             //Remove current coin and add another one
             _coins.removeFromParent();
             Future.delayed(Duration.zero, () async{
               if(running &&  !_coins.isMounted){
                 await add(_coins);
-                _coins.position = Vector2(camera.position.x + randomX, camera.position.y + randomY) ;
+                _coins.position = Vector2(_player.position.x + (randomX * ApplicationConstants.deltaValue), _player.position.y + (randomY * ApplicationConstants.deltaValue)) ;
+                await speakCollectablePosition();
               }
             });
           }
@@ -120,9 +123,10 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
       _gameTriggers.addStepCounter(2);
     }
     _player.direction = direction;
+    _player.updatePosition();
   }
 
-  Player get getPlayer {
+  TutorialPlayer get getPlayer {
     return _player;
   }
 
@@ -153,33 +157,32 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
 
-  Future<void> speakMovement(GhostPositionModel ghostPositionModel) async{
-    String speakString = "";
-    bool isRight = _ghostPlayer.position.x > _player.position.x;
-    if(ghostPositionModel.isXAxisMovement){
-      if(isRight){
-        speakString = "Enemy coming from right";
+  Future<void> speakCollectablePosition() async{
+    bool isLeft = _player.position.x > _coins.x ;
+    bool isUp = _player.position.y > _coins.y ;
+    ///Below variables calculate how many places player has to move to reach to collectible
+    int xPlaces =((_player.position.x - _coins.position.x) ~/ (ApplicationConstants.deltaValue)).abs() ;
+    int yPlaces =(((_player.position.y - _coins.position.y) ~/ (ApplicationConstants.deltaValue)) - 2).abs() ;
+    String coinPositionText;
+    if(isUp){
+      if(isLeft){
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} upwards";
       }
       else{
-        speakString = "Enemy coming from left";
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} upwards";
       }
     }
     else{
-      if(ghostPositionModel.isDown && isRight){
-        speakString = "Enemy coming from right and walking down";
+      if(isLeft){
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} downwards";
       }
-      else if(ghostPositionModel.isDown && !isRight){
-        speakString = "Enemy coming from left and walking down";
-      }
-      else if(!ghostPositionModel.isDown && isRight){
-        speakString = "Enemy coming from right and walking up";
-      }
-      else if(!ghostPositionModel.isDown && !isRight){
-        speakString = "Enemy coming from left and walking up";
+      else{
+        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
       }
     }
-    _logger.log(_TAG, "Speak String $speakString");
-    //await _visionTts.speakText(speakString);
+
+    await _visionTts.speakStop();
+    await _visionTts.speakText(coinPositionText);
   }
 
 

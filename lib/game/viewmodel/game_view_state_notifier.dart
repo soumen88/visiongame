@@ -208,7 +208,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   Future<bool> startStepOneInTutorial() async{
-    String lineOne = "Nice. Now Amaze would let you know how to play this game.";
+    String lineOne = "Great! Now Amaze would let you know how to play this game.";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "In a moment I will show you our game";
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
@@ -230,8 +230,10 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
     String lineThree = "In your screen you will now see a coin.";
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "Swipe on your screen and make ${ApplicationConstants.PlayerName} walk over coin to collect it";
+    String lineFour = "You have to swipe on your screen and make ${ApplicationConstants.PlayerName} walk over coin to collect it";
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
+    /*String lineFive = "You have to move 3 places to your right and 4 places down to reach to your coin";
+    bool isLineFiveComplete = await _visionTts.speakText(lineFive);*/
     bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
       _gameTutorialTriggers.addStepCounter(3);
@@ -239,12 +241,16 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startStepThreeInTutorial() async{
-    String lineOne = "In a similar way you will also see other collectibles in the game";
+    String lineOne = "In a similar way you will also see other collectibles in the game.";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    /*String lineTwo = "When ${ApplicationConstants.PlayerName} collects a heart he would have more lives to fight";
-    bool isLineTwoComplete = await _visionTts.speakText(lineTwo);*/
+    String lineTwo = "Amaze would help you three times to reach to collectible from players position.";
+    bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
+    String lineThree = "If you don't collect even after three times then Amaze would remove collectible and add a new one.";
+    bool isLineThreeComplete = await _visionTts.speakText(lineThree);
+    String lineFour = "Our new collectible will be at a new position";
+    bool isLineFourComplete = await _visionTts.speakText(lineFour);
     //bool isComplete = isLineOneComplete && isLineTwoComplete;
-    bool isComplete = isLineOneComplete;
+    bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isComplete){
       _gameTutorialTriggers.addStepCounter(5);
     }
