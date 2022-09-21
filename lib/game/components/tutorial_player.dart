@@ -43,7 +43,7 @@ import '../triggers/game_triggers.dart';
 
 class TutorialPlayer extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
-  final _TAG = "Player";
+  final _TAG = "TutorialPlayer";
   final _gameTriggers = locator<GameTriggers>();
 
   final double _playerSpeed = 100.0;
@@ -106,16 +106,19 @@ class TutorialPlayer extends SpriteAnimationComponent with HasGameRef, Collision
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent  other) async{
     super.onCollisionStart(intersectionPoints, other);
+
+    if(other is TutorialGhost){
+      //await _visionTts.speakStop();
+      await _visionTts.speakText("Oh no! Don't let this happen. If the ghost touches ${ApplicationConstants.PlayerName} then he would lose a life");
+    }
+
     ///Player would not die if it is immutable
     if (other is ScreenHitbox) {
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position);
       return;
     }
 
-    if(isPlayerImmutable == false && (other is TutorialGhost)){
-      await _visionTts.speakStop();
-      await _visionTts.speakText("Oh no! Don't let this happen. If the ghost touches ${ApplicationConstants.PlayerName} then he would lose a life");
-    }
+
   }
 
 

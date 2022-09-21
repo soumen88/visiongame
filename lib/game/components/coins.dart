@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/enums/collectible_quadrant_enums.dart';
 import 'package:visiongame/enums/game_component_enums.dart';
+import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/components/player.dart';
 import 'package:visiongame/game/components/tutorial_player.dart';
 import 'package:visiongame/injector/injection.dart';
@@ -141,11 +142,13 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
     }
 
     if(other is TutorialPlayer && _gameTutorialTriggers.isTutorialInProgress){
-      int? currentStep = _gameTutorialTriggers.stepCounter.value;
+
+      TutorialStepEnums? currentStep = _gameTutorialTriggers.stepCounter.value;
+      _logger.log(_TAG, "tutorial player collecting coin $currentStep");
       await _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);
       removeFromParent();
-      if(currentStep != null && currentStep == 3){
-        _gameTutorialTriggers.addStepCounter(4);
+      if(currentStep != null && currentStep == TutorialStepEnums.SPAWN_COIN){
+        _gameTutorialTriggers.addStepCounter(TutorialStepEnums.ADDITIONAL_GAME_COLLECTIBLES);
       }
     }
   }

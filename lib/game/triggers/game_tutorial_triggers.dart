@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/difficulty_level_enum.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
+import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 
 import '../../base/logger_utils.dart';
@@ -29,7 +30,7 @@ class GameTutorialTriggers{
   BehaviorSubject<DifficultyLevelEnums?> gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
   ///Below variable counts at which step currently tutorial is been played at
-  BehaviorSubject<int?> stepCounter = BehaviorSubject.seeded(null);
+  BehaviorSubject<TutorialStepEnums?> stepCounter = BehaviorSubject.seeded(null);
 
   bool isTutorialInProgress = false;
 
@@ -50,9 +51,12 @@ class GameTutorialTriggers{
   }
 
   ///1 - Tutorial begins
-  ///2 - When player does left direction swipe then Intro to step 2
+  ///2 - Introduction to ghost
   ///3 - Adding coin to game view
-  void addStepCounter(int stepValue){
+  ///4 - Collect coin
+  ///5 - Removing coin on three calls from game view
+  ///6 - Start Game
+  void addStepCounter(TutorialStepEnums stepValue){
     stepCounter.add(stepValue);
     _logger.log(_TAG, "Current step counter ${stepCounter.value}");
   }

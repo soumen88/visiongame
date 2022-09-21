@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/models/game_screen_view_state.dart';
 import 'package:visiongame/injector/injection.dart';
 
@@ -176,26 +177,26 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void listenToGameSteps(){
-    _gameTutorialTriggers.stepCounter.listen((int? stepValue) {
+    _gameTutorialTriggers.stepCounter.listen((TutorialStepEnums? stepValue) {
       if(stepValue != null){
         switch(stepValue){
-          case 1:{
+          case TutorialStepEnums.START_TUTORIAL_VIEW:{
             state = const GameScreenViewState.displayTutorialView();
           }
           break;
-          case 2:{
+          case TutorialStepEnums.START_GHOST_INTRODUCTION:{
             startStepTwoInTutorial();
           }
           break;
-          case 4:{
+          case TutorialStepEnums.START_COIN_INTRODUCTION:{
             startStepThreeInTutorial();
           }
           break;
-          case 5:{
+          case TutorialStepEnums.ADDITIONAL_GAME_COLLECTIBLES:{
             startStepFourInTutorial();
           }
           break;
-          case 6:{
+          case TutorialStepEnums.START_ACTUAL_GAME:{
             startStepFiveInTutorial();
           }
           break;
@@ -218,7 +219,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
     bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
-      _gameTutorialTriggers.addStepCounter(1);
+      _gameTutorialTriggers.addStepCounter(TutorialStepEnums.START_TUTORIAL_VIEW);
     }
     return Future.value(isAllComplete);
   }
@@ -236,7 +237,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineFiveComplete = await _visionTts.speakText(lineFive);*/
     bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
-      _gameTutorialTriggers.addStepCounter(3);
+      _gameTutorialTriggers.addStepCounter(TutorialStepEnums.SPAWN_COIN);
     }
   }
 
@@ -252,7 +253,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     //bool isComplete = isLineOneComplete && isLineTwoComplete;
     bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isComplete){
-      _gameTutorialTriggers.addStepCounter(5);
+      _gameTutorialTriggers.addStepCounter(TutorialStepEnums.START_ACTUAL_GAME);
     }
   }
 
@@ -267,7 +268,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
     bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isComplete){
-      _gameTutorialTriggers.addStepCounter(6);
+      _gameTutorialTriggers.addStepCounter(TutorialStepEnums.SPAWN_GHOST);
     }
 
   }

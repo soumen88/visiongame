@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
+import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
@@ -82,7 +83,8 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
         int randomY = next(50, 400);
         _logger.log(_TAG, "Dragon position ${_dragon.position}");
         _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
-        if (isVoiceEnabled) {
+        TutorialStepEnums? currentStep = _gameTriggers.stepCounter.value;
+        if (currentStep == TutorialStepEnums.SPAWN_COIN) {
           await speakMovement(ghostPositionModel, _ghostPlayer.position);
         }
       }
@@ -90,10 +92,10 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
   }
 
   void listenToGameSteps(){
-    _gameTriggers.stepCounter.listen((int? stepValue) {
+    _gameTriggers.stepCounter.listen((TutorialStepEnums? stepValue) {
       if(stepValue != null){
         switch(stepValue){
-          case 3:{
+          case TutorialStepEnums.SPAWN_COIN:{
             int randomX = 3;
             int randomY = 5;
             //Remove current coin and add another one
@@ -107,13 +109,14 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
             });
           }
           break;
-          case 5:{
+          case TutorialStepEnums.SPAWN_GHOST:{
             int randomX = next(50, 100);
             int randomY = next(50, 500);
             Future.delayed(Duration.zero, () async{
               await add(_ghostPlayer);
               _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
             });
+            _gameTriggers.addStepCounter(TutorialStepEnums.START_COIN_INTRODUCTION);
           }
           break;
           default:{
@@ -222,12 +225,15 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
   }
 
   onArrowKeyChanged(Direction direction){
-    int? currentStep = _gameTriggers.stepCounter.value;
-    if(currentStep != null && currentStep == 1){
-      _gameTriggers.addStepCounter(2);
+    TutorialStepEnums? currentStep = _gameTriggers.stepCounter.value;
+    if(currentStep != null && currentStep == TutorialStepEnums.START_TUTORIAL_VIEW){
+      _gameTriggers.addStepCounter(TutorialStepEnums.START_GHOST_INTRODUCTION);
     }
-    _player.direction = direction;
-    _player.updatePosition();
+    if(isPlayerMovementLocked == false){
+      _player.direction = direction;
+      _player.updatePosition();
+    }
+
   }
 
   TutorialPlayer get getPlayer {
