@@ -8,4 +8,5 @@ class DifficultyLevelViewState with _$DifficultyLevelViewState {
   const factory DifficultyLevelViewState.error(String errorMessage) = _Error;
   const factory DifficultyLevelViewState.loading() = _Loading;
   const factory DifficultyLevelViewState.homeView() = _LevelView;
+  const factory DifficultyLevelViewState.startGameView() = _StartGameView;
 }

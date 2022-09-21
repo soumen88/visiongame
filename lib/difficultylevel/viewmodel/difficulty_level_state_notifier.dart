@@ -40,6 +40,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   Future<bool> askForDifficultyLevel() async{
     state = const DifficultyLevelViewState.homeView();
     //reloadDifficultyBottomSheet(true);
+    await visionTts.speakStop();
     String lineOne = "Nice!";
     bool isSpeakComplete1 = await visionTts.speakText(lineOne);
     String lineTwo = "Now we move to our next part.";
@@ -51,8 +52,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     String lineFive = "You can Swipe right to begin a fresh game";
     bool isSpeakComplete5 = await visionTts.speakText(lineFive);
     //if( isSpeakComplete1 && isSpeakComplete2){
-    if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4
-        && isSpeakComplete5){
+    if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4 && isSpeakComplete5){
       _logger.log(_TAG, "All speak completed");
       isSpeakingComplete = true;
       //reloadDifficultyBottomSheet(true);
@@ -62,7 +62,7 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   }
 
 
-  void stopSpeaking() async{
+  Future<void> stopSpeaking() async{
     await visionTts.speakStop();
   }
 
@@ -73,8 +73,9 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
 
   ///Below function would read tutorial for player for understanding this game
   Future<bool> readGameInstructions() async{
-    //state = DifficultyLevelViewState.readTutorial();
+    state = const DifficultyLevelViewState.startGameView();
     isReadingTutorial = true;
+    await visionTts.speakStop();
     String lineOne = "Now Amaze would let you know about instructions for playing this game.";
     bool isLineOneComplete = await visionTts.speakText(lineOne);
     String lineTwo = "Our Hero ${ApplicationConstants.PlayerName}, has been trapped.";
@@ -91,12 +92,13 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     bool isLineSevenComplete = await visionTts.speakText(lineSeven);
     /*String lineEight = "Swipe Right to Continue or swipe left to read the instructions again.";
     bool isLineEightComplete = await visionTts.speakText(lineEight);*/
-    startNextScreen(ApplicationConstants.ScreenGame);
+
     isReadingTutorial = false;
-    /*if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete &&
+    if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete &&
         isLineFiveComplete && isLineSixComplete && isLineSevenComplete){
+      startNextScreen(ApplicationConstants.ScreenGame);
       _logger.log(_TAG, "All speak complete start new screen");
-    }*/
+    }
     return Future.value(isReadingTutorial);
   }
 }

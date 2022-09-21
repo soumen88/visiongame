@@ -24,6 +24,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
   final _TAG = "DifficultyLevel";
   bool isBottomSheetDisplayed = false;
   final _gameTriggers = locator<GameTriggers>();
+  bool isSwipeDone = false;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
@@ -93,20 +94,20 @@ class DifficultyLevelScreen extends HookConsumerWidget{
               child: SwipeDetector(
                 behavior: HitTestBehavior.opaque,
                 //Start tutorial
-                onSwipeLeft: (Offset offset){
+                onSwipeLeft: (Offset offset) async{
                   _logger.log(_TAG, "Swipe left");
+                  isSwipeDone = true;
                   gameNotifier.isTutorialView = true;
-                  difficultyScreenNotifier.stopSpeaking();
+                  await difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
                 },
                 //Begin a fresh game
-                onSwipeRight: (Offset offset){
+                onSwipeRight: (Offset offset) async{
                   _logger.log(_TAG, "Swipe right");
-                  //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.MEDIUM);
+                  isSwipeDone = true;
                   gameNotifier.isTutorialView = false;
-                  //difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
-                  difficultyScreenNotifier.stopSpeaking();
                   difficultyScreenNotifier.readGameInstructions();
+
                 },
                /* onSwipeUp: (Offset offset){
                   _logger.log(_TAG, "Swipe up");
@@ -117,6 +118,14 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                 child: RobotWaveWidget(),
               ),
             )
+          );
+        },
+        startGameView: (){
+          return Scaffold(
+              backgroundColor: Colors.lightGreen,
+              body: Center(
+                child: RobotWaveWidget(),
+              )
           );
         },
         orElse: (){

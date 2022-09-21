@@ -21,6 +21,7 @@ mixin _$DifficultyLevelViewState {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$DifficultyLevelViewState {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_LevelView value) homeView,
+    required TResult Function(_StartGameView value) startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$DifficultyLevelViewState {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -146,6 +152,7 @@ class _$_Error implements _Error {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() startGameView,
   }) {
     return error(errorMessage);
   }
@@ -156,6 +163,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
   }) {
     return error?.call(errorMessage);
   }
@@ -166,6 +174,7 @@ class _$_Error implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -180,6 +189,7 @@ class _$_Error implements _Error {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_LevelView value) homeView,
+    required TResult Function(_StartGameView value) startGameView,
   }) {
     return error(this);
   }
@@ -190,6 +200,7 @@ class _$_Error implements _Error {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
   }) {
     return error?.call(this);
   }
@@ -200,6 +211,7 @@ class _$_Error implements _Error {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -261,6 +273,7 @@ class _$_Loading implements _Loading {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() startGameView,
   }) {
     return loading();
   }
@@ -271,6 +284,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
   }) {
     return loading?.call();
   }
@@ -281,6 +295,7 @@ class _$_Loading implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -295,6 +310,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_LevelView value) homeView,
+    required TResult Function(_StartGameView value) startGameView,
   }) {
     return loading(this);
   }
@@ -305,6 +321,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
   }) {
     return loading?.call(this);
   }
@@ -315,6 +332,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -372,6 +390,7 @@ class _$_LevelView implements _LevelView {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() startGameView,
   }) {
     return homeView();
   }
@@ -382,6 +401,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
   }) {
     return homeView?.call();
   }
@@ -392,6 +412,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? startGameView,
     required TResult orElse(),
   }) {
     if (homeView != null) {
@@ -406,6 +427,7 @@ class _$_LevelView implements _LevelView {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_LevelView value) homeView,
+    required TResult Function(_StartGameView value) startGameView,
   }) {
     return homeView(this);
   }
@@ -416,6 +438,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
   }) {
     return homeView?.call(this);
   }
@@ -426,6 +449,7 @@ class _$_LevelView implements _LevelView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
     required TResult orElse(),
   }) {
     if (homeView != null) {
@@ -437,4 +461,121 @@ class _$_LevelView implements _LevelView {
 
 abstract class _LevelView implements DifficultyLevelViewState {
   const factory _LevelView() = _$_LevelView;
+}
+
+/// @nodoc
+abstract class _$$_StartGameViewCopyWith<$Res> {
+  factory _$$_StartGameViewCopyWith(
+          _$_StartGameView value, $Res Function(_$_StartGameView) then) =
+      __$$_StartGameViewCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_StartGameViewCopyWithImpl<$Res>
+    extends _$DifficultyLevelViewStateCopyWithImpl<$Res>
+    implements _$$_StartGameViewCopyWith<$Res> {
+  __$$_StartGameViewCopyWithImpl(
+      _$_StartGameView _value, $Res Function(_$_StartGameView) _then)
+      : super(_value, (v) => _then(v as _$_StartGameView));
+
+  @override
+  _$_StartGameView get _value => super._value as _$_StartGameView;
+}
+
+/// @nodoc
+
+class _$_StartGameView implements _StartGameView {
+  const _$_StartGameView();
+
+  @override
+  String toString() {
+    return 'DifficultyLevelViewState.startGameView()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_StartGameView);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String errorMessage) error,
+    required TResult Function() loading,
+    required TResult Function() homeView,
+    required TResult Function() startGameView,
+  }) {
+    return startGameView();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? homeView,
+    TResult Function()? startGameView,
+  }) {
+    return startGameView?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? homeView,
+    TResult Function()? startGameView,
+    required TResult orElse(),
+  }) {
+    if (startGameView != null) {
+      return startGameView();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Error value) error,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_LevelView value) homeView,
+    required TResult Function(_StartGameView value) startGameView,
+  }) {
+    return startGameView(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
+  }) {
+    return startGameView?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_LevelView value)? homeView,
+    TResult Function(_StartGameView value)? startGameView,
+    required TResult orElse(),
+  }) {
+    if (startGameView != null) {
+      return startGameView(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StartGameView implements DifficultyLevelViewState {
+  const factory _StartGameView() = _$_StartGameView;
 }
