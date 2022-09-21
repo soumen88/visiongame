@@ -30,11 +30,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
-import 'package:visiongame/game/components/coins.dart';
-import 'package:visiongame/game/components/enemy_dragon.dart';
-import 'package:visiongame/game/components/ghost.dart';
-import 'package:visiongame/game/components/moth.dart';
-import 'package:visiongame/game/components/ninja_girl.dart';
+import 'package:visiongame/game/components/tutorial_ghost.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
@@ -69,7 +65,7 @@ class TutorialPlayer extends SpriteAnimationComponent with HasGameRef, Collision
   TimerComponent? _oneTimeTimer;
   TutorialPlayer()
       : super(
-    size: Vector2.all(50.0),
+    size: Vector2.all(45.0),
   );
 
   @override
@@ -116,6 +112,10 @@ class TutorialPlayer extends SpriteAnimationComponent with HasGameRef, Collision
       return;
     }
 
+    if(isPlayerImmutable == false && (other is TutorialGhost)){
+      await _visionTts.speakStop();
+      await _visionTts.speakText("Oh no! Don't let this happen. If the ghost touches ${ApplicationConstants.PlayerName} then he would lose a life");
+    }
   }
 
 

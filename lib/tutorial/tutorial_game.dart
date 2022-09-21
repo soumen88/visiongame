@@ -9,6 +9,7 @@ import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
 import 'package:visiongame/game/components/moth.dart';
+import 'package:visiongame/game/components/tutorial_ghost.dart';
 import 'package:visiongame/game/components/tutorial_player.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
@@ -18,6 +19,7 @@ import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/constants.dart';
 import '../base/logger_utils.dart';
+import '../enums/collectible_quadrant_enums.dart';
 import '../enums/difficulty_level_enum.dart';
 import '../game/components/player.dart';
 import '../game/helpers/direction.dart';
@@ -32,7 +34,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
   final TutorialPlayer _player = TutorialPlayer();
 
   final EnemyDragon _dragon = EnemyDragon();
-  final Ghost _ghostPlayer = Ghost();
+  final TutorialGhost _ghostPlayer = TutorialGhost();
   late Moth _moth;
 
   final VisionWorld _world = VisionWorld();
@@ -48,12 +50,18 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
   bool isVoiceEnabled = true;
   ///Below variable is used for speaking about ghost position in the game
   final _visionTts = locator<VisionTextToSpeechConverter>();
+  ///If below variable is true then player cannot move
+  bool isPlayerMovementLocked = false;
+  ///In tutorial there will only be one enemy that is ghost
+  String enemyName = "Ghost";
+  ///If collectible is not picked within this counter time then it would be removed
+  ///and then a new collectible will be added
+  int collectibleCounter = 3;
+
 
   TutorialGame({required this.screenWidth, required this.screenHeight}){
-
-
+    listenToGhostMovement();
     listenToVoiceInputEnabled();
-
     listenToGameSteps();
   }
 
@@ -63,6 +71,20 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) {
       if(isInputEnabled != null){
         isVoiceEnabled = isInputEnabled;
+      }
+    });
+  }
+
+  void listenToGhostMovement() {
+    _ghostPlayer.ghostPositionNotifierTutorial.listen((GhostPositionModel? ghostPositionModel) async {
+      if (ghostPositionModel != null && running) {
+        int randomX = next(50, 400);
+        int randomY = next(50, 400);
+        _logger.log(_TAG, "Dragon position ${_dragon.position}");
+        _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if (isVoiceEnabled) {
+          await speakMovement(ghostPositionModel, _ghostPlayer.position);
+        }
       }
     });
   }
@@ -117,6 +139,88 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
 
   }
 
+  Future<bool> addCoinInGame() async{
+    bool isCoinRemoved = false;
+    if(_coins.isMounted){
+      collectibleCounter--;
+      _logger.log(_TAG, "Collectible counter $collectibleCounter");
+      if(collectibleCounter == 0){
+        _logger.log(_TAG, "remove coin on purpose");
+        isCoinRemoved = true;
+        collectibleCounter = 3;
+        _coins.removeFromParent();
+      }
+      else{
+        bool isLeft = _player.position.x > _coins.x ;
+        bool isUp = _player.position.y > _coins.y ;
+        _logger.log(_TAG, "Is left $isLeft, or up is $isUp");
+        if(isLeft && isUp){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.SECOND;
+        }
+        else if(isLeft == false && isUp){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FIRST;
+        }
+        else if(isLeft && isUp == false){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.THIRD;
+        }
+        else if(isLeft == false && isUp == false){
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FOURTH;
+        }
+      }
+    }
+    if(running &&  !_coins.isMounted){
+      int randomX = next(1, 5);
+      //int randomX = 2;
+      int randomY = next(1, 8);
+      //int randomY = 3;
+      int randomNumberOne = next(-10, 10);
+      int randomNumberTwo = next(-10, 10);
+      isCoinRemoved = false;
+      await add(_coins);
+
+      if(randomNumberOne > 0){
+        if(randomNumberTwo > 0){
+          ///This will make coin appear in 4th quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FOURTH;
+        }
+        else{
+          ///This will make coin appear in 3rd quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.THIRD;
+        }
+      }
+      else {
+        if(randomNumberTwo > 0){
+          ///This will make coin appear in 2nd quadrant
+          _coins.position = Vector2(
+              _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+              _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+          );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.SECOND;
+        }
+        else{
+          ///This will make coin appear in 1st quadrant
+          _coins.position =
+              Vector2(
+                  _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                  _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+              );
+          _coins.currentQuadrant = CollectibleQuadrantEnums.FIRST;
+        }
+      }
+    }
+    return Future.value(isCoinRemoved);
+  }
+
   onArrowKeyChanged(Direction direction){
     int? currentStep = _gameTriggers.stepCounter.value;
     if(currentStep != null && currentStep == 1){
@@ -157,12 +261,67 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
 
+  Future<void> speakMovement(GhostPositionModel ghostPositionModel, NotifyingVector2 enemyPosition ) async{
+    String speakString = "";
+    bool isRight = enemyPosition.x > _player.position.x;
+    if(ghostPositionModel.isXAxisMovement){
+      if(isRight){
+        speakString = "$enemyName coming from right";
+      }
+      else{
+        speakString = "$enemyName coming from left";
+      }
+    }
+    else{
+      if(ghostPositionModel.isDown && isRight){
+        speakString = "$enemyName coming from right and walking down";
+      }
+      else if(ghostPositionModel.isDown && !isRight){
+        speakString = "$enemyName coming from left and walking down";
+      }
+      else if(!ghostPositionModel.isDown && isRight){
+        speakString = "$enemyName coming from right and walking up";
+      }
+      else if(!ghostPositionModel.isDown && !isRight){
+        speakString = "$enemyName coming from left and walking up";
+      }
+    }
+    _logger.log(_TAG, "Speak String $speakString");
+    bool isSpeakComplete = await _visionTts.speakText(speakString);
+    //bool isSpeakComplete = true;
+    if(isSpeakComplete){
+      //await _coins.generateRandomCollectible();
+      bool isCoinRemoved = await addCoinInGame();
+      if(isCoinRemoved == false){
+        await speakCollectablePosition();
+      }
+
+    }
+  }
+
+  ///Position for collectable is only spoken when it is added in game
   Future<void> speakCollectablePosition() async{
+    isPlayerMovementLocked = true;
+    _player.isPlayerImmutable = true;
     bool isLeft = _player.position.x > _coins.x ;
     bool isUp = _player.position.y > _coins.y ;
     ///Below variables calculate how many places player has to move to reach to collectible
-    int xPlaces =((_player.position.x - _coins.position.x) ~/ (ApplicationConstants.deltaValue)).abs() ;
-    int yPlaces =(((_player.position.y - _coins.position.y) ~/ (ApplicationConstants.deltaValue)) - 2).abs() ;
+    int xPlaces =((_player.position.x - _coins.position.x) / (ApplicationConstants.deltaValue)).abs().round();
+    int yPlaces =(((_player.position.y - _coins.position.y) / (ApplicationConstants.deltaValue))).abs().round();
+    if(_coins.currentQuadrant == CollectibleQuadrantEnums.SECOND){
+      if(xPlaces > 0){
+        xPlaces = xPlaces - 1;
+      }
+      if(yPlaces > 0){
+        yPlaces = yPlaces - 1;
+      }
+    }
+    if(_coins.currentQuadrant == CollectibleQuadrantEnums.FIRST){
+      if(yPlaces > 0){
+        yPlaces = yPlaces - 1;
+      }
+    }
+    //_logger.log(_TAG, "X places $xPlaces and y places $yPlaces");
     String coinPositionText;
     if(isUp){
       if(isLeft){
@@ -180,11 +339,11 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
         coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
       }
     }
-
+    _logger.log(_TAG, "Next collectible at $coinPositionText");
     await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
+    isPlayerMovementLocked = false;
   }
-
 
   /**
    * Generates a positive random integer uniformly distributed on the range

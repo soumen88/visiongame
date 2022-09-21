@@ -223,8 +223,8 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     return Future.value(isAllComplete);
   }
 
-  void startStepTwoInTutorial() async{
-    String lineOne = "Now lets move on to Step Two.";
+  void startStepThreeInTutorial() async{
+    String lineOne = "Now lets move on to Step Three.";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "Amaze will now introduce you to game collectables.";
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
@@ -240,7 +240,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     }
   }
 
-  void startStepThreeInTutorial() async{
+  void startStepFourInTutorial() async{
     String lineOne = "In a similar way you will also see other collectibles in the game.";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "Amaze would help you three times to reach to collectible from players position.";
@@ -256,7 +256,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     }
   }
 
-  void startStepFourInTutorial() async{
+  void startStepTwoInTutorial() async{
     String lineOne = "Well as you know every story has a villain";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "In this game villain is a group of monsters";

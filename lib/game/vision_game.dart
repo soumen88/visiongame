@@ -56,6 +56,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   ///and then a new collectible will be added
   int collectibleCounter = 3;
 
+  ///If below variable is true then player cannot move
+  bool isPlayerMovementLocked = false;
+
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
     listenToGhostMovement();
@@ -78,47 +81,52 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     });
   }
 
+  ///Once player is touching edge of the phone
   void changePlayerWalkDirection({bool shouldSpeakDirection = false}) async{
     ///Reversing the direction of player when he spawns again into game
     switch(_player.direction){
       case Direction.down:{
         _player.direction = Direction.up;
-        if(shouldSpeakDirection){
+        _player.position.y = _player.position.y - (4 * ApplicationConstants.deltaValue);
+        /*if(shouldSpeakDirection){
           await _visionTts.speakStop();
           await _visionTts.speakText("${ApplicationConstants.edgeMessage} upwards.");
-        }
+        }*/
       }
       break;
       case Direction.up :{
         _player.direction = Direction.down;
-        if(shouldSpeakDirection){
+        _player.position.y = _player.position.y + (4 * ApplicationConstants.deltaValue);
+        /*if(shouldSpeakDirection){
           await _visionTts.speakStop();
           await _visionTts.speakText("${ApplicationConstants.edgeMessage} downwards.");
-        }
+        }*/
       }
       break;
       case Direction.right :{
         _player.direction = Direction.left;
-        if(shouldSpeakDirection){
+        _player.position.x = _player.position.x - (4 * ApplicationConstants.deltaValue);
+        /*if(shouldSpeakDirection){
           await _visionTts.speakStop();
           await _visionTts.speakText("${ApplicationConstants.edgeMessage} left.");
-        }
+        }*/
       }
       break;
       case Direction.left :{
         _player.direction = Direction.right;
-        if(shouldSpeakDirection){
+        _player.position.x = _player.position.x + (4 * ApplicationConstants.deltaValue);
+        /*if(shouldSpeakDirection){
           await _visionTts.speakStop();
           await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
-        }
+        }*/
       }
       break;
       case Direction.none :{
         _player.direction = Direction.right;
-        if(shouldSpeakDirection){
+        /*if(shouldSpeakDirection){
           await _visionTts.speakStop();
           await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
-        }
+        }*/
       }
       break;
     }
@@ -180,16 +188,20 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         if(currentDifficultyLevel == DifficultyLevelEnums.EASY){
           _logger.log(_TAG, "Received event for easy level with ${_ghostPlayer.isMounted}");
           enemyName = "Ghost";
+          await _visionTts.speakStop();
+          await _visionTts.speakText("Lets Begin. To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelEasyCompletionCoins} collectibles.");
           _dragon.removeFromParent();
           _ninjaGirl.removeFromParent();
           _ghostPlayer.position = _world.size / 1.6;
+          await _visionTts.speakText("Ghost coming from left and walking up");
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
           _logger.log(_TAG, "Received event for medium level");
           _ghostPlayer.removeFromParent();
           enemyName = "Dragon";
           await _visionTts.speakStop();
-          await _visionTts.speakText("You have moved to Level Medium.Enemy changes to $enemyName");
+          await _visionTts.speakText("Yay! You have cleared Level Medium. Enemy changes to $enemyName");
+          await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelMediumCompletionCoins} collectibles.");
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
@@ -205,6 +217,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomY = next(50, 400);
           await _visionTts.speakStop();
           await _visionTts.speakText("You have moved to Level Hard.Enemy changes to $enemyName");
+          await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
           //listenToMothMovement();
           /*await add(_moth);
           _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);*/
@@ -231,8 +244,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   }
 
   onArrowKeyChanged(Direction direction){
-    _player.direction = direction;
-    _player.updatePosition();
+    if(isPlayerMovementLocked == false){
+      _player.direction = direction;
+      _player.updatePosition();
+      _player.isPlayerImmutable = false;
+    }
+
   }
 
   Player get getPlayer {
@@ -390,6 +407,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   ///Position for collectable is only spoken when it is added in game
   Future<void> speakCollectablePosition() async{
+    isPlayerMovementLocked = true;
+    _player.isPlayerImmutable = true;
     bool isLeft = _player.position.x > _coins.x ;
     bool isUp = _player.position.y > _coins.y ;
     ///Below variables calculate how many places player has to move to reach to collectible
@@ -429,6 +448,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _logger.log(_TAG, "Next collectible at $coinPositionText");
     await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
+    isPlayerMovementLocked = false;
   }
 
   /**
