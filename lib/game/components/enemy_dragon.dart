@@ -38,7 +38,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-  bool _isEnabled = false;
+  bool isEnabled = false;
   TimerComponent? _dragonTimerComponent;
   final BehaviorSubject<GhostPositionModel?> dragonPositionNotifier = BehaviorSubject.seeded(null);
   final _gameTriggers = locator<GameTriggers>();
@@ -71,7 +71,9 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
         ..paint = hitboxPaint
         ..renderShape = false,
     );
+
     add(ScreenHitbox());
+
     ///Once this timer elapses then dragon position would be changed in game
     add(
         _dragonTimerComponent = TimerComponent(
@@ -82,9 +84,9 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
           },
         )
     );
-    //listenToDifficultyLevelChanges();
-    //listenPlayerDead();
   }
+
+
 
   Future<void> addDragonMotion() async{
     direction = DirectionEnumsExt.generateRandomUniqueDirection();
@@ -113,12 +115,21 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     _logger.log(_TAG, "Dragon changing position now ${_dragonTimerComponent?.timer.isRunning()}");
     GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
     dragonPositionNotifier.add(dragonPositionModel);
+
   }
 
   @override
   void update(double delta) {
     super.update(delta);
-    movePlayer(delta);
+    if(isEnabled){
+      movePlayer(delta);
+    }
+  }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> spawnDragon() async{
+    await addDragonMotion();
+    isEnabled = true;
   }
 
   @override
@@ -193,33 +204,8 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     }
   }
 
-  ///Depending upon difficulty level enemy is added in game
-  Future<void> listenToDifficultyLevelChanges() async{
-    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
-      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
-        _isEnabled = true;
-        _dragonTimerComponent?.timer.start();
-      }
-      else{
-        _isEnabled = false;
-        _dragonTimerComponent?.timer.pause();
-      }
-    });
-  }
-
-  void listenPlayerDead(){
-    _gameTriggers.playerLifeEventNotifier.listen((PlayerMotionModel? playerMotionModel) {
-      if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_GAME_OVER){
-          _logger.log(_TAG, "Removing dragon on player game over");
-          _dragonTimerComponent?.timer.pause();
-          removeFromParent();
-      }
-    });
-  }
-
-
   void checkisenabled(){
-    _logger.log(_TAG, "Check is enabled ${_isEnabled}");
+    _logger.log(_TAG, "Check is enabled ");
     _dragonTimerComponent?.timer.pause();
   }
 

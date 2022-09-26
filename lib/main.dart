@@ -30,9 +30,6 @@ class MyApp extends HookConsumerWidget {
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
     ]);
     return MaterialApp.router(
       debugShowCheckedModeBanner: true,

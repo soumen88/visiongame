@@ -61,4 +61,18 @@ class GameTutorialTriggers{
     _logger.log(_TAG, "Current step counter ${stepCounter.value}");
   }
 
+  void resetTutorial(){
+    isGamePausedNotifer = BehaviorSubject.seeded(null);
+
+    isVoiceInputEnabled = BehaviorSubject<bool?>.seeded(null);
+
+    ///Below variable decides what is players walk speed in game
+    gameDifficultyLevelStream = BehaviorSubject.seeded(null);
+
+    ///Below variable counts at which step currently tutorial is been played at
+    stepCounter = BehaviorSubject.seeded(null);
+
+    isTutorialInProgress = false;
+  }
+
 }

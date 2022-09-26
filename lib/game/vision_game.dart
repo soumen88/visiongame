@@ -88,45 +88,26 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       case Direction.down:{
         _player.direction = Direction.up;
         _player.position.y = _player.position.y - (4 * ApplicationConstants.deltaValue);
-        /*if(shouldSpeakDirection){
-          await _visionTts.speakStop();
-          await _visionTts.speakText("${ApplicationConstants.edgeMessage} upwards.");
-        }*/
       }
       break;
       case Direction.up :{
         _player.direction = Direction.down;
         _player.position.y = _player.position.y + (4 * ApplicationConstants.deltaValue);
-        /*if(shouldSpeakDirection){
-          await _visionTts.speakStop();
-          await _visionTts.speakText("${ApplicationConstants.edgeMessage} downwards.");
-        }*/
+
       }
       break;
       case Direction.right :{
         _player.direction = Direction.left;
         _player.position.x = _player.position.x - (4 * ApplicationConstants.deltaValue);
-        /*if(shouldSpeakDirection){
-          await _visionTts.speakStop();
-          await _visionTts.speakText("${ApplicationConstants.edgeMessage} left.");
-        }*/
       }
       break;
       case Direction.left :{
         _player.direction = Direction.right;
         _player.position.x = _player.position.x + (4 * ApplicationConstants.deltaValue);
-        /*if(shouldSpeakDirection){
-          await _visionTts.speakStop();
-          await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
-        }*/
       }
       break;
       case Direction.none :{
         _player.direction = Direction.right;
-        /*if(shouldSpeakDirection){
-          await _visionTts.speakStop();
-          await _visionTts.speakText("${ApplicationConstants.edgeMessage} right.");
-        }*/
       }
       break;
     }
@@ -190,25 +171,32 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           enemyName = "Ghost";
           await _visionTts.speakStop();
           await _visionTts.speakText("Lets Begin. To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelEasyCompletionCoins} collectibles.");
+          _dragon.isEnabled = false;
           _dragon.removeFromParent();
           _ninjaGirl.removeFromParent();
-          _ghostPlayer.position = _world.size / 1.6;
-          await _visionTts.speakText("Ghost coming from left and walking up");
+          //_ghostPlayer.position = _world.size / 1.6;
+          int randomX = next(50, 400);
+          int randomY = next(50, 400);
+          _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _ghostPlayer.spawnGhost();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
           _logger.log(_TAG, "Received event for medium level");
+          _ghostPlayer.isEnabled = false;
           _ghostPlayer.removeFromParent();
           enemyName = "Dragon";
-          await _visionTts.speakStop();
+          //await _visionTts.speakStop();
           await _visionTts.speakText("Yay! You have cleared Level Medium. Enemy changes to $enemyName");
           await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelMediumCompletionCoins} collectibles.");
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
           _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _dragon.spawnDragon();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
           _logger.log(_TAG, "Received event for hard level");
+          _dragon.isEnabled = false;
           _dragon.removeFromParent();
           enemyName = "Ninja Girl";
           /*final componentSize = Vector2(150, 100);
@@ -216,13 +204,11 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
-          await _visionTts.speakText("You have moved to Level Hard.Enemy changes to $enemyName");
+          await _visionTts.speakText("You have moved to Level Hard. Enemy changes to $enemyName");
           await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
-          //listenToMothMovement();
-          /*await add(_moth);
-          _moth.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);*/
           await add(_ninjaGirl);
           _ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _ninjaGirl.spawnNinjaGirl();
         }
       }
     });
@@ -367,29 +353,50 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
 
-  Future<void> speakMovement(GhostPositionModel ghostPositionModel, NotifyingVector2 enemyPosition ) async{
+  Future<void> speakMovement(GhostPositionModel? ghostPositionModel, NotifyingVector2 enemyPosition ) async{
     String speakString = "";
     bool isRight = enemyPosition.x > _player.position.x;
-    if(ghostPositionModel.isXAxisMovement){
-      if(isRight){
-        speakString = "$enemyName coming from right";
+    bool isUp = enemyPosition.y > _player.position.y ;
+    if(ghostPositionModel != null){
+      if(ghostPositionModel.isXAxisMovement){
+        if(isRight){
+          speakString = "$enemyName coming from right";
+        }
+        else{
+          speakString = "$enemyName coming from left";
+        }
       }
       else{
-        speakString = "$enemyName coming from left";
+        if(ghostPositionModel.isDown && isRight){
+          speakString = "$enemyName coming from right and walking down";
+        }
+        else if(ghostPositionModel.isDown && !isRight){
+          speakString = "$enemyName coming from left and walking down";
+        }
+        else if(!ghostPositionModel.isDown && isRight){
+          speakString = "$enemyName coming from right and walking up";
+        }
+        else if(!ghostPositionModel.isDown && !isRight){
+          speakString = "$enemyName coming from left and walking up";
+        }
       }
     }
     else{
-      if(ghostPositionModel.isDown && isRight){
-        speakString = "$enemyName coming from right and walking down";
+      if(isUp){
+        if(isRight){
+          speakString = "$enemyName is towards your right and walking up";
+        }
+        else{
+          speakString = "$enemyName is towards your left and walking up";
+        }
       }
-      else if(ghostPositionModel.isDown && !isRight){
-        speakString = "$enemyName coming from left and walking down";
-      }
-      else if(!ghostPositionModel.isDown && isRight){
-        speakString = "$enemyName coming from right and walking up";
-      }
-      else if(!ghostPositionModel.isDown && !isRight){
-        speakString = "$enemyName coming from left and walking up";
+      else{
+        if(isRight){
+          speakString = "$enemyName is towards your right and walking down";
+        }
+        else{
+          speakString = "$enemyName is towards your left and walking down";
+        }
       }
     }
     _logger.log(_TAG, "Speak String $speakString");

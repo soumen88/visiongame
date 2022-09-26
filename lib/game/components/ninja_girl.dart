@@ -36,7 +36,7 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-  bool _isEnabled = false;
+  bool isEnabled = false;
   final _gameTriggers = locator<GameTriggers>();
 
   final BehaviorSubject<GhostPositionModel?> ninjaPositionNotifier = BehaviorSubject.seeded(null);
@@ -84,6 +84,12 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
     //listenToDifficultyLevelChanges();
   }
 
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> spawnNinjaGirl() async{
+    await addNinjaMotion();
+    isEnabled = true;
+  }
+
   Future<void> addNinjaMotion() async{
     direction = DirectionEnumsExt.generateRandomUniqueDirection();
     if(direction == Direction.up || direction == Direction.down){
@@ -113,23 +119,14 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
     ninjaPositionNotifier.add(ninjaPositionModel);
   }
 
-  ///Depending upon difficulty level enemy is added in game
-  Future<void> listenToDifficultyLevelChanges() async{
-    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
-      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.HARD){
-        _isEnabled = true;
-      }
-      else{
-        _isEnabled = false;
-      }
-    });
-  }
-
 
   @override
   void update(double delta) {
     super.update(delta);
-    movePlayer(delta);
+    if(isEnabled){
+      movePlayer(delta);
+    }
+
   }
 
   @override

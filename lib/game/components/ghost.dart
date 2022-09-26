@@ -18,7 +18,7 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   bool isDown = false;
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
-  bool _isEnabled = false;
+  bool isEnabled = false;
   final _random = Random();
 
   double _motionFactor = 0.25;
@@ -26,14 +26,13 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
 
-  Ghost()
-      : super(size: Vector2.all(50.0));
+  Ghost() : super(size: Vector2.all(50.0));
 
   @override
   Future<void> onLoad() async {
     _logger.log(_TAG, "Loading ghost sprite now");
     sprite = await gameRef.loadSprite('ghost.png');
-    position = gameRef.size / 2;
+    //position = gameRef.size / 2;
     add(RectangleHitbox());
     ///Once this timer elapses then ghost position would be changed in game
     add(
@@ -49,15 +48,9 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   }
 
   ///Depending upon difficulty level enemy is added in game
-  Future<void> listenToDifficultyLevelChanges() async{
-    _gameTriggers.gameDifficultyLevelStream.listen((DifficultyLevelEnums? currentDifficultyLevel) async{
-      if(currentDifficultyLevel != null && currentDifficultyLevel == DifficultyLevelEnums.EASY){
-        _isEnabled = true;
-      }
-      else{
-        _isEnabled = false;
-      }
-    });
+  Future<void> spawnGhost() async{
+    await addGhostMotion();
+    isEnabled = true;
   }
 
 
@@ -84,7 +77,6 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
 
     GhostPositionModel ghostPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
     ghostPositionNotifier.add(ghostPositionModel);
-
   }
 
   @override
@@ -100,30 +92,27 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   @override
   void update(double dt) {
     super.update(dt);
-    if(isXAxisMovement){
-      if (isLeft) {
-        this.x -= _motionFactor;
+    if(isEnabled){
+      if(isXAxisMovement){
+        if (isLeft) {
+          this.x -= _motionFactor;
+        }
+        else{
+          this.x += _motionFactor;
+        }
       }
-      else{
-        this.x += _motionFactor;
+
+      if(isYAxisMovement){
+        if (isDown) {
+          this.y += _motionFactor;
+          //_logger.log(_TAG, "Doing plus makes character go down");
+        }
+        else{
+          this.y -= _motionFactor;
+          //_logger.log(_TAG, "Doing minus makes character go up");
+        }
       }
     }
-
-    if(isYAxisMovement){
-      if (isDown) {
-        this.y += _motionFactor;
-        //_logger.log(_TAG, "Doing plus makes character go down");
-      }
-      else{
-        this.y -= _motionFactor;
-        //_logger.log(_TAG, "Doing minus makes character go up");
-      }
-    }
-
-    /*if (_collision) {
-      print('hit');
-      remove();
-    }*/
   }
 
   @override
