@@ -88,17 +88,19 @@ class GameTriggers{
     if(currentDifficultLevel != null){
       _logger.log(_TAG, "Current difficulty level $currentDifficultLevel");
       if(currentDifficultLevel == DifficultyLevelEnums.EASY && playerCoinsStream.value == ApplicationConstants.kLevelEasyCompletionCoins){
-
-        addPlayerCoins(isInitial: true, addCoins: false);
-        gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
+        Future.delayed(Duration(seconds: 3), (){
+          addPlayerCoins(isInitial: true, addCoins: false);
+          gameDifficultyLevelStream.add(DifficultyLevelEnums.MEDIUM);
+        });
         /*PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_WIN, position: null, playerLivesLeft: 0);
         playerLifeEventNotifier.add(newPlayerModel);*/
         //gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.MEDIUM && playerCoinsStream.value == ApplicationConstants.kLevelMediumCompletionCoins){
-
-        addPlayerCoins(isInitial: true, addCoins: false);
-        gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
+        Future.delayed(Duration(seconds: 3), (){
+          addPlayerCoins(isInitial: true, addCoins: false);
+          gameDifficultyLevelStream.add(DifficultyLevelEnums.HARD);
+        });
       }
       else if(currentDifficultLevel == DifficultyLevelEnums.HARD && playerCoinsStream.value == ApplicationConstants.kLevelHardCompletionCoins){
         PlayerMotionModel newPlayerModel = PlayerMotionModel(event: PlayerLifeStatusEnums.PLAYER_GAME_WIN, position: null, playerLivesLeft: 0);

@@ -69,8 +69,17 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
         ..paint = hitboxPaint
         ..renderShape = false,
     );
-    add(ScreenHitbox());
-    ///Once this timer elapses then dragon position would be changed in game
+    //add(ScreenHitbox());
+
+    //listenToDifficultyLevelChanges();
+    listenToPlayerCollect();
+  }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> spawnNinjaGirl() async{
+    isEnabled = true;
+    await addNinjaMotion();
+    ///Once this timer elapses then ninja girl position would be changed in game
     add(
         TimerComponent(
           period: 10,
@@ -80,17 +89,13 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
           },
         )
     );
-
-    //listenToDifficultyLevelChanges();
-  }
-
-  ///Depending upon difficulty level enemy is added in game
-  Future<void> spawnNinjaGirl() async{
-    await addNinjaMotion();
-    isEnabled = true;
   }
 
   Future<void> addNinjaMotion() async{
+    if(isEnabled == false){
+      //_logger.log(_TAG, "Not changing because ghost is disabled");
+      return;
+    }
     direction = DirectionEnumsExt.generateRandomUniqueDirection();
     if(direction == Direction.up || direction == Direction.down){
       isYAxisMovement = true;
@@ -167,6 +172,18 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
 
     _standingAnimation =
         spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);
+  }
+
+  void listenToPlayerCollect(){
+    _gameTriggers.playerCoinsStream.listen((int? coinsValue) {
+      if(coinsValue != null){
+        _logger.log(_TAG, "Coins value $coinsValue");
+        isEnabled = false;
+        Future.delayed(Duration(seconds: 3), (){
+          isEnabled = true;
+        });
+      }
+    });
   }
 
   void movePlayer(double delta) {

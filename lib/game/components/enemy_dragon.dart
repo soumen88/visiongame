@@ -19,7 +19,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   final _logger = locator<LoggerUtils>();
   final _TAG = "EnemyDragon";
 
-  final double _playerSpeed = 100.0;
+  final double _playerSpeed = 50.0;
   final double _animationSpeed = 0.15;
 
   late final SpriteAnimation _runDownAnimation;
@@ -74,21 +74,16 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
 
     add(ScreenHitbox());
 
-    ///Once this timer elapses then dragon position would be changed in game
-    add(
-        _dragonTimerComponent = TimerComponent(
-          period: 10,
-          repeat: true,
-          onTick: () async{
-            await addDragonMotion();
-          },
-        )
-    );
+    listenToPlayerCollect();
   }
 
 
 
   Future<void> addDragonMotion() async{
+    if(isEnabled == false){
+      //_logger.log(_TAG, "Not changing because ghost is disabled");
+      return;
+    }
     direction = DirectionEnumsExt.generateRandomUniqueDirection();
     if(direction == Direction.up || direction == Direction.down){
       isYAxisMovement = true;
@@ -128,20 +123,32 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
 
   ///Depending upon difficulty level enemy is added in game
   Future<void> spawnDragon() async{
-    await addDragonMotion();
     isEnabled = true;
+    await addDragonMotion();
+    ///Once this timer elapses then dragon position would be changed in game
+    add(
+        _dragonTimerComponent = TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await addDragonMotion();
+          },
+        )
+    );
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollision(intersectionPoints, other);
+    ///DO NOT DELETE
+    ///If you want the dragon to stop on screen collision then uncomment below lines
     //_logger.log(_TAG, "Inside on collision");
-    if (other is ScreenHitbox) {
+    /*if (other is ScreenHitbox) {
       if (!_hasCollided) {
         _hasCollided = true;
         _collisionDirection = direction;
       }
-    }
+    }*/
   }
 
   @override
@@ -204,9 +211,16 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
     }
   }
 
-  void checkisenabled(){
-    _logger.log(_TAG, "Check is enabled ");
-    _dragonTimerComponent?.timer.pause();
+  void listenToPlayerCollect(){
+    _gameTriggers.playerCoinsStream.listen((int? coinsValue) {
+      if(coinsValue != null){
+        _logger.log(_TAG, "Coins value $coinsValue");
+        isEnabled = false;
+        Future.delayed(Duration(seconds: 3), (){
+          isEnabled = true;
+        });
+      }
+    });
   }
 
   bool canPlayerMoveUp() {

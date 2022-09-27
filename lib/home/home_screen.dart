@@ -84,7 +84,6 @@ class HomeScreenPage extends HookConsumerWidget{
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onDoubleTap: (){
-              _logger.log(_TAG, 'Double tap event received');
               timerNotifier.hideTimerView();
               homeScreenNotifier.reloadBottomSheet(false);
               homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);

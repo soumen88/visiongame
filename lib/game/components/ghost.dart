@@ -6,6 +6,7 @@ import 'package:visiongame/base/logger_utils.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
 import '../../enums/difficulty_level_enum.dart';
 import '../../injector/injection.dart';
+import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../triggers/game_triggers.dart';
 
 class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
@@ -25,6 +26,8 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
   final _gameTriggers = locator<GameTriggers>();
 
   final BehaviorSubject<GhostPositionModel?> ghostPositionNotifier = BehaviorSubject.seeded(null);
+  ///Below variable is used for speaking about ghost position in the game
+  final _visionTts = locator<VisionTextToSpeechConverter>();
 
   Ghost() : super(size: Vector2.all(50.0));
 
@@ -34,6 +37,15 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
     sprite = await gameRef.loadSprite('ghost.png');
     //position = gameRef.size / 2;
     add(RectangleHitbox());
+
+    listenToPlayerCollect();
+  }
+
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> spawnGhost() async{
+    isEnabled = true;
+    //_logger.log(_TAG, "Spawwning the ghost");
+    await addGhostMotion();
     ///Once this timer elapses then ghost position would be changed in game
     add(
         TimerComponent(
@@ -44,18 +56,14 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
           },
         )
     );
-    //listenToDifficultyLevelChanges();
-  }
-
-  ///Depending upon difficulty level enemy is added in game
-  Future<void> spawnGhost() async{
-    await addGhostMotion();
-    isEnabled = true;
   }
 
 
   Future<void> addGhostMotion() async{
-    _logger.log(_TAG, "Changing direction of ghost");
+    if(isEnabled == false){
+      //_logger.log(_TAG, "Not changing because ghost is disabled");
+      return;
+    }
     var randomNumber1 = next(1, 100);
     var randomNumber2 = next(7, 500);
     if(randomNumber1 % 2 == 0){
@@ -66,6 +74,7 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
       isXAxisMovement = false;
       isYAxisMovement = true;
     }
+
     if(randomNumber2 % 2 == 0){
       isLeft = true;
       isDown = true;
@@ -125,6 +134,22 @@ class Ghost extends SpriteComponent with HasGameRef, CollisionCallbacks {
     _logger.log(_TAG, "Inside switch direction");
     isXAxisMovement = !isXAxisMovement;
     isYAxisMovement = !isYAxisMovement;
+  }
+
+  void listenToPlayerCollect(){
+    _gameTriggers.playerCoinsStream.listen((int? coinsValue) {
+      if(coinsValue != null){
+        _logger.log(_TAG, "Coins value $coinsValue");
+        isEnabled = false;
+        Future.delayed(Duration(seconds: 3), (){
+          isEnabled = true;
+        });
+      }
+    });
+  }
+
+  void test(){
+    isEnabled = false;
   }
 
   Future<void> speakMovement() async{

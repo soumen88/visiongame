@@ -346,7 +346,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
       }
     }
     _logger.log(_TAG, "Next collectible at $coinPositionText");
-    await _visionTts.speakStop();
+    //await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
     isPlayerMovementLocked = false;
   }

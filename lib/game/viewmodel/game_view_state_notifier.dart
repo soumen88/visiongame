@@ -43,7 +43,7 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     listenToSpeechInput();
   }
 
-  void init(){
+  void init() async{
     _gameTriggers.toggleVoiceInput(isInitial: true);
     if(isTutorialView){
       state = const GameScreenViewState.displayRobotView();

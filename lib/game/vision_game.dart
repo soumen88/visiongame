@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -12,8 +11,6 @@ import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
-import 'package:visiongame/game/components/animated_component.dart';
-import 'package:visiongame/game/components/moth.dart';
 import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
@@ -93,7 +90,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       case Direction.up :{
         _player.direction = Direction.down;
         _player.position.y = _player.position.y + (4 * ApplicationConstants.deltaValue);
-
       }
       break;
       case Direction.right :{
@@ -118,10 +114,44 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   void listenToGhostMovement(){
     _ghostPlayer.ghostPositionNotifier.listen((GhostPositionModel? ghostPositionModel) async{
       if(ghostPositionModel != null && running){
-        int randomX = next(50, 400);
-        int randomY = next(50, 400);
-        _logger.log(_TAG, "Dragon position ${_dragon.position}");
-        _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        int randomX = next(1, 5);
+        int randomY = next(1, 12);
+        int randomNumberOne = next(-10, 10);
+        int randomNumberTwo = next(-10, 10);
+        //_ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if(randomNumberOne > 0){
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 4th quadrant
+            _ghostPlayer.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 3rd quadrant
+            _ghostPlayer.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+        }
+        else {
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 2nd quadrant
+            _ghostPlayer.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 1st quadrant
+            _ghostPlayer.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+        }
+
         if(isVoiceEnabled){
           await speakMovement(ghostPositionModel, _ghostPlayer.position);
         }
@@ -130,9 +160,43 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
     _dragon.dragonPositionNotifier.listen((GhostPositionModel? dragonPositionModel) async{
       if(dragonPositionModel != null && running){
-        int randomX = next(50, 400);
-        int randomY = next(50, 400);
-        _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        int randomX = next(1, 6);
+        int randomY = next(1, 12);
+        int randomNumberOne = next(-10, 10);
+        int randomNumberTwo = next(-10, 10);
+        //_dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if(randomNumberOne > 0){
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 4th quadrant
+            _dragon.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 3rd quadrant
+            _dragon.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+        }
+        else {
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 2nd quadrant
+            _dragon.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 1st quadrant
+            _dragon.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+        }
         if(isVoiceEnabled){
           await speakMovement(dragonPositionModel, _dragon.position);
         }
@@ -225,7 +289,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await addWorldCollision();
     await add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
-
+    _visionTts.setUpTtsListeners();
     camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
   }
 
@@ -252,6 +316,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         isCoinRemoved = true;
         collectibleCounter = 3;
         _coins.removeFromParent();
+        String removeCollectible = "Collectible Removed. Wait Until Amaze informs you again";
+        await _visionTts.speakText(removeCollectible);
       }
       else{
         bool isLeft = _player.position.x > _coins.x ;
@@ -353,62 +419,46 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.addGamePauseOrResume(isGamePaused: running);
   }
 
-  Future<void> speakMovement(GhostPositionModel? ghostPositionModel, NotifyingVector2 enemyPosition ) async{
+  Future<void> speakMovement(GhostPositionModel ghostPositionModel, NotifyingVector2 enemyPosition ) async{
     String speakString = "";
-    bool isRight = enemyPosition.x > _player.position.x;
-    bool isUp = enemyPosition.y > _player.position.y ;
-    if(ghostPositionModel != null){
-      if(ghostPositionModel.isXAxisMovement){
-        if(isRight){
-          speakString = "$enemyName coming from right";
-        }
-        else{
-          speakString = "$enemyName coming from left";
-        }
+    bool isPlayerRight = enemyPosition.x > _player.position.x;
+    bool isPlayerDownwards =   enemyPosition.y > _player.position.y  ;
+    if(ghostPositionModel.isXAxisMovement){
+      if(ghostPositionModel.isLeft && isPlayerDownwards){
+        speakString = "$enemyName is downwards and moving left";
       }
-      else{
-        if(ghostPositionModel.isDown && isRight){
-          speakString = "$enemyName coming from right and walking down";
-        }
-        else if(ghostPositionModel.isDown && !isRight){
-          speakString = "$enemyName coming from left and walking down";
-        }
-        else if(!ghostPositionModel.isDown && isRight){
-          speakString = "$enemyName coming from right and walking up";
-        }
-        else if(!ghostPositionModel.isDown && !isRight){
-          speakString = "$enemyName coming from left and walking up";
-        }
+      else if(ghostPositionModel.isLeft && !isPlayerDownwards){
+        speakString = "$enemyName is upwards and moving left";
+      }
+      else if(!ghostPositionModel.isLeft && isPlayerDownwards){
+        speakString = "$enemyName is downwards and moving right";
+      }
+      else if(!ghostPositionModel.isLeft && !isPlayerDownwards){
+        speakString = "$enemyName is upwards and moving right";
       }
     }
     else{
-      if(isUp){
-        if(isRight){
-          speakString = "$enemyName is towards your right and walking up";
-        }
-        else{
-          speakString = "$enemyName is towards your left and walking up";
-        }
+      if(ghostPositionModel.isDown && isPlayerRight){
+        speakString = "$enemyName coming from right and walking down";
       }
-      else{
-        if(isRight){
-          speakString = "$enemyName is towards your right and walking down";
-        }
-        else{
-          speakString = "$enemyName is towards your left and walking down";
-        }
+      else if(ghostPositionModel.isDown && !isPlayerRight){
+        speakString = "$enemyName coming from left and walking down";
+      }
+      else if(!ghostPositionModel.isDown && isPlayerRight){
+        speakString = "$enemyName coming from right and walking up";
+      }
+      else if(!ghostPositionModel.isDown && !isPlayerRight){
+        speakString = "$enemyName coming from left and walking up";
       }
     }
     _logger.log(_TAG, "Speak String $speakString");
     bool isSpeakComplete = await _visionTts.speakText(speakString);
     //bool isSpeakComplete = true;
     if(isSpeakComplete){
-      //await _coins.generateRandomCollectible();
       bool isCoinRemoved = await addCoinInGame();
       if(isCoinRemoved == false){
         await speakCollectablePosition();
       }
-
     }
   }
 
@@ -452,10 +502,14 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
       }
     }
-    _logger.log(_TAG, "Next collectible at $coinPositionText");
-    await _visionTts.speakStop();
+    //_logger.log(_TAG, "Next collectible at $coinPositionText");
+    //await _visionTts.speakStop();
     await _visionTts.speakText(coinPositionText);
     isPlayerMovementLocked = false;
+  }
+
+  void check(){
+    _ghostPlayer.test();
   }
 
   /**
