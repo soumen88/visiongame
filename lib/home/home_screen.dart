@@ -93,12 +93,12 @@ class HomeScreenPage extends HookConsumerWidget{
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  /*Container(
                     margin: EdgeInsets.all(50),
                     child: ElevatedButton(onPressed: () async{
                       homeScreenNotifier.test();
                     }, child: Text("Test audio")),
-                  ),
+                  ),*/
                   RobotWaveWidget()
                 ],
               )

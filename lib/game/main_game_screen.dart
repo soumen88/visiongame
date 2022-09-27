@@ -87,14 +87,14 @@ class MainGamePage extends HookConsumerWidget {
                 child: Stack(
                   children: [
                     GameWidget(game: game),
-                    Positioned(
+                    /*Positioned(
                       top: 100,
                       left: 100,
                       child: ElevatedButton(onPressed: () async{
                         _logger.log(_TAG, "Test button was clicked");
                           game.check();
                       }, child: Text("Test")),
-                    ),
+                    ),*/
                     GameTrackerWidget(),
                     GameVolumeWidget()
                   ],

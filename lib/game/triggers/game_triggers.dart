@@ -42,6 +42,9 @@ class GameTriggers{
   bool isRunning = true;
   late Stream<int> ghostDirectionStream;
 
+  ///This variable is spoken when player would win the game
+  int collectibleCounter = 0;
+
   void addPlayerEvent(PlayerLifeStatusEnums event, Vector2 playerPosition, {bool isInitial = false}){
     if(isInitial){
       PlayerMotionModel playerMotionModel = PlayerMotionModel(event: event, position: playerPosition, playerLivesLeft: ApplicationConstants.kInitialPlayerLifes);
@@ -78,6 +81,7 @@ class GameTriggers{
     else if(addCoins){
       int currentCoins = playerCoinsStream.value!;
       currentCoins++;
+      collectibleCounter++;
       playerCoinsStream.add(currentCoins);
     }
     checkForVaryingDifficulty();
@@ -169,6 +173,7 @@ class GameTriggers{
 
     gameDifficultyLevelStream = BehaviorSubject.seeded(null);
 
+    collectibleCounter = 0;
     //isPlayerImmutable = BehaviorSubject.seeded(null);
 
   }

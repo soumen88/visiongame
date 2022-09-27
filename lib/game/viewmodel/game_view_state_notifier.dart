@@ -130,18 +130,20 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "We hope that you liked our game";
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "Do you want to continue playing our game?";
+    String lineThree = "You had successfully collected ${_gameTriggers.collectibleCounter} collectibles while playing this game.";
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour;
+    String lineFour = "Do you want to continue playing our game?";
+    bool isLineFourComplete = await _visionTts.speakText(lineFour);
+    String lineFive;
     if(isSpeechInputEnabled){
-      lineFour = "Say yes to continue or double tap on the screen";
+      lineFive = "Say yes to continue or double tap on the screen";
     }
     else{
-      lineFour = "double tap on the screen";
+      lineFive = "double tap on the screen";
     }
 
-    bool isLineFourComplete = await _visionTts.speakText(lineFour);
-    if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete & isLineFourComplete){
+    bool isLineFiveComplete = await _visionTts.speakText(lineFive);
+    if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete & isLineFourComplete && isLineFiveComplete){
       reloadBottomSheet(true);
     }
   }
