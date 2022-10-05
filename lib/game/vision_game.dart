@@ -289,7 +289,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await addWorldCollision();
     await add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
-    _visionTts.setUpTtsListeners();
+    //_visionTts.setUpTtsListeners();
     camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
   }
 

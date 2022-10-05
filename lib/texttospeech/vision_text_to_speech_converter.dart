@@ -23,20 +23,6 @@ class VisionTextToSpeechConverter{
 
   }
 
-  void setUpTtsListeners(){
-    _textToSpeechConverter.setStartHandler(() {
-      _logger.log(_TAG, "Speech started");
-      isSpeaking = true;
-      speechEventNotifier.add(isSpeaking);
-    });
-
-    _textToSpeechConverter.setCompletionHandler(() {
-      _logger.log(_TAG, "Speech Completed");
-      isSpeaking = false;
-      speechEventNotifier.add(isSpeaking);
-    });
-  }
-
   ///When the result from speak is 1 then it indicates that current speak part is complete
   ///Hence we are sending true only once the sentence is finished
   Future<bool> speakText(String inputText) async{
