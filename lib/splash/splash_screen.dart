@@ -36,8 +36,8 @@ class SplashScreenPage extends HookWidget {
                   padding: const EdgeInsets.all(20),
                   child: Container(
                     margin: const EdgeInsets.all(20),
-                    width: 200.0,
-                    height: 200.0,
+                    width: 250.0,
+                    height: 250.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         image: const DecorationImage(
@@ -49,13 +49,13 @@ class SplashScreenPage extends HookWidget {
                   ),
                 ),
               ),
-              const Text(ApplicationConstants.APP_NAME,
+              /*const Text(ApplicationConstants.APP_NAME,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white
                 ),
-              ),
+              ),*/
 
             ],
           ),

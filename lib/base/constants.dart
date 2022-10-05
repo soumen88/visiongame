@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ApplicationConstants {
-  static const APP_NAME = "Amaze";
+  static const APP_NAME = "A-Maze";
   static int kSplashScreenTime = 3;//seconds
   static int kAnimationLoadTime = 1;//seconds
   static int kTimerLimit = 5;//seconds
@@ -22,7 +22,8 @@ class ApplicationConstants {
   static String collectibleMessage  = "Collectable is to your ";
   static String levelChangeMessage  = "Yay! You have cleared Level ";
 
-  static const splashBackgroundColor = Colors.lightGreen;
+  static const appBackgroundColor = Color.fromARGB(255, 11, 134, 119);
+  static const splashBackgroundColor = Color.fromARGB(255, 236,232,226);
   static int deltaValue = 50;
   static double playerDeltaValue = 0.5;
   //static double playerDeltaValue = 3;
