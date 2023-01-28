@@ -17,7 +17,13 @@ class VisionTextToSpeechConverter{
     _textToSpeechConverter = FlutterTts();
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
-    await _textToSpeechConverter.setLanguage('en');
+
+    await _textToSpeechConverter.setLanguage('hi-IN');
+    //Good female
+    //await _textToSpeechConverter.setVoice({"name": "hi-IN-language", "locale": "hi-IN"});
+    //Good male
+    await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
+    //await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-network", "locale": "hi-IN"});
     await _textToSpeechConverter.setSpeechRate(0.4);
     //await _textToSpeechConverter.setQueueMode(2);
 
@@ -52,4 +58,14 @@ class VisionTextToSpeechConverter{
     }
   }
 
+  Future<void> test() async{
+    List<dynamic> languages = await _textToSpeechConverter.getLanguages;
+    for(var language in languages){
+      //_logger.log(_TAG, "Language $language");
+    }
+    List<dynamic> voices = await _textToSpeechConverter.getVoices;
+    for(var voice in voices){
+      _logger.log(_TAG, "Voice $voice");
+    }
+  }
 }

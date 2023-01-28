@@ -84,21 +84,21 @@ class HomeScreenPage extends HookConsumerWidget{
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onDoubleTap: (){
-              timerNotifier.hideTimerView();
+              /*timerNotifier.hideTimerView();
               homeScreenNotifier.reloadBottomSheet(false);
-              homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
+              homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);*/
             },
             child: Scaffold(
               backgroundColor: Colors.lightGreen,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  /*Container(
+                  Container(
                     margin: EdgeInsets.all(50),
                     child: ElevatedButton(onPressed: () async{
                       homeScreenNotifier.test();
-                    }, child: Text("Test audio")),
-                  ),*/
+                    }, child: Text("Female audio sample")),
+                  ),
                   RobotWaveWidget()
                 ],
               )

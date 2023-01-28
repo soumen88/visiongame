@@ -129,12 +129,12 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   void test() async{
-    String text1 = "Hey I wish I could have done this project";
+    /*String text1 = "Hey I wish I could have done this project";
     String text2 = "This game is an amazing project to work upon";
     String text3 = "What I am testing is the vision TTS";
     visionTts.speakText(text1);
     visionTts.speakText(text2);
-    visionTts.speakText(text3);
-
+    visionTts.speakText(text3);*/
+    visionTts.test();
   }
 }
