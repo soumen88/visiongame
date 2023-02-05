@@ -10,11 +10,11 @@ class RobotWaveWidget extends HookWidget{
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        /*Container(
           width: 100,
           height: 100,
           child: TimerContainer(timerLabel: "Secs", durationLabel: "00",),
-        ),
+        ),*/
         Align(
           alignment: Alignment.center,
           child: // Load a Lottie animation file from your assets

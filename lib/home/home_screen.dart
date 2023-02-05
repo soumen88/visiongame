@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,8 @@ class HomeScreenPage extends HookConsumerWidget{
   final _logger = locator<LoggerUtils>();
   final _TAG = "HomeScreenPage";
   bool isBottomSheetDisplayed = false;
-  //final _visionSpeechInput = locator<VisionSpeechInput>();
+  bool? isEnabled;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeScreenNotifier = ref.watch(homeScreenProviders.notifier);
@@ -34,6 +37,18 @@ class HomeScreenPage extends HookConsumerWidget{
     final homeScreenState = ref.watch(homeScreenProviders);
     final displaySheet = useStream(homeScreenNotifier.bottomSheetEvent.stream);
     final startNextScreen = useStream(homeScreenNotifier.startNextScreenEvent.stream);
+
+    final appLifecycleState = useAppLifecycleState();
+
+    useEffect(() {
+      _logger.log(_TAG, "current app state ${appLifecycleState }");
+      if (appLifecycleState == AppLifecycleState.paused || appLifecycleState == AppLifecycleState.inactive) {
+
+      } else if (appLifecycleState == AppLifecycleState.resumed) {
+        isEnabled = true;
+      }
+      return null;
+    }, [appLifecycleState]);
 
     useEffect((){
       Future.delayed(Duration.zero, (){
@@ -75,6 +90,7 @@ class HomeScreenPage extends HookConsumerWidget{
 
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenDifficulty){
       _logger.log(_TAG, "Start next screen now");
+      //context.router.navigate(const DifficultyLevelScreen());
       context.router.replace(const DifficultyLevelScreen());
     }
 
@@ -83,22 +99,25 @@ class HomeScreenPage extends HookConsumerWidget{
         homeView: (){
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onDoubleTap: (){
-              /*timerNotifier.hideTimerView();
-              homeScreenNotifier.reloadBottomSheet(false);
-              homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);*/
+            onTap: (){
+              if(isEnabled != null && isEnabled!){
+                isEnabled = false;
+                //timerNotifier.hideTimerView();
+                //homeScreenNotifier.reloadBottomSheet(false);
+                homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
+              }
             },
             child: Scaffold(
               backgroundColor: Colors.lightGreen,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  /*Container(
                     margin: EdgeInsets.all(50),
                     child: ElevatedButton(onPressed: () async{
                       homeScreenNotifier.test();
                     }, child: Text("Female audio sample")),
-                  ),
+                  ),*/
                   RobotWaveWidget()
                 ],
               )

@@ -19,6 +19,7 @@ class SplashScreenPage extends HookWidget {
     useEffect((){
       Future.delayed(Duration(seconds: ApplicationConstants.kSplashScreenTime), () {
         context.router.replace(const HomeScreenRoute());
+        //context.router.replace(const DifficultyLevelR());
         //context.router.replace(const MainGameRoute());
       });
     });

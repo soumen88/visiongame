@@ -17,6 +17,7 @@ import '../game/ui/game_tracker_widget.dart';
 import '../home/start_listening_widget.dart';
 import '../home/viewmodel/robot_wave_widget.dart';
 import '../injector/injection.dart';
+import 'display_lottie_animation.dart';
 
 class DifficultyLevelScreen extends HookConsumerWidget{
 
@@ -34,13 +35,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     final displaySheet = useStream(difficultyScreenNotifier.difficultyScreenBottomSheetEvent.stream);
     final startNextScreen = useStream(difficultyScreenNotifier.startNextScreenEvent.stream);
 
-    final _animationController = useAnimationController(duration: Duration(seconds: 3));
-
-    Animation<double> _animation = CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeIn
-    );
-
     useEffect((){
       if(difficultyScreenNotifier.isSpeakingComplete == false){
         Future.delayed(Duration.zero, () async{
@@ -55,7 +49,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
 
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenGame){
       _logger.log(_TAG, "Start next screen now");
-      context.router.replace(MainGameRoute());
+      context.router.replace(const MainGameRoute());
     }
 
     void displayBottomSheet(){
@@ -90,33 +84,39 @@ class DifficultyLevelScreen extends HookConsumerWidget{
         homeView: (){
           return Scaffold(
             backgroundColor: Colors.lightGreen,
-            body: SizedBox.expand(
-              child: SwipeDetector(
-                behavior: HitTestBehavior.opaque,
-                //Start tutorial
-                onSwipeLeft: (Offset offset) async{
-                  _logger.log(_TAG, "Swipe left");
-                  isSwipeDone = true;
-                  gameNotifier.isTutorialView = true;
-                  await difficultyScreenNotifier.stopSpeaking();
-                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
-                },
-                //Begin a fresh game
-                onSwipeRight: (Offset offset) async{
-                  _logger.log(_TAG, "Swipe right");
-                  isSwipeDone = true;
-                  gameNotifier.isTutorialView = false;
-                  difficultyScreenNotifier.readGameInstructions();
+            body: Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DisplayLottieAnimation(lottieFilePath: "assets/animation/swipe_left.json",label: "Swipe Left \n Tutorial",),
+                    DisplayLottieAnimation(lottieFilePath: "assets/animation/swipe_right.json",label: "Swipe Right \n Start Game",),
+                  ],
+                ),
+                SwipeDetector(
+                  behavior: HitTestBehavior.opaque,
+                  //Start tutorial
+                  onSwipeLeft: (Offset offset) async{
+                    _logger.log(_TAG, "Swipe left");
+                    isSwipeDone = true;
+                    gameNotifier.isTutorialView = true;
+                    await difficultyScreenNotifier.stopSpeaking();
+                    difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                  },
+                  //Begin a fresh game
+                  onSwipeRight: (Offset offset) async{
+                    _logger.log(_TAG, "Swipe right");
+                    isSwipeDone = true;
+                    gameNotifier.isTutorialView = false;
+                    difficultyScreenNotifier.readGameInstructions();
 
-                },
-               /* onSwipeUp: (Offset offset){
-                  _logger.log(_TAG, "Swipe up");
-                  //_gameTriggers.setDifficultyLevel(DifficultyLevelEnums.HARD);
-                  difficultyScreenNotifier.reloadDifficultyBottomSheet(false);
-                  difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
-                },*/
-                child: RobotWaveWidget(),
-              ),
+                  },
+                  child: RobotWaveWidget(),
+                ),
+              ],
             )
           );
         },
