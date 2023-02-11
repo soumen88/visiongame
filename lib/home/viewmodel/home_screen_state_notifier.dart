@@ -137,4 +137,8 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     visionTts.speakText(text3);*/
     visionTts.test();
   }
+
+  Future<void> stopSpeaking() async{
+    await visionTts.speakStop();
+  }
 }

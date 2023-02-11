@@ -17,13 +17,12 @@ class VisionTextToSpeechConverter{
     _textToSpeechConverter = FlutterTts();
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
-
-    await _textToSpeechConverter.setLanguage('hi-IN');
-    //Good female
-    //await _textToSpeechConverter.setVoice({"name": "hi-IN-language", "locale": "hi-IN"});
-    //Good male
-    await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
-    //await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-network", "locale": "hi-IN"});
+    bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
+    _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
+    if(isLanguageAvailable){
+      await _textToSpeechConverter.setLanguage('hi-IN');
+      await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
+    }
     await _textToSpeechConverter.setSpeechRate(0.4);
     //await _textToSpeechConverter.setQueueMode(2);
 

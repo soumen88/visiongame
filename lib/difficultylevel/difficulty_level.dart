@@ -96,26 +96,28 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                     DisplayLottieAnimation(lottieFilePath: "assets/animation/swipe_right.json",label: "Swipe Right \n Start Game",),
                   ],
                 ),
-                SwipeDetector(
-                  behavior: HitTestBehavior.opaque,
-                  //Start tutorial
-                  onSwipeLeft: (Offset offset) async{
-                    _logger.log(_TAG, "Swipe left");
-                    isSwipeDone = true;
-                    gameNotifier.isTutorialView = true;
-                    await difficultyScreenNotifier.stopSpeaking();
-                    difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
-                  },
-                  //Begin a fresh game
-                  onSwipeRight: (Offset offset) async{
-                    _logger.log(_TAG, "Swipe right");
-                    isSwipeDone = true;
-                    gameNotifier.isTutorialView = false;
-                    difficultyScreenNotifier.readGameInstructions();
+                Expanded(
+                    child: SwipeDetector(
+                      behavior: HitTestBehavior.opaque,
+                      //Start tutorial
+                      onSwipeLeft: (Offset offset) async{
+                        _logger.log(_TAG, "Swipe left");
+                        isSwipeDone = true;
+                        gameNotifier.isTutorialView = true;
+                        await difficultyScreenNotifier.stopSpeaking();
+                        difficultyScreenNotifier.startNextScreen(ApplicationConstants.ScreenGame);
+                      },
+                      //Begin a fresh game
+                      onSwipeRight: (Offset offset) async{
+                        _logger.log(_TAG, "Swipe right");
+                        isSwipeDone = true;
+                        gameNotifier.isTutorialView = false;
+                        difficultyScreenNotifier.readGameInstructions();
 
-                  },
-                  child: RobotWaveWidget(),
-                ),
+                      },
+                      child: RobotWaveWidget(),
+                    ),
+                )
               ],
             )
           );

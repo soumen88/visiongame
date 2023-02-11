@@ -43,7 +43,7 @@ class HomeScreenPage extends HookConsumerWidget{
     useEffect(() {
       _logger.log(_TAG, "current app state ${appLifecycleState }");
       if (appLifecycleState == AppLifecycleState.paused || appLifecycleState == AppLifecycleState.inactive) {
-
+        homeScreenNotifier.stopSpeaking();
       } else if (appLifecycleState == AppLifecycleState.resumed) {
         isEnabled = true;
       }
