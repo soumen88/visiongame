@@ -129,7 +129,8 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
         await _visionTts.speakStop()
             .then((value) {
               _logger.log(_TAG, "Speak stop value $value");
-          _visionTts.speakText("Yay! You collected $currentCollectable");
+              _visionTts.enableSpeaking();
+              _visionTts.speakText("Yay! You collected $currentCollectable");
         }).then((value){
           _logger.log(_TAG, "Play game sound");
           _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);

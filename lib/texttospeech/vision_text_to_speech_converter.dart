@@ -11,7 +11,7 @@ class VisionTextToSpeechConverter{
   final _logger = locator<LoggerUtils>();
   FlutterTts _textToSpeechConverter = FlutterTts();
   BehaviorSubject<bool?> speechEventNotifier = BehaviorSubject.seeded(null);
-  bool isSpeaking = true;
+  bool isStop = false;
 
   Future<void> setUpTTs() async{
     _textToSpeechConverter = FlutterTts();
@@ -25,29 +25,34 @@ class VisionTextToSpeechConverter{
     }
     await _textToSpeechConverter.setSpeechRate(0.4);
     //await _textToSpeechConverter.setQueueMode(2);
-
   }
 
   ///When the result from speak is 1 then it indicates that current speak part is complete
   ///Hence we are sending true only once the sentence is finished
   Future<bool> speakText(String inputText) async{
-    _logger.log(_TAG, "Inside speak text $inputText");
-    var result = await _textToSpeechConverter.speak(inputText);
-    if(result == 1){
-      return Future.value(true);
+    _logger.log(_TAG, "Inside speak text $inputText and $isStop");
+    if(isStop == false){
+      var result = await _textToSpeechConverter.speak(inputText);
+      if(result == 1){
+        return Future.value(true);
+      }
+      else{
+        return Future.value(false);
+      }
     }
     else{
       return Future.value(false);
     }
+  }
 
-
-    /*speechEventNotifier.add(inputText);
-    return Future.value(true);*/
+  void enableSpeaking(){
+    isStop = false;
   }
 
   ///When the result from speak is 1 then it indicates that current speak part is complete
   ///Hence we are sending true only once the sentence is finished
   Future<bool> speakStop() async{
+    isStop = true;
     var result = await _textToSpeechConverter.stop();
     if(result == 1){
       return Future.value(true);
@@ -57,7 +62,7 @@ class VisionTextToSpeechConverter{
     }
   }
 
-  Future<void> test() async{
+  Future<void> getSupportedLanguagesAndVoices() async{
     List<dynamic> languages = await _textToSpeechConverter.getLanguages;
     for(var language in languages){
       //_logger.log(_TAG, "Language $language");

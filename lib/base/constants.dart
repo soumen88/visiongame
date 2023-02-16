@@ -9,7 +9,7 @@ class ApplicationConstants {
   static int kInitialPlayerLifes = 3;//player life's at beginning of each level
   //This indicates the number of coins player has to collect in order to complete 1st level
   static int kLevelEasyCompletionCoins = 5;
-  static int kLevelMediumCompletionCoins = 5;
+  static int kLevelMediumCompletionCoins = 3;
   static int kLevelHardCompletionCoins = 3;
   static int kLevelEasyWalkSpeed = 100;
 

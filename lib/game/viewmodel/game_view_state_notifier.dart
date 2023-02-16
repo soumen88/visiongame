@@ -94,10 +94,11 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   void startGameOverScript() async{
     _logger.log(_TAG, "Inside game over script");
     if(isSpeechInputEnabled){
-      PermissionUtils permissionUtils = PermissionUtils();
-      bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();
+      /*PermissionUtils permissionUtils = PermissionUtils();
+      bool isPermissionGranted = await permissionUtils.askMicroPhonePermission();*/
     }
     await _visionTts.speakStop();
+    _visionTts.enableSpeaking();
     String lineOne = "Alas, that was bad. We hope that you liked our game";
     bool isSpeakOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "To continue playing our game double tap on the screen";
@@ -125,7 +126,8 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
 
       }
     }
-    await _visionTts.speakStop();
+    //await _visionTts.speakStop();
+    _visionTts.enableSpeaking();
     String lineOne = "Congratulations on winning this game. You have successfully saved ${ApplicationConstants.PlayerName} life";
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
     String lineTwo = "We hope that you liked our game";

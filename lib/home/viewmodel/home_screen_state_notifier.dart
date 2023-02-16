@@ -19,8 +19,6 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   ///Below variable is used for taking speech input from user
   final visionSpeechInput = locator<VisionSpeechInput>();
 
-  ///Below variable is used for displaying bottom sheet on the home screen
-  BehaviorSubject<bool?> bottomSheetEvent = BehaviorSubject<bool?>.seeded(null);
   BehaviorSubject<String?> startNextScreenEvent = BehaviorSubject<String?>.seeded(null);
 
   bool isSpeechInputEnabled = false;
@@ -55,6 +53,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   void startIntroduction() async{
+    visionTts.enableSpeaking();
     String lineOne = "Hello I am Amaze Robot.";
     await visionTts.speakText(lineOne);
     String lineTwo = "I would be assisting you to play this Amazing game.";
@@ -77,7 +76,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   void reloadBottomSheet(bool value) async{
     await visionTts.speakStop();
     if(value){
-      bottomSheetEvent.add(true);
+      //bottomSheetEvent.add(true);
       if(isSpeechInputEnabled){
         bool isListening = await visionSpeechInput.startListening(SpeechInputEnums.START_GAME);
         if(isListening){
@@ -86,7 +85,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
             if(visionSpeechInput.isSpeechEnabled){
               bool isStopped = await visionSpeechInput.stopListening();
               if(isStopped){
-                bottomSheetEvent.add(false);
+                //bottomSheetEvent.add(false);
               }
             }
           });
@@ -95,12 +94,12 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
       else{
         Future.delayed(Duration(seconds: ApplicationConstants.kSpeechTimerLimit),() async{
           _logger.log(_TAG, "Stop bottom sheet now");
-          bottomSheetEvent.add(false);
+          //bottomSheetEvent.add(false);
         });
       }
     }
     else{
-      bottomSheetEvent.add(false);
+      //bottomSheetEvent.add(false);
       if(isSpeechInputEnabled){
         if(visionSpeechInput.isSpeechEnabled){
           await visionSpeechInput.stopListening();
@@ -125,6 +124,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   void startNextScreen(String value){
+    //bottomSheetEvent.add(false);
     startNextScreenEvent.add(value);
   }
 
@@ -135,10 +135,10 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     visionTts.speakText(text1);
     visionTts.speakText(text2);
     visionTts.speakText(text3);*/
-    visionTts.test();
+    visionTts.getSupportedLanguagesAndVoices();
   }
 
-  Future<void> stopSpeaking() async{
-    await visionTts.speakStop();
+  Future<bool> stopSpeaking() async{
+    return await visionTts.speakStop();
   }
 }

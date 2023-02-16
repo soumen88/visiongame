@@ -35,7 +35,6 @@ class HomeScreenPage extends HookConsumerWidget{
     final homeScreenNotifier = ref.watch(homeScreenProviders.notifier);
     final timerNotifier = ref.watch(timerProvider.notifier);
     final homeScreenState = ref.watch(homeScreenProviders);
-    final displaySheet = useStream(homeScreenNotifier.bottomSheetEvent.stream);
     final startNextScreen = useStream(homeScreenNotifier.startNextScreenEvent.stream);
 
     final appLifecycleState = useAppLifecycleState();
@@ -45,6 +44,7 @@ class HomeScreenPage extends HookConsumerWidget{
       if (appLifecycleState == AppLifecycleState.paused || appLifecycleState == AppLifecycleState.inactive) {
         homeScreenNotifier.stopSpeaking();
       } else if (appLifecycleState == AppLifecycleState.resumed) {
+        homeScreenNotifier.init();
         isEnabled = true;
       }
       return null;
@@ -70,23 +70,6 @@ class HomeScreenPage extends HookConsumerWidget{
       );
     }
 
-    ///When display sheet data is true then bottom sheet is displayed and when it is false it gets
-    ///hidden
-    if(displaySheet.data != null){
-      if(displaySheet.data == false && isBottomSheetDisplayed){
-        _logger.log(_TAG, "Closing bottom sheet");
-        Future.delayed(Duration.zero, (){
-          Navigator.pop(context);
-        });
-      }
-      else{
-        Future.delayed(Duration.zero, (){
-          isBottomSheetDisplayed = true;
-          timerNotifier.startTimer();
-          displayBottomSheet();
-        });
-      }
-    }
 
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenDifficulty){
       _logger.log(_TAG, "Start next screen now");
@@ -99,12 +82,13 @@ class HomeScreenPage extends HookConsumerWidget{
         homeView: (){
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: (){
+            onTap: () async{
               if(isEnabled != null && isEnabled!){
                 isEnabled = false;
-                //timerNotifier.hideTimerView();
-                //homeScreenNotifier.reloadBottomSheet(false);
-                homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
+                bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();
+                if(hasStoppedSpeaking){
+                  homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
+                }
               }
             },
             child: Scaffold(
@@ -115,8 +99,15 @@ class HomeScreenPage extends HookConsumerWidget{
                   /*Container(
                     margin: EdgeInsets.all(50),
                     child: ElevatedButton(onPressed: () async{
-                      homeScreenNotifier.test();
-                    }, child: Text("Female audio sample")),
+                      if(isEnabled != null && isEnabled!){
+                        isEnabled = false;
+                        bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();
+                        if(hasStoppedSpeaking){
+                          homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
+                        }
+                      }
+
+                    }, child: Text("Test")),
                   ),*/
                   RobotWaveWidget()
                 ],

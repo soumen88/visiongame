@@ -20,7 +20,6 @@ class RobotWaveWidget extends HookWidget{
           child: // Load a Lottie animation file from your assets
           Lottie.asset('assets/animation/robot_wave.json'),
         )
-
       ],
     );
   }

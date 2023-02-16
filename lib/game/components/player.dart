@@ -147,6 +147,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
         if(isVoiceEnabled){
           String playerDead = "Oh no! You Died";
           await _visionTts.speakStop();
+          _visionTts.enableSpeaking();
           await _visionTts.speakText(playerDead);
         }
       }

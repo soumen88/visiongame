@@ -38,9 +38,10 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   DifficultyLevelStateNotifier() : super(const DifficultyLevelViewState.loading());
   ///Below function asks for difficulty level in the game
   Future<bool> askForDifficultyLevel() async{
+
     state = const DifficultyLevelViewState.homeView();
-    //reloadDifficultyBottomSheet(true);
-    await visionTts.speakStop();
+    //await visionTts.speakStop();
+    visionTts.enableSpeaking();
     String lineOne = "Nice!";
     bool isSpeakComplete1 = await visionTts.speakText(lineOne);
     String lineTwo = "Now we move to our next part.";
@@ -75,7 +76,8 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
   Future<bool> readGameInstructions() async{
     state = const DifficultyLevelViewState.startGameView();
     isReadingTutorial = true;
-    await visionTts.speakStop();
+    //await visionTts.speakStop();
+    visionTts.enableSpeaking();
     String lineOne = "Now Amaze would let you know about instructions for playing this game.";
     bool isLineOneComplete = await visionTts.speakText(lineOne);
     String lineTwo = "Our Hero ${ApplicationConstants.PlayerName}, has been trapped.";

@@ -234,6 +234,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _logger.log(_TAG, "Received event for easy level with ${_ghostPlayer.isMounted}");
           enemyName = "Ghost";
           await _visionTts.speakStop();
+          _visionTts.enableSpeaking();
           await _visionTts.speakText("Lets Begin. To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelEasyCompletionCoins} collectibles.");
           _dragon.isEnabled = false;
           _dragon.removeFromParent();
@@ -268,6 +269,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
+          _visionTts.enableSpeaking();
           await _visionTts.speakText("You have moved to Level Hard. Enemy changes to $enemyName");
           await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
           await add(_ninjaGirl);

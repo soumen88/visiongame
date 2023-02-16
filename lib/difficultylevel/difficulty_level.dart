@@ -32,7 +32,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
     final difficultyScreenNotifier = ref.watch(difficultyScreenProviders.notifier);
     final difficultyScreenState = ref.watch(difficultyScreenProviders);
     final gameNotifier = ref.watch(gameProvider.notifier);
-    final displaySheet = useStream(difficultyScreenNotifier.difficultyScreenBottomSheetEvent.stream);
     final startNextScreen = useStream(difficultyScreenNotifier.startNextScreenEvent.stream);
 
     useEffect((){
@@ -63,21 +62,6 @@ class DifficultyLevelScreen extends HookConsumerWidget{
           return StartListeningWidget();
         },
       );
-    }
-
-    if(displaySheet.data != null){
-      _logger.log(_TAG, "Display sheet data ${displaySheet.data}");
-      if(displaySheet.data == false && isBottomSheetDisplayed){
-        Future.delayed(Duration.zero, (){
-          Navigator.pop(context);
-        });
-      }
-      else{
-        Future.delayed(Duration.zero, (){
-          isBottomSheetDisplayed = true;
-          displayBottomSheet();
-        });
-      }
     }
 
     return difficultyScreenState.maybeWhen(
@@ -112,6 +96,7 @@ class DifficultyLevelScreen extends HookConsumerWidget{
                         _logger.log(_TAG, "Swipe right");
                         isSwipeDone = true;
                         gameNotifier.isTutorialView = false;
+                        await difficultyScreenNotifier.stopSpeaking();
                         difficultyScreenNotifier.readGameInstructions();
 
                       },
