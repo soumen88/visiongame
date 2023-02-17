@@ -41,21 +41,19 @@ class HomeScreenPage extends HookConsumerWidget{
 
     useEffect(() {
       _logger.log(_TAG, "current app state ${appLifecycleState }");
+
+
       if (appLifecycleState == AppLifecycleState.paused || appLifecycleState == AppLifecycleState.inactive) {
         homeScreenNotifier.stopSpeaking();
       } else if (appLifecycleState == AppLifecycleState.resumed) {
-        homeScreenNotifier.init();
-        isEnabled = true;
+        Future.delayed(Duration.zero, (){
+          homeScreenNotifier.init();
+          isEnabled = true;
+        });
+
       }
       return null;
     }, [appLifecycleState]);
-
-    useEffect((){
-      Future.delayed(Duration.zero, (){
-        homeScreenNotifier.init();
-      });
-
-    }, const []);
 
     void displayBottomSheet(){
       showModalBottomSheet(
