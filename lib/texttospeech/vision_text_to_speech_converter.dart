@@ -31,7 +31,7 @@ class VisionTextToSpeechConverter{
   ///Hence we are sending true only once the sentence is finished
   Future<bool> speakText(String inputText) async{
     _logger.log(_TAG, "Inside speak text $inputText and $isStop");
-    if(isStop == false){
+    /*if(isStop == false){
       var result = await _textToSpeechConverter.speak(inputText);
       if(result == 1){
         return Future.value(true);
@@ -42,7 +42,8 @@ class VisionTextToSpeechConverter{
     }
     else{
       return Future.value(false);
-    }
+    }*/
+    return Future.value(false);
   }
 
   void enableSpeaking(){

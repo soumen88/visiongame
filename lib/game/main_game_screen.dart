@@ -88,7 +88,9 @@ class MainGamePage extends HookConsumerWidget {
                 },
                 child: Stack(
                   children: [
-                    GameWidget(game: game),
+                    GameWidget(
+                        game: game
+                    ),
                     /*Positioned(
                       top: 100,
                       left: 100,

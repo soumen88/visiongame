@@ -54,7 +54,7 @@ dependencies:
   injectable: ^2.4.2
 
   #Game engine
-  flame: ^1.18.0
+  flame: ^1.2.0
 
   #Text to speech converter
   flutter_tts: ^4.0.2

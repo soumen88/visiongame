@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:visiongame/base/constants.dart';
@@ -56,8 +57,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   ///If below variable is true then player cannot move
   bool isPlayerMovementLocked = false;
-
-  late CameraComponent startCamera;
 
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
@@ -206,16 +205,16 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       }
     });
 
-   _ninjaGirl.ninjaPositionNotifier.listen((GhostPositionModel? ninjaPositionModel) async{
-     if(ninjaPositionModel != null && running){
-       int randomX = next(50, 400);
-       int randomY = next(50, 400);
-       //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
-       if(isVoiceEnabled){
-         await speakMovement(ninjaPositionModel, _ninjaGirl.position);
-       }
-     }
-   });
+    _ninjaGirl.ninjaPositionNotifier.listen((GhostPositionModel? ninjaPositionModel) async{
+      if(ninjaPositionModel != null && running){
+        int randomX = next(50, 400);
+        int randomY = next(50, 400);
+        //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if(isVoiceEnabled){
+          await speakMovement(ninjaPositionModel, _ninjaGirl.position);
+        }
+      }
+    });
   }
 
   ///Once mike icon is set to turn off position the speaking for enemy position would stop
@@ -245,7 +244,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           //_ghostPlayer.position = _world.size / 1.6;
           int randomX = next(50, 400);
           int randomY = next(50, 400);
-          //_ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _ghostPlayer.position = Vector2(camera.viewport.position.x + randomX, camera.viewport.position.y + randomY);
           _ghostPlayer.spawnGhost();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
@@ -259,7 +258,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
-          //_dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _dragon.position = Vector2(camera.viewport.position.x + randomX, camera.viewport.position.y + randomY);
           _dragon.spawnDragon();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
@@ -276,8 +275,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           await _visionTts.speakText("You have moved to Level Hard. Enemy changes to $enemyName");
           await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
           await add(_ninjaGirl);
-
-          //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          _ninjaGirl.position = Vector2(camera.viewport.position.x + randomX, camera.viewport.position.y + randomY);
           _ninjaGirl.spawnNinjaGirl();
         }
       }
@@ -289,16 +287,18 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     super.onLoad();
     _logger.log(_TAG, "inside on load");
 
-    await add(_world);
-    await add(_player);
+    await world.add(_world);
+    await world.add(_player);
     _player.position = _world.size / 1.5;
     await addWorldCollision();
-    await add(_ghostPlayer);
+    await world.add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
     //_visionTts.setUpTtsListeners();
-    startCamera = CameraComponent(world: world);
-    startCamera.follow(_player);
     //camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
+    camera
+      ..viewfinder.visibleGameSize = Vector2(screenWidth.toDouble(), screenHeight.toDouble())
+      ..follow(_player)
+      ..setBounds(Rectangle.fromLTRB(0, 0, _world.size.x, _world.size.y));
   }
 
   onArrowKeyChanged(Direction direction){
@@ -480,12 +480,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     int xPlaces =((_player.position.x - _coins.position.x) / (ApplicationConstants.deltaValue)).abs().round();
     int yPlaces =(((_player.position.y - _coins.position.y) / (ApplicationConstants.deltaValue))).abs().round();
     if(_coins.currentQuadrant == CollectibleQuadrantEnums.SECOND){
-        if(xPlaces > 0){
-          xPlaces = xPlaces - 1;
-        }
-        if(yPlaces > 0){
-          yPlaces = yPlaces - 1;
-        }
+      if(xPlaces > 0){
+        xPlaces = xPlaces - 1;
+      }
+      if(yPlaces > 0){
+        yPlaces = yPlaces - 1;
+      }
     }
     if(_coins.currentQuadrant == CollectibleQuadrantEnums.FIRST){
       if(yPlaces > 0){
