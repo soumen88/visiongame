@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:injectable/injectable.dart';
-import 'package:visiongame/router/app_router.gr.dart';
+import 'package:visiongame/router/app_router.dart';
 import 'package:visiongame/texttospeech/vision_text_to_speech_converter.dart';
 import 'base/constants.dart';
 import 'injector/injection.dart';

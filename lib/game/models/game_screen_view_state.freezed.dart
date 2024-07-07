@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_screen_view_state.dart';
 
@@ -12,7 +12,7 @@ part of 'game_screen_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$GameScreenViewState {
@@ -29,13 +29,13 @@ mixin _$GameScreenViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,13 +63,13 @@ mixin _$GameScreenViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -90,42 +90,44 @@ mixin _$GameScreenViewState {
 abstract class $GameScreenViewStateCopyWith<$Res> {
   factory $GameScreenViewStateCopyWith(
           GameScreenViewState value, $Res Function(GameScreenViewState) then) =
-      _$GameScreenViewStateCopyWithImpl<$Res>;
+      _$GameScreenViewStateCopyWithImpl<$Res, GameScreenViewState>;
 }
 
 /// @nodoc
-class _$GameScreenViewStateCopyWithImpl<$Res>
+class _$GameScreenViewStateCopyWithImpl<$Res, $Val extends GameScreenViewState>
     implements $GameScreenViewStateCopyWith<$Res> {
   _$GameScreenViewStateCopyWithImpl(this._value, this._then);
 
-  final GameScreenViewState _value;
   // ignore: unused_field
-  final $Res Function(GameScreenViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
+  @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
-      : super(_value, (v) => _then(v as _$_Error));
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_Error get _value => super._value as _$_Error;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errorMessage = freezed,
+    Object? errorMessage = null,
   }) {
-    return _then(_$_Error(
-      errorMessage == freezed
+    return _then(_$ErrorImpl(
+      null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
@@ -135,8 +137,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error implements _Error {
-  const _$_Error(this.errorMessage);
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -147,22 +149,22 @@ class _$_Error implements _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
-            const DeepCollectionEquality()
-                .equals(other.errorMessage, errorMessage));
+            other is _$ErrorImpl &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(errorMessage));
+  int get hashCode => Object.hash(runtimeType, errorMessage);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -181,13 +183,13 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return error?.call(errorMessage);
   }
@@ -227,13 +229,13 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return error?.call(this);
   }
@@ -258,36 +260,34 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements GameScreenViewState {
-  const factory _Error(final String errorMessage) = _$_Error;
+  const factory _Error(final String errorMessage) = _$ErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
-      : super(_value, (v) => _then(v as _$_Loading));
-
-  @override
-  _$_Loading get _value => super._value as _$_Loading;
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading implements _Loading {
-  const _$_Loading();
+class _$LoadingImpl implements _Loading {
+  const _$LoadingImpl();
 
   @override
   String toString() {
@@ -295,9 +295,9 @@ class _$_Loading implements _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -320,13 +320,13 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return loading?.call();
   }
@@ -366,13 +366,13 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return loading?.call(this);
   }
@@ -397,32 +397,29 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements GameScreenViewState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayGameViewCopyWith<$Res> {
-  factory _$$_DisplayGameViewCopyWith(
-          _$_DisplayGameView value, $Res Function(_$_DisplayGameView) then) =
-      __$$_DisplayGameViewCopyWithImpl<$Res>;
+abstract class _$$DisplayGameViewImplCopyWith<$Res> {
+  factory _$$DisplayGameViewImplCopyWith(_$DisplayGameViewImpl value,
+          $Res Function(_$DisplayGameViewImpl) then) =
+      __$$DisplayGameViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DisplayGameViewCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayGameViewCopyWith<$Res> {
-  __$$_DisplayGameViewCopyWithImpl(
-      _$_DisplayGameView _value, $Res Function(_$_DisplayGameView) _then)
-      : super(_value, (v) => _then(v as _$_DisplayGameView));
-
-  @override
-  _$_DisplayGameView get _value => super._value as _$_DisplayGameView;
+class __$$DisplayGameViewImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$DisplayGameViewImpl>
+    implements _$$DisplayGameViewImplCopyWith<$Res> {
+  __$$DisplayGameViewImplCopyWithImpl(
+      _$DisplayGameViewImpl _value, $Res Function(_$DisplayGameViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_DisplayGameView implements _DisplayGameView {
-  const _$_DisplayGameView();
+class _$DisplayGameViewImpl implements _DisplayGameView {
+  const _$DisplayGameViewImpl();
 
   @override
   String toString() {
@@ -430,9 +427,9 @@ class _$_DisplayGameView implements _DisplayGameView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DisplayGameView);
+        (other.runtimeType == runtimeType && other is _$DisplayGameViewImpl);
   }
 
   @override
@@ -455,13 +452,13 @@ class _$_DisplayGameView implements _DisplayGameView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return displayGameView?.call();
   }
@@ -501,13 +498,13 @@ class _$_DisplayGameView implements _DisplayGameView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return displayGameView?.call(this);
   }
@@ -532,32 +529,29 @@ class _$_DisplayGameView implements _DisplayGameView {
 }
 
 abstract class _DisplayGameView implements GameScreenViewState {
-  const factory _DisplayGameView() = _$_DisplayGameView;
+  const factory _DisplayGameView() = _$DisplayGameViewImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayGameOverCopyWith<$Res> {
-  factory _$$_DisplayGameOverCopyWith(
-          _$_DisplayGameOver value, $Res Function(_$_DisplayGameOver) then) =
-      __$$_DisplayGameOverCopyWithImpl<$Res>;
+abstract class _$$DisplayGameOverImplCopyWith<$Res> {
+  factory _$$DisplayGameOverImplCopyWith(_$DisplayGameOverImpl value,
+          $Res Function(_$DisplayGameOverImpl) then) =
+      __$$DisplayGameOverImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DisplayGameOverCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayGameOverCopyWith<$Res> {
-  __$$_DisplayGameOverCopyWithImpl(
-      _$_DisplayGameOver _value, $Res Function(_$_DisplayGameOver) _then)
-      : super(_value, (v) => _then(v as _$_DisplayGameOver));
-
-  @override
-  _$_DisplayGameOver get _value => super._value as _$_DisplayGameOver;
+class __$$DisplayGameOverImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$DisplayGameOverImpl>
+    implements _$$DisplayGameOverImplCopyWith<$Res> {
+  __$$DisplayGameOverImplCopyWithImpl(
+      _$DisplayGameOverImpl _value, $Res Function(_$DisplayGameOverImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_DisplayGameOver implements _DisplayGameOver {
-  const _$_DisplayGameOver();
+class _$DisplayGameOverImpl implements _DisplayGameOver {
+  const _$DisplayGameOverImpl();
 
   @override
   String toString() {
@@ -565,9 +559,9 @@ class _$_DisplayGameOver implements _DisplayGameOver {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DisplayGameOver);
+        (other.runtimeType == runtimeType && other is _$DisplayGameOverImpl);
   }
 
   @override
@@ -590,13 +584,13 @@ class _$_DisplayGameOver implements _DisplayGameOver {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return displayGameOver?.call();
   }
@@ -636,13 +630,13 @@ class _$_DisplayGameOver implements _DisplayGameOver {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return displayGameOver?.call(this);
   }
@@ -667,32 +661,29 @@ class _$_DisplayGameOver implements _DisplayGameOver {
 }
 
 abstract class _DisplayGameOver implements GameScreenViewState {
-  const factory _DisplayGameOver() = _$_DisplayGameOver;
+  const factory _DisplayGameOver() = _$DisplayGameOverImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayGameWinCopyWith<$Res> {
-  factory _$$_DisplayGameWinCopyWith(
-          _$_DisplayGameWin value, $Res Function(_$_DisplayGameWin) then) =
-      __$$_DisplayGameWinCopyWithImpl<$Res>;
+abstract class _$$DisplayGameWinImplCopyWith<$Res> {
+  factory _$$DisplayGameWinImplCopyWith(_$DisplayGameWinImpl value,
+          $Res Function(_$DisplayGameWinImpl) then) =
+      __$$DisplayGameWinImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DisplayGameWinCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayGameWinCopyWith<$Res> {
-  __$$_DisplayGameWinCopyWithImpl(
-      _$_DisplayGameWin _value, $Res Function(_$_DisplayGameWin) _then)
-      : super(_value, (v) => _then(v as _$_DisplayGameWin));
-
-  @override
-  _$_DisplayGameWin get _value => super._value as _$_DisplayGameWin;
+class __$$DisplayGameWinImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$DisplayGameWinImpl>
+    implements _$$DisplayGameWinImplCopyWith<$Res> {
+  __$$DisplayGameWinImplCopyWithImpl(
+      _$DisplayGameWinImpl _value, $Res Function(_$DisplayGameWinImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_DisplayGameWin implements _DisplayGameWin {
-  const _$_DisplayGameWin();
+class _$DisplayGameWinImpl implements _DisplayGameWin {
+  const _$DisplayGameWinImpl();
 
   @override
   String toString() {
@@ -700,9 +691,9 @@ class _$_DisplayGameWin implements _DisplayGameWin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DisplayGameWin);
+        (other.runtimeType == runtimeType && other is _$DisplayGameWinImpl);
   }
 
   @override
@@ -725,13 +716,13 @@ class _$_DisplayGameWin implements _DisplayGameWin {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return displayGameWin?.call();
   }
@@ -771,13 +762,13 @@ class _$_DisplayGameWin implements _DisplayGameWin {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return displayGameWin?.call(this);
   }
@@ -802,32 +793,29 @@ class _$_DisplayGameWin implements _DisplayGameWin {
 }
 
 abstract class _DisplayGameWin implements GameScreenViewState {
-  const factory _DisplayGameWin() = _$_DisplayGameWin;
+  const factory _DisplayGameWin() = _$DisplayGameWinImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayTutorialViewCopyWith<$Res> {
-  factory _$$_DisplayTutorialViewCopyWith(_$_DisplayTutorialView value,
-          $Res Function(_$_DisplayTutorialView) then) =
-      __$$_DisplayTutorialViewCopyWithImpl<$Res>;
+abstract class _$$DisplayTutorialViewImplCopyWith<$Res> {
+  factory _$$DisplayTutorialViewImplCopyWith(_$DisplayTutorialViewImpl value,
+          $Res Function(_$DisplayTutorialViewImpl) then) =
+      __$$DisplayTutorialViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DisplayTutorialViewCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayTutorialViewCopyWith<$Res> {
-  __$$_DisplayTutorialViewCopyWithImpl(_$_DisplayTutorialView _value,
-      $Res Function(_$_DisplayTutorialView) _then)
-      : super(_value, (v) => _then(v as _$_DisplayTutorialView));
-
-  @override
-  _$_DisplayTutorialView get _value => super._value as _$_DisplayTutorialView;
+class __$$DisplayTutorialViewImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$DisplayTutorialViewImpl>
+    implements _$$DisplayTutorialViewImplCopyWith<$Res> {
+  __$$DisplayTutorialViewImplCopyWithImpl(_$DisplayTutorialViewImpl _value,
+      $Res Function(_$DisplayTutorialViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_DisplayTutorialView implements _DisplayTutorialView {
-  const _$_DisplayTutorialView();
+class _$DisplayTutorialViewImpl implements _DisplayTutorialView {
+  const _$DisplayTutorialViewImpl();
 
   @override
   String toString() {
@@ -835,9 +823,10 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DisplayTutorialView);
+        (other.runtimeType == runtimeType &&
+            other is _$DisplayTutorialViewImpl);
   }
 
   @override
@@ -860,13 +849,13 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return displayTutorialView?.call();
   }
@@ -906,13 +895,13 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return displayTutorialView?.call(this);
   }
@@ -937,32 +926,29 @@ class _$_DisplayTutorialView implements _DisplayTutorialView {
 }
 
 abstract class _DisplayTutorialView implements GameScreenViewState {
-  const factory _DisplayTutorialView() = _$_DisplayTutorialView;
+  const factory _DisplayTutorialView() = _$DisplayTutorialViewImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayRobotViewCopyWith<$Res> {
-  factory _$$_DisplayRobotViewCopyWith(
-          _$_DisplayRobotView value, $Res Function(_$_DisplayRobotView) then) =
-      __$$_DisplayRobotViewCopyWithImpl<$Res>;
+abstract class _$$DisplayRobotViewImplCopyWith<$Res> {
+  factory _$$DisplayRobotViewImplCopyWith(_$DisplayRobotViewImpl value,
+          $Res Function(_$DisplayRobotViewImpl) then) =
+      __$$DisplayRobotViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DisplayRobotViewCopyWithImpl<$Res>
-    extends _$GameScreenViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayRobotViewCopyWith<$Res> {
-  __$$_DisplayRobotViewCopyWithImpl(
-      _$_DisplayRobotView _value, $Res Function(_$_DisplayRobotView) _then)
-      : super(_value, (v) => _then(v as _$_DisplayRobotView));
-
-  @override
-  _$_DisplayRobotView get _value => super._value as _$_DisplayRobotView;
+class __$$DisplayRobotViewImplCopyWithImpl<$Res>
+    extends _$GameScreenViewStateCopyWithImpl<$Res, _$DisplayRobotViewImpl>
+    implements _$$DisplayRobotViewImplCopyWith<$Res> {
+  __$$DisplayRobotViewImplCopyWithImpl(_$DisplayRobotViewImpl _value,
+      $Res Function(_$DisplayRobotViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_DisplayRobotView implements _DisplayRobotView {
-  const _$_DisplayRobotView();
+class _$DisplayRobotViewImpl implements _DisplayRobotView {
+  const _$DisplayRobotViewImpl();
 
   @override
   String toString() {
@@ -970,9 +956,9 @@ class _$_DisplayRobotView implements _DisplayRobotView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DisplayRobotView);
+        (other.runtimeType == runtimeType && other is _$DisplayRobotViewImpl);
   }
 
   @override
@@ -995,13 +981,13 @@ class _$_DisplayRobotView implements _DisplayRobotView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? displayGameView,
-    TResult Function()? displayGameOver,
-    TResult Function()? displayGameWin,
-    TResult Function()? displayTutorialView,
-    TResult Function()? displayRobotView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? displayGameView,
+    TResult? Function()? displayGameOver,
+    TResult? Function()? displayGameWin,
+    TResult? Function()? displayTutorialView,
+    TResult? Function()? displayRobotView,
   }) {
     return displayRobotView?.call();
   }
@@ -1041,13 +1027,13 @@ class _$_DisplayRobotView implements _DisplayRobotView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayGameView value)? displayGameView,
-    TResult Function(_DisplayGameOver value)? displayGameOver,
-    TResult Function(_DisplayGameWin value)? displayGameWin,
-    TResult Function(_DisplayTutorialView value)? displayTutorialView,
-    TResult Function(_DisplayRobotView value)? displayRobotView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayGameView value)? displayGameView,
+    TResult? Function(_DisplayGameOver value)? displayGameOver,
+    TResult? Function(_DisplayGameWin value)? displayGameWin,
+    TResult? Function(_DisplayTutorialView value)? displayTutorialView,
+    TResult? Function(_DisplayRobotView value)? displayRobotView,
   }) {
     return displayRobotView?.call(this);
   }
@@ -1072,5 +1058,5 @@ class _$_DisplayRobotView implements _DisplayRobotView {
 }
 
 abstract class _DisplayRobotView implements GameScreenViewState {
-  const factory _DisplayRobotView() = _$_DisplayRobotView;
+  const factory _DisplayRobotView() = _$DisplayRobotViewImpl;
 }

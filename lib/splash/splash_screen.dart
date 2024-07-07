@@ -1,15 +1,13 @@
 import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:visiongame/difficultylevel/difficulty_level.dart';
-
+import 'package:visiongame/router/app_router.dart';
 import '../base/constants.dart';
-import '../router/app_router.gr.dart';
 
-class SplashScreenPage extends HookWidget {
+@RoutePage()
+class SplashScreen extends HookWidget {
 
   String TAG = "SplashScreen";
 
@@ -18,7 +16,7 @@ class SplashScreenPage extends HookWidget {
     //Start home screen whenever timer is over
     useEffect((){
       Future.delayed(Duration(seconds: ApplicationConstants.kSplashScreenTime), () {
-        context.router.replace(const HomeScreenRoute());
+        context.router.replace(const HomeRoute());
         //context.router.replace(const DifficultyLevelR());
         //context.router.replace(const MainGameRoute());
       });

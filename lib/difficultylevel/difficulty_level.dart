@@ -7,7 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:visiongame/enums/difficulty_level_enum.dart';
 import 'package:visiongame/loading/loading_widget.dart';
 import 'package:visiongame/providers/provider.dart';
-import 'package:visiongame/router/app_router.gr.dart';
+import 'package:visiongame/router/app_router.dart';
 
 import '../base/constants.dart';
 import '../base/logger_utils.dart';
@@ -19,6 +19,7 @@ import '../home/viewmodel/robot_wave_widget.dart';
 import '../injector/injection.dart';
 import 'display_lottie_animation.dart';
 
+@RoutePage()
 class DifficultyLevelScreen extends HookConsumerWidget{
 
   final _logger = locator<LoggerUtils>();

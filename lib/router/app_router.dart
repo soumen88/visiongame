@@ -1,35 +1,32 @@
-
-
 import 'package:auto_route/auto_route.dart';
-import 'package:visiongame/difficultylevel/difficulty_level.dart';
-import 'package:visiongame/splash/splash_screen.dart';
 
+import '../difficultylevel/difficulty_level.dart';
 import '../game/main_game_screen.dart';
 import '../home/home_screen.dart';
+import '../splash/splash_screen.dart';
 
-@MaterialAutoRouter(
-    replaceInRouteName:'Page,Route',
-    routes: [
-      AutoRoute(
-        path: "/splash",
-        initial: true,
-        page: SplashScreenPage,
-      ),
-      AutoRoute(
-        path: "/home",
-        page: HomeScreenPage,
-      ),
-      AutoRoute(
-        path: "/difficultylevel",
-        page: DifficultyLevelScreen,
-      ),
-      AutoRoute(
-        path: "/gameScreen",
-        page: MainGamePage,
-      ),
-    ]
-)
+part 'app_router.gr.dart';
 
-class $AppRouter{
-
+@AutoRouterConfig()
+class AppRouter extends _$AppRouter{
+  @override
+  List<AutoRoute> get routes => [
+    AutoRoute(
+      path: "/splash",
+      initial: true,
+      page: SplashRoute.page,
+    ),
+    AutoRoute(
+      path: "/home",
+      page: HomeRoute.page,
+    ),
+    AutoRoute(
+      path: "/difficultylevel",
+      page: DifficultyLevelRoute.page,
+    ),
+    AutoRoute(
+      path: "/gameScreen",
+      page: MainGameRoute.page,
+    ),
+  ];
 }

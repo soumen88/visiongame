@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'home_screen_view_state.dart';
 
@@ -12,7 +12,7 @@ part of 'home_screen_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$HomeScreenViewState {
@@ -26,10 +26,10 @@ mixin _$HomeScreenViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? permissionDeniedView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,10 +51,10 @@ mixin _$HomeScreenViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_HomeView value)? homeView,
-    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -72,42 +72,44 @@ mixin _$HomeScreenViewState {
 abstract class $HomeScreenViewStateCopyWith<$Res> {
   factory $HomeScreenViewStateCopyWith(
           HomeScreenViewState value, $Res Function(HomeScreenViewState) then) =
-      _$HomeScreenViewStateCopyWithImpl<$Res>;
+      _$HomeScreenViewStateCopyWithImpl<$Res, HomeScreenViewState>;
 }
 
 /// @nodoc
-class _$HomeScreenViewStateCopyWithImpl<$Res>
+class _$HomeScreenViewStateCopyWithImpl<$Res, $Val extends HomeScreenViewState>
     implements $HomeScreenViewStateCopyWith<$Res> {
   _$HomeScreenViewStateCopyWithImpl(this._value, this._then);
 
-  final HomeScreenViewState _value;
   // ignore: unused_field
-  final $Res Function(HomeScreenViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
+  @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$HomeScreenViewStateCopyWithImpl<$Res>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
-      : super(_value, (v) => _then(v as _$_Error));
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_Error get _value => super._value as _$_Error;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errorMessage = freezed,
+    Object? errorMessage = null,
   }) {
-    return _then(_$_Error(
-      errorMessage == freezed
+    return _then(_$ErrorImpl(
+      null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
@@ -117,8 +119,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error implements _Error {
-  const _$_Error(this.errorMessage);
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -129,22 +131,22 @@ class _$_Error implements _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
-            const DeepCollectionEquality()
-                .equals(other.errorMessage, errorMessage));
+            other is _$ErrorImpl &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(errorMessage));
+  int get hashCode => Object.hash(runtimeType, errorMessage);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -160,10 +162,10 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? permissionDeniedView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? permissionDeniedView,
   }) {
     return error?.call(errorMessage);
   }
@@ -197,10 +199,10 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_HomeView value)? homeView,
-    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return error?.call(this);
   }
@@ -222,36 +224,34 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements HomeScreenViewState {
-  const factory _Error(final String errorMessage) = _$_Error;
+  const factory _Error(final String errorMessage) = _$ErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$HomeScreenViewStateCopyWithImpl<$Res>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
-      : super(_value, (v) => _then(v as _$_Loading));
-
-  @override
-  _$_Loading get _value => super._value as _$_Loading;
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading implements _Loading {
-  const _$_Loading();
+class _$LoadingImpl implements _Loading {
+  const _$LoadingImpl();
 
   @override
   String toString() {
@@ -259,9 +259,9 @@ class _$_Loading implements _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -281,10 +281,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? permissionDeniedView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? permissionDeniedView,
   }) {
     return loading?.call();
   }
@@ -318,10 +318,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_HomeView value)? homeView,
-    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return loading?.call(this);
   }
@@ -343,32 +343,29 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements HomeScreenViewState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$_HomeViewCopyWith<$Res> {
-  factory _$$_HomeViewCopyWith(
-          _$_HomeView value, $Res Function(_$_HomeView) then) =
-      __$$_HomeViewCopyWithImpl<$Res>;
+abstract class _$$HomeViewImplCopyWith<$Res> {
+  factory _$$HomeViewImplCopyWith(
+          _$HomeViewImpl value, $Res Function(_$HomeViewImpl) then) =
+      __$$HomeViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_HomeViewCopyWithImpl<$Res>
-    extends _$HomeScreenViewStateCopyWithImpl<$Res>
-    implements _$$_HomeViewCopyWith<$Res> {
-  __$$_HomeViewCopyWithImpl(
-      _$_HomeView _value, $Res Function(_$_HomeView) _then)
-      : super(_value, (v) => _then(v as _$_HomeView));
-
-  @override
-  _$_HomeView get _value => super._value as _$_HomeView;
+class __$$HomeViewImplCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res, _$HomeViewImpl>
+    implements _$$HomeViewImplCopyWith<$Res> {
+  __$$HomeViewImplCopyWithImpl(
+      _$HomeViewImpl _value, $Res Function(_$HomeViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_HomeView implements _HomeView {
-  const _$_HomeView();
+class _$HomeViewImpl implements _HomeView {
+  const _$HomeViewImpl();
 
   @override
   String toString() {
@@ -376,9 +373,9 @@ class _$_HomeView implements _HomeView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_HomeView);
+        (other.runtimeType == runtimeType && other is _$HomeViewImpl);
   }
 
   @override
@@ -398,10 +395,10 @@ class _$_HomeView implements _HomeView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? permissionDeniedView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? permissionDeniedView,
   }) {
     return homeView?.call();
   }
@@ -435,10 +432,10 @@ class _$_HomeView implements _HomeView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_HomeView value)? homeView,
-    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return homeView?.call(this);
   }
@@ -460,32 +457,29 @@ class _$_HomeView implements _HomeView {
 }
 
 abstract class _HomeView implements HomeScreenViewState {
-  const factory _HomeView() = _$_HomeView;
+  const factory _HomeView() = _$HomeViewImpl;
 }
 
 /// @nodoc
-abstract class _$$_PermissionDeniedViewCopyWith<$Res> {
-  factory _$$_PermissionDeniedViewCopyWith(_$_PermissionDeniedView value,
-          $Res Function(_$_PermissionDeniedView) then) =
-      __$$_PermissionDeniedViewCopyWithImpl<$Res>;
+abstract class _$$PermissionDeniedViewImplCopyWith<$Res> {
+  factory _$$PermissionDeniedViewImplCopyWith(_$PermissionDeniedViewImpl value,
+          $Res Function(_$PermissionDeniedViewImpl) then) =
+      __$$PermissionDeniedViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_PermissionDeniedViewCopyWithImpl<$Res>
-    extends _$HomeScreenViewStateCopyWithImpl<$Res>
-    implements _$$_PermissionDeniedViewCopyWith<$Res> {
-  __$$_PermissionDeniedViewCopyWithImpl(_$_PermissionDeniedView _value,
-      $Res Function(_$_PermissionDeniedView) _then)
-      : super(_value, (v) => _then(v as _$_PermissionDeniedView));
-
-  @override
-  _$_PermissionDeniedView get _value => super._value as _$_PermissionDeniedView;
+class __$$PermissionDeniedViewImplCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res, _$PermissionDeniedViewImpl>
+    implements _$$PermissionDeniedViewImplCopyWith<$Res> {
+  __$$PermissionDeniedViewImplCopyWithImpl(_$PermissionDeniedViewImpl _value,
+      $Res Function(_$PermissionDeniedViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_PermissionDeniedView implements _PermissionDeniedView {
-  const _$_PermissionDeniedView();
+class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
+  const _$PermissionDeniedViewImpl();
 
   @override
   String toString() {
@@ -493,9 +487,10 @@ class _$_PermissionDeniedView implements _PermissionDeniedView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_PermissionDeniedView);
+        (other.runtimeType == runtimeType &&
+            other is _$PermissionDeniedViewImpl);
   }
 
   @override
@@ -515,10 +510,10 @@ class _$_PermissionDeniedView implements _PermissionDeniedView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? permissionDeniedView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? permissionDeniedView,
   }) {
     return permissionDeniedView?.call();
   }
@@ -552,10 +547,10 @@ class _$_PermissionDeniedView implements _PermissionDeniedView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_HomeView value)? homeView,
-    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return permissionDeniedView?.call(this);
   }
@@ -577,5 +572,5 @@ class _$_PermissionDeniedView implements _PermissionDeniedView {
 }
 
 abstract class _PermissionDeniedView implements HomeScreenViewState {
-  const factory _PermissionDeniedView() = _$_PermissionDeniedView;
+  const factory _PermissionDeniedView() = _$PermissionDeniedViewImpl;
 }

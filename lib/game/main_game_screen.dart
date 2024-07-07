@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import '../loading/loading_widget.dart';
 import '../providers/provider.dart';
 import 'vision_game.dart';
 
+@RoutePage()
 class MainGamePage extends HookConsumerWidget {
   final _logger = locator<LoggerUtils>();
   final _TAG = "MainGamePage";

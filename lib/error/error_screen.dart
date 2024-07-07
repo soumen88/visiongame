@@ -51,8 +51,7 @@ class ErrorScreen extends HookConsumerWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    primary:Colors.white
+                        borderRadius: BorderRadius.circular(50)), backgroundColor: Colors.white
                 ),
                 onPressed: () async{
 

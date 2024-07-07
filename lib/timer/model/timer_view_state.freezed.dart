@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'timer_view_state.dart';
 
@@ -12,7 +12,7 @@ part of 'timer_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$TimerViewState {
@@ -25,9 +25,9 @@ mixin _$TimerViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function(bool isTimerVisible, int seconds)? displayTime,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function(bool isTimerVisible, int seconds)? displayTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -47,9 +47,9 @@ mixin _$TimerViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayTime value)? displayTime,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayTime value)? displayTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -66,41 +66,44 @@ mixin _$TimerViewState {
 abstract class $TimerViewStateCopyWith<$Res> {
   factory $TimerViewStateCopyWith(
           TimerViewState value, $Res Function(TimerViewState) then) =
-      _$TimerViewStateCopyWithImpl<$Res>;
+      _$TimerViewStateCopyWithImpl<$Res, TimerViewState>;
 }
 
 /// @nodoc
-class _$TimerViewStateCopyWithImpl<$Res>
+class _$TimerViewStateCopyWithImpl<$Res, $Val extends TimerViewState>
     implements $TimerViewStateCopyWith<$Res> {
   _$TimerViewStateCopyWithImpl(this._value, this._then);
 
-  final TimerViewState _value;
   // ignore: unused_field
-  final $Res Function(TimerViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
+  @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res> extends _$TimerViewStateCopyWithImpl<$Res>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
-      : super(_value, (v) => _then(v as _$_Error));
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$TimerViewStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_Error get _value => super._value as _$_Error;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errorMessage = freezed,
+    Object? errorMessage = null,
   }) {
-    return _then(_$_Error(
-      errorMessage == freezed
+    return _then(_$ErrorImpl(
+      null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
@@ -110,8 +113,8 @@ class __$$_ErrorCopyWithImpl<$Res> extends _$TimerViewStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error implements _Error {
-  const _$_Error(this.errorMessage);
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -122,22 +125,22 @@ class _$_Error implements _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
-            const DeepCollectionEquality()
-                .equals(other.errorMessage, errorMessage));
+            other is _$ErrorImpl &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(errorMessage));
+  int get hashCode => Object.hash(runtimeType, errorMessage);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -152,9 +155,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function(bool isTimerVisible, int seconds)? displayTime,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function(bool isTimerVisible, int seconds)? displayTime,
   }) {
     return error?.call(errorMessage);
   }
@@ -186,9 +189,9 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayTime value)? displayTime,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayTime value)? displayTime,
   }) {
     return error?.call(this);
   }
@@ -209,35 +212,34 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements TimerViewState {
-  const factory _Error(final String errorMessage) = _$_Error;
+  const factory _Error(final String errorMessage) = _$ErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res> extends _$TimerViewStateCopyWithImpl<$Res>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
-      : super(_value, (v) => _then(v as _$_Loading));
-
-  @override
-  _$_Loading get _value => super._value as _$_Loading;
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$TimerViewStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading implements _Loading {
-  const _$_Loading();
+class _$LoadingImpl implements _Loading {
+  const _$LoadingImpl();
 
   @override
   String toString() {
@@ -245,9 +247,9 @@ class _$_Loading implements _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -266,9 +268,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function(bool isTimerVisible, int seconds)? displayTime,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function(bool isTimerVisible, int seconds)? displayTime,
   }) {
     return loading?.call();
   }
@@ -300,9 +302,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayTime value)? displayTime,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayTime value)? displayTime,
   }) {
     return loading?.call(this);
   }
@@ -323,39 +325,38 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements TimerViewState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$_DisplayTimeCopyWith<$Res> {
-  factory _$$_DisplayTimeCopyWith(
-          _$_DisplayTime value, $Res Function(_$_DisplayTime) then) =
-      __$$_DisplayTimeCopyWithImpl<$Res>;
+abstract class _$$DisplayTimeImplCopyWith<$Res> {
+  factory _$$DisplayTimeImplCopyWith(
+          _$DisplayTimeImpl value, $Res Function(_$DisplayTimeImpl) then) =
+      __$$DisplayTimeImplCopyWithImpl<$Res>;
+  @useResult
   $Res call({bool isTimerVisible, int seconds});
 }
 
 /// @nodoc
-class __$$_DisplayTimeCopyWithImpl<$Res>
-    extends _$TimerViewStateCopyWithImpl<$Res>
-    implements _$$_DisplayTimeCopyWith<$Res> {
-  __$$_DisplayTimeCopyWithImpl(
-      _$_DisplayTime _value, $Res Function(_$_DisplayTime) _then)
-      : super(_value, (v) => _then(v as _$_DisplayTime));
+class __$$DisplayTimeImplCopyWithImpl<$Res>
+    extends _$TimerViewStateCopyWithImpl<$Res, _$DisplayTimeImpl>
+    implements _$$DisplayTimeImplCopyWith<$Res> {
+  __$$DisplayTimeImplCopyWithImpl(
+      _$DisplayTimeImpl _value, $Res Function(_$DisplayTimeImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_DisplayTime get _value => super._value as _$_DisplayTime;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isTimerVisible = freezed,
-    Object? seconds = freezed,
+    Object? isTimerVisible = null,
+    Object? seconds = null,
   }) {
-    return _then(_$_DisplayTime(
-      isTimerVisible == freezed
+    return _then(_$DisplayTimeImpl(
+      null == isTimerVisible
           ? _value.isTimerVisible
           : isTimerVisible // ignore: cast_nullable_to_non_nullable
               as bool,
-      seconds == freezed
+      null == seconds
           ? _value.seconds
           : seconds // ignore: cast_nullable_to_non_nullable
               as int,
@@ -365,8 +366,8 @@ class __$$_DisplayTimeCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_DisplayTime implements _DisplayTime {
-  const _$_DisplayTime(this.isTimerVisible, this.seconds);
+class _$DisplayTimeImpl implements _DisplayTime {
+  const _$DisplayTimeImpl(this.isTimerVisible, this.seconds);
 
   @override
   final bool isTimerVisible;
@@ -379,25 +380,23 @@ class _$_DisplayTime implements _DisplayTime {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DisplayTime &&
-            const DeepCollectionEquality()
-                .equals(other.isTimerVisible, isTimerVisible) &&
-            const DeepCollectionEquality().equals(other.seconds, seconds));
+            other is _$DisplayTimeImpl &&
+            (identical(other.isTimerVisible, isTimerVisible) ||
+                other.isTimerVisible == isTimerVisible) &&
+            (identical(other.seconds, seconds) || other.seconds == seconds));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(isTimerVisible),
-      const DeepCollectionEquality().hash(seconds));
+  int get hashCode => Object.hash(runtimeType, isTimerVisible, seconds);
 
   @JsonKey(ignore: true)
   @override
-  _$$_DisplayTimeCopyWith<_$_DisplayTime> get copyWith =>
-      __$$_DisplayTimeCopyWithImpl<_$_DisplayTime>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$DisplayTimeImplCopyWith<_$DisplayTimeImpl> get copyWith =>
+      __$$DisplayTimeImplCopyWithImpl<_$DisplayTimeImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -412,9 +411,9 @@ class _$_DisplayTime implements _DisplayTime {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function(bool isTimerVisible, int seconds)? displayTime,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function(bool isTimerVisible, int seconds)? displayTime,
   }) {
     return displayTime?.call(isTimerVisible, seconds);
   }
@@ -446,9 +445,9 @@ class _$_DisplayTime implements _DisplayTime {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_DisplayTime value)? displayTime,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_DisplayTime value)? displayTime,
   }) {
     return displayTime?.call(this);
   }
@@ -470,11 +469,11 @@ class _$_DisplayTime implements _DisplayTime {
 
 abstract class _DisplayTime implements TimerViewState {
   const factory _DisplayTime(final bool isTimerVisible, final int seconds) =
-      _$_DisplayTime;
+      _$DisplayTimeImpl;
 
   bool get isTimerVisible;
   int get seconds;
   @JsonKey(ignore: true)
-  _$$_DisplayTimeCopyWith<_$_DisplayTime> get copyWith =>
+  _$$DisplayTimeImplCopyWith<_$DisplayTimeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

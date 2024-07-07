@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'difficulty_level_view_state.dart';
 
@@ -12,7 +12,7 @@ part of 'difficulty_level_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$DifficultyLevelViewState {
@@ -26,10 +26,10 @@ mixin _$DifficultyLevelViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? startGameView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,10 +51,10 @@ mixin _$DifficultyLevelViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_LevelView value)? homeView,
-    TResult Function(_StartGameView value)? startGameView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_LevelView value)? homeView,
+    TResult? Function(_StartGameView value)? startGameView,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -72,42 +72,45 @@ mixin _$DifficultyLevelViewState {
 abstract class $DifficultyLevelViewStateCopyWith<$Res> {
   factory $DifficultyLevelViewStateCopyWith(DifficultyLevelViewState value,
           $Res Function(DifficultyLevelViewState) then) =
-      _$DifficultyLevelViewStateCopyWithImpl<$Res>;
+      _$DifficultyLevelViewStateCopyWithImpl<$Res, DifficultyLevelViewState>;
 }
 
 /// @nodoc
-class _$DifficultyLevelViewStateCopyWithImpl<$Res>
+class _$DifficultyLevelViewStateCopyWithImpl<$Res,
+        $Val extends DifficultyLevelViewState>
     implements $DifficultyLevelViewStateCopyWith<$Res> {
   _$DifficultyLevelViewStateCopyWithImpl(this._value, this._then);
 
-  final DifficultyLevelViewState _value;
   // ignore: unused_field
-  final $Res Function(DifficultyLevelViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
+  @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$DifficultyLevelViewStateCopyWithImpl<$Res>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
-      : super(_value, (v) => _then(v as _$_Error));
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$DifficultyLevelViewStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_Error get _value => super._value as _$_Error;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errorMessage = freezed,
+    Object? errorMessage = null,
   }) {
-    return _then(_$_Error(
-      errorMessage == freezed
+    return _then(_$ErrorImpl(
+      null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
@@ -117,8 +120,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error implements _Error {
-  const _$_Error(this.errorMessage);
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.errorMessage);
 
   @override
   final String errorMessage;
@@ -129,22 +132,22 @@ class _$_Error implements _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
-            const DeepCollectionEquality()
-                .equals(other.errorMessage, errorMessage));
+            other is _$ErrorImpl &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(errorMessage));
+  int get hashCode => Object.hash(runtimeType, errorMessage);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -160,10 +163,10 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? startGameView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? startGameView,
   }) {
     return error?.call(errorMessage);
   }
@@ -197,10 +200,10 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_LevelView value)? homeView,
-    TResult Function(_StartGameView value)? startGameView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_LevelView value)? homeView,
+    TResult? Function(_StartGameView value)? startGameView,
   }) {
     return error?.call(this);
   }
@@ -222,36 +225,34 @@ class _$_Error implements _Error {
 }
 
 abstract class _Error implements DifficultyLevelViewState {
-  const factory _Error(final String errorMessage) = _$_Error;
+  const factory _Error(final String errorMessage) = _$ErrorImpl;
 
   String get errorMessage;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$DifficultyLevelViewStateCopyWithImpl<$Res>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
-      : super(_value, (v) => _then(v as _$_Loading));
-
-  @override
-  _$_Loading get _value => super._value as _$_Loading;
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$DifficultyLevelViewStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading implements _Loading {
-  const _$_Loading();
+class _$LoadingImpl implements _Loading {
+  const _$LoadingImpl();
 
   @override
   String toString() {
@@ -259,9 +260,9 @@ class _$_Loading implements _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -281,10 +282,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? startGameView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? startGameView,
   }) {
     return loading?.call();
   }
@@ -318,10 +319,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_LevelView value)? homeView,
-    TResult Function(_StartGameView value)? startGameView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_LevelView value)? homeView,
+    TResult? Function(_StartGameView value)? startGameView,
   }) {
     return loading?.call(this);
   }
@@ -343,32 +344,29 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements DifficultyLevelViewState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$_LevelViewCopyWith<$Res> {
-  factory _$$_LevelViewCopyWith(
-          _$_LevelView value, $Res Function(_$_LevelView) then) =
-      __$$_LevelViewCopyWithImpl<$Res>;
+abstract class _$$LevelViewImplCopyWith<$Res> {
+  factory _$$LevelViewImplCopyWith(
+          _$LevelViewImpl value, $Res Function(_$LevelViewImpl) then) =
+      __$$LevelViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LevelViewCopyWithImpl<$Res>
-    extends _$DifficultyLevelViewStateCopyWithImpl<$Res>
-    implements _$$_LevelViewCopyWith<$Res> {
-  __$$_LevelViewCopyWithImpl(
-      _$_LevelView _value, $Res Function(_$_LevelView) _then)
-      : super(_value, (v) => _then(v as _$_LevelView));
-
-  @override
-  _$_LevelView get _value => super._value as _$_LevelView;
+class __$$LevelViewImplCopyWithImpl<$Res>
+    extends _$DifficultyLevelViewStateCopyWithImpl<$Res, _$LevelViewImpl>
+    implements _$$LevelViewImplCopyWith<$Res> {
+  __$$LevelViewImplCopyWithImpl(
+      _$LevelViewImpl _value, $Res Function(_$LevelViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_LevelView implements _LevelView {
-  const _$_LevelView();
+class _$LevelViewImpl implements _LevelView {
+  const _$LevelViewImpl();
 
   @override
   String toString() {
@@ -376,9 +374,9 @@ class _$_LevelView implements _LevelView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_LevelView);
+        (other.runtimeType == runtimeType && other is _$LevelViewImpl);
   }
 
   @override
@@ -398,10 +396,10 @@ class _$_LevelView implements _LevelView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? startGameView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? startGameView,
   }) {
     return homeView?.call();
   }
@@ -435,10 +433,10 @@ class _$_LevelView implements _LevelView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_LevelView value)? homeView,
-    TResult Function(_StartGameView value)? startGameView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_LevelView value)? homeView,
+    TResult? Function(_StartGameView value)? startGameView,
   }) {
     return homeView?.call(this);
   }
@@ -460,32 +458,29 @@ class _$_LevelView implements _LevelView {
 }
 
 abstract class _LevelView implements DifficultyLevelViewState {
-  const factory _LevelView() = _$_LevelView;
+  const factory _LevelView() = _$LevelViewImpl;
 }
 
 /// @nodoc
-abstract class _$$_StartGameViewCopyWith<$Res> {
-  factory _$$_StartGameViewCopyWith(
-          _$_StartGameView value, $Res Function(_$_StartGameView) then) =
-      __$$_StartGameViewCopyWithImpl<$Res>;
+abstract class _$$StartGameViewImplCopyWith<$Res> {
+  factory _$$StartGameViewImplCopyWith(
+          _$StartGameViewImpl value, $Res Function(_$StartGameViewImpl) then) =
+      __$$StartGameViewImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_StartGameViewCopyWithImpl<$Res>
-    extends _$DifficultyLevelViewStateCopyWithImpl<$Res>
-    implements _$$_StartGameViewCopyWith<$Res> {
-  __$$_StartGameViewCopyWithImpl(
-      _$_StartGameView _value, $Res Function(_$_StartGameView) _then)
-      : super(_value, (v) => _then(v as _$_StartGameView));
-
-  @override
-  _$_StartGameView get _value => super._value as _$_StartGameView;
+class __$$StartGameViewImplCopyWithImpl<$Res>
+    extends _$DifficultyLevelViewStateCopyWithImpl<$Res, _$StartGameViewImpl>
+    implements _$$StartGameViewImplCopyWith<$Res> {
+  __$$StartGameViewImplCopyWithImpl(
+      _$StartGameViewImpl _value, $Res Function(_$StartGameViewImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_StartGameView implements _StartGameView {
-  const _$_StartGameView();
+class _$StartGameViewImpl implements _StartGameView {
+  const _$StartGameViewImpl();
 
   @override
   String toString() {
@@ -493,9 +488,9 @@ class _$_StartGameView implements _StartGameView {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_StartGameView);
+        (other.runtimeType == runtimeType && other is _$StartGameViewImpl);
   }
 
   @override
@@ -515,10 +510,10 @@ class _$_StartGameView implements _StartGameView {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String errorMessage)? error,
-    TResult Function()? loading,
-    TResult Function()? homeView,
-    TResult Function()? startGameView,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? startGameView,
   }) {
     return startGameView?.call();
   }
@@ -552,10 +547,10 @@ class _$_StartGameView implements _StartGameView {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Error value)? error,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_LevelView value)? homeView,
-    TResult Function(_StartGameView value)? startGameView,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_LevelView value)? homeView,
+    TResult? Function(_StartGameView value)? startGameView,
   }) {
     return startGameView?.call(this);
   }
@@ -577,5 +572,5 @@ class _$_StartGameView implements _StartGameView {
 }
 
 abstract class _StartGameView implements DifficultyLevelViewState {
-  const factory _StartGameView() = _$_StartGameView;
+  const factory _StartGameView() = _$StartGameViewImpl;
 }

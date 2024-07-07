@@ -12,6 +12,7 @@ import 'package:visiongame/error/error_screen.dart';
 import 'package:visiongame/home/start_listening_widget.dart';
 import 'package:visiongame/home/viewmodel/robot_wave_widget.dart';
 import 'package:visiongame/injector/injection.dart';
+import 'package:visiongame/router/app_router.dart';
 import 'package:visiongame/timer/timer_container.dart';
 
 import '../audioplayer/game_audio_player.dart';
@@ -19,11 +20,11 @@ import '../base/constants.dart';
 import '../base/logger_utils.dart';
 import '../loading/loading_widget.dart';
 import '../providers/provider.dart';
-import '../router/app_router.gr.dart';
 import '../texttospeech/vision_text_to_speech_converter.dart';
 import '../voiceinput/vision_speech_input.dart';
 
-class HomeScreenPage extends HookConsumerWidget{
+@RoutePage()
+class HomeScreen extends HookConsumerWidget{
 
   final _logger = locator<LoggerUtils>();
   final _TAG = "HomeScreenPage";
@@ -72,7 +73,7 @@ class HomeScreenPage extends HookConsumerWidget{
     if(startNextScreen.data != null && startNextScreen.data == ApplicationConstants.ScreenDifficulty){
       _logger.log(_TAG, "Start next screen now");
       //context.router.navigate(const DifficultyLevelScreen());
-      context.router.replace(const DifficultyLevelScreen());
+      context.router.replace(const DifficultyLevelRoute());
     }
 
 
