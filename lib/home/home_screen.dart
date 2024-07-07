@@ -50,7 +50,6 @@ class HomeScreenPage extends HookConsumerWidget{
           homeScreenNotifier.init();
           isEnabled = true;
         });
-
       }
       return null;
     }, [appLifecycleState]);
