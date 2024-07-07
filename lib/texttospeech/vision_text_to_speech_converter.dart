@@ -14,24 +14,24 @@ class VisionTextToSpeechConverter{
   bool isStop = false;
 
   Future<void> setUpTTs() async{
-    _textToSpeechConverter = FlutterTts();
+    await _textToSpeechConverter.setLanguage("en-US");
+    await _textToSpeechConverter.setSpeechRate(0.5);
     await _textToSpeechConverter.setVolume(1.0);
+    await _textToSpeechConverter.setPitch(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
-    bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
+    /*bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
     _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
     if(isLanguageAvailable){
       await _textToSpeechConverter.setLanguage('hi-IN');
       await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
-    }
-    await _textToSpeechConverter.setSpeechRate(0.4);
-    //await _textToSpeechConverter.setQueueMode(2);
+    }*/
   }
 
   ///When the result from speak is 1 then it indicates that current speak part is complete
   ///Hence we are sending true only once the sentence is finished
   Future<bool> speakText(String inputText) async{
     _logger.log(_TAG, "Inside speak text $inputText and $isStop");
-    /*if(isStop == false){
+    if(isStop == false){
       var result = await _textToSpeechConverter.speak(inputText);
       if(result == 1){
         return Future.value(true);
@@ -42,8 +42,7 @@ class VisionTextToSpeechConverter{
     }
     else{
       return Future.value(false);
-    }*/
-    return Future.value(false);
+    }
   }
 
   void enableSpeaking(){
