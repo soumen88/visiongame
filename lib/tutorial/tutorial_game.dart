@@ -82,7 +82,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
         int randomX = next(50, 400);
         int randomY = next(50, 400);
         _logger.log(_TAG, "Dragon position ${_dragon.position}");
-        _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        //_ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
         TutorialStepEnums? currentStep = _gameTriggers.stepCounter.value;
         if (currentStep == TutorialStepEnums.SPAWN_COIN) {
           await speakMovement(ghostPositionModel, _ghostPlayer.position);
@@ -114,7 +114,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
             int randomY = next(50, 500);
             Future.delayed(Duration.zero, () async{
               await add(_ghostPlayer);
-              _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+              //_ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
             });
             _gameTriggers.addStepCounter(TutorialStepEnums.START_COIN_INTRODUCTION);
           }
@@ -137,8 +137,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     _player.position = _world.size / 1.5;
     addWorldCollision();
 
-    camera.followComponent(_player,
-        worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
+    //camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
 
   }
 

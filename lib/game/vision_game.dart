@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -55,6 +56,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   ///If below variable is true then player cannot move
   bool isPlayerMovementLocked = false;
+
+  late CameraComponent startCamera;
 
   VisionGame({required this.screenWidth, required this.screenHeight}){
     listenPlayerDead();
@@ -207,7 +210,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
      if(ninjaPositionModel != null && running){
        int randomX = next(50, 400);
        int randomY = next(50, 400);
-       _ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+       //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
        if(isVoiceEnabled){
          await speakMovement(ninjaPositionModel, _ninjaGirl.position);
        }
@@ -242,7 +245,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           //_ghostPlayer.position = _world.size / 1.6;
           int randomX = next(50, 400);
           int randomY = next(50, 400);
-          _ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          //_ghostPlayer.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
           _ghostPlayer.spawnGhost();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.MEDIUM){
@@ -256,7 +259,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await add(_dragon);
-          _dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+          //_dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
           _dragon.spawnDragon();
         }
         else if(currentDifficultyLevel == DifficultyLevelEnums.HARD){
@@ -273,7 +276,8 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           await _visionTts.speakText("You have moved to Level Hard. Enemy changes to $enemyName");
           await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
           await add(_ninjaGirl);
-          _ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+
+          //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
           _ninjaGirl.spawnNinjaGirl();
         }
       }
@@ -292,7 +296,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     await add(_ghostPlayer);
     _gameTriggers.setDifficultyLevel(DifficultyLevelEnums.EASY);
     //_visionTts.setUpTtsListeners();
-    camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
+    startCamera = CameraComponent(world: world);
+    startCamera.follow(_player);
+    //camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
   }
 
   onArrowKeyChanged(Direction direction){
