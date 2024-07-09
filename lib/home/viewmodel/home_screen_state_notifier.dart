@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
@@ -7,6 +8,7 @@ import 'package:visiongame/enums/speech_input_enums.dart';
 import 'package:visiongame/injector/injection.dart';
 
 import '../../base/logger_utils.dart';
+import '../../generated/locale_keys.g.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../../voiceinput/vision_speech_input.dart';
 import '../model/home_screen_view_state.dart';
@@ -53,18 +55,13 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   void startIntroduction() async{
+    _logger.log(_TAG, "After translation ${LocaleKeys.home_intro_line_one.tr()}");
     visionTts.enableSpeaking();
-    String lineOne = "Hello I am Amaze Robot.";
+    String lineOne = LocaleKeys.home_intro_line_one.tr();
     await visionTts.speakText(lineOne);
-    String lineTwo = "I would be assisting you to play this Amazing game.";
+    String lineTwo = LocaleKeys.home_intro_line_two.tr();
     await visionTts.speakText(lineTwo);
-    String lineThree;
-    if(isSpeechInputEnabled){
-      lineThree = "To Continue playing, Please speak ready or double tap any where on the screen";
-    }
-    else{
-      lineThree = "To Continue playing, double tap any where on the screen";
-    }
+    String lineThree = LocaleKeys.home_intro_line_three.tr();
     await visionTts.speakText(lineThree);
     reloadBottomSheet(true);
   }

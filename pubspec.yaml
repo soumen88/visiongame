@@ -82,6 +82,9 @@ dependencies:
   #Creating immutable data classes
   freezed: ^2.5.2
 
+  #Adding multiple language support
+  easy_localization: ^3.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -119,6 +122,7 @@ flutter:
     - assets/images/
     - assets/animation/
     - assets/audio/
+    - assets/lang/
     - assets/rayworld_collision_map.json
   # To add assets to your application, add an assets section, like this:
   # assets:

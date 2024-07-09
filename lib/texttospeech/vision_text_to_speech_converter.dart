@@ -19,12 +19,13 @@ class VisionTextToSpeechConverter{
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.setPitch(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
-    /*bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
+
+    bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
     _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
     if(isLanguageAvailable){
       await _textToSpeechConverter.setLanguage('hi-IN');
       await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
-    }*/
+    }
   }
 
   ///When the result from speak is 1 then it indicates that current speak part is complete
