@@ -1,7 +1,24 @@
 {
   "home": {
-    "intro_line_one": "Hello I am Sahaaya Robot.",
+    "intro_line_one": "Hello I am {appName} Robot.",
     "intro_line_two": "I would be assisting you to play this Amazing game.",
     "intro_line_three": "To Continue playing, double tap any where on the screen"
+  },
+  "difficulty_level" : {
+    "ask_for_difficulty_level_line_one" : "Nice!",
+    "ask_for_difficulty_level_line_two" : "Now we move to our next part.",
+    "ask_for_difficulty_level_line_three" : "Swipe left to understand this game with the help of a tutorial",
+    "ask_for_difficulty_level_line_four" : "This tutorial is recommended for first time users.",
+    "ask_for_difficulty_level_line_five" : "You can Swipe right to begin a fresh game",
+    "read_game_instructions_line_one" : "Now {appName} would let you know about instructions for playing this game.",
+    "read_game_instructions_line_two" : "Our Hero {playerName}, has been trapped.",
+    "read_game_instructions_line_three" : "And to get out of this trap {playerName} has to collect coins.",
+    "read_game_instructions_line_four" : "Well, this is not easy as {playerName} would be meeting a Ghost.",
+    "read_game_instructions_line_five" : "You have to save {playerName} by collecting {kLevelEasyCompletionCoins} coins.",
+    "read_game_instructions_line_six" : "You can move {playerName} by Swiping left, right, up and down in order to collect coins.",
+    "read_game_instructions_line_seven" : "Do your best to Save {playerName}'s life from Angry Monsters."
+  },
+  "game" : {
+    "begin" : ""
   }
 }

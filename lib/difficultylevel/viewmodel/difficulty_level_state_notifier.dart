@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/difficultylevel/model/difficulty_level_view_state.dart';
+import 'package:visiongame/generated/locale_keys.g.dart';
 import 'package:visiongame/injector/injection.dart';
 
 import '../../base/constants.dart';
@@ -42,15 +44,15 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     state = const DifficultyLevelViewState.homeView();
     //await visionTts.speakStop();
     visionTts.enableSpeaking();
-    String lineOne = "Nice!";
+    String lineOne = LocaleKeys.difficulty_level_ask_for_difficulty_level_line_one.tr();
     bool isSpeakComplete1 = await visionTts.speakText(lineOne);
-    String lineTwo = "Now we move to our next part.";
+    String lineTwo = LocaleKeys.difficulty_level_ask_for_difficulty_level_line_two.tr();
     bool isSpeakComplete2 = await visionTts.speakText(lineTwo);
-    String lineThree = "Swipe left to understand this game with the help of a tutorial";
+    String lineThree = LocaleKeys.difficulty_level_ask_for_difficulty_level_line_three.tr();
     bool isSpeakComplete3 = await visionTts.speakText(lineThree);
-    String lineFour = "This tutorial is recommended for first time users.";
+    String lineFour = LocaleKeys.difficulty_level_ask_for_difficulty_level_line_four.tr();
     bool isSpeakComplete4 = await visionTts.speakText(lineFour);
-    String lineFive = "You can Swipe right to begin a fresh game";
+    String lineFive = LocaleKeys.difficulty_level_ask_for_difficulty_level_line_five.tr();
     bool isSpeakComplete5 = await visionTts.speakText(lineFive);
     //if( isSpeakComplete1 && isSpeakComplete2){
     if( isSpeakComplete1 && isSpeakComplete2 && isSpeakComplete3 && isSpeakComplete4 && isSpeakComplete5){
@@ -78,19 +80,33 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     isReadingTutorial = true;
     //await visionTts.speakStop();
     visionTts.enableSpeaking();
-    String lineOne = "Now Amaze would let you know about instructions for playing this game.";
+    String lineOne = LocaleKeys.difficulty_level_read_game_instructions_line_one.tr(namedArgs: {
+      'appName' : ApplicationConstants.APP_NAME
+    });
     bool isLineOneComplete = await visionTts.speakText(lineOne);
-    String lineTwo = "Our Hero ${ApplicationConstants.PlayerName}, has been trapped.";
+    String lineTwo = LocaleKeys.difficulty_level_read_game_instructions_line_two.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineTwoComplete = await visionTts.speakText(lineTwo);
-    String lineThree = "And to get out of this trap ${ApplicationConstants.PlayerName} has to collect coins.";
+    String lineThree = LocaleKeys.difficulty_level_read_game_instructions_line_three.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineThreeComplete = await visionTts.speakText(lineThree);
-    String lineFour = "Well, this is not easy as ${ApplicationConstants.PlayerName} would be meeting a Ghost.";
+    String lineFour = LocaleKeys.difficulty_level_read_game_instructions_line_four.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineFourComplete = await visionTts.speakText(lineFour);
-    String lineFive = "You have to save ${ApplicationConstants.PlayerName} by collecting ${ApplicationConstants.kLevelEasyCompletionCoins} coins.";
+    String lineFive = LocaleKeys.difficulty_level_read_game_instructions_line_five.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineFiveComplete = await visionTts.speakText(lineFive);
-    String lineSix = "You can move ${ApplicationConstants.PlayerName} by Swiping left, right, up and down in order to collect coins.";
+    String lineSix = LocaleKeys.difficulty_level_read_game_instructions_line_six.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineSixComplete = await visionTts.speakText(lineSix);
-    String lineSeven = "Do your best to Save ${ApplicationConstants.PlayerName}'s life from Angry Monsters.";
+    String lineSeven = LocaleKeys.difficulty_level_read_game_instructions_line_seven.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineSevenComplete = await visionTts.speakText(lineSeven);
     /*String lineEight = "Swipe Right to Continue or swipe left to read the instructions again.";
     bool isLineEightComplete = await visionTts.speakText(lineEight);*/

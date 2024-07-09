@@ -1,7 +1,21 @@
 {
   "home": {
     "intro_line_one": "नमस्ते, मैं सहाया रोबोट हूं।",
-    "intro_line_two": "मैं इस अद्भुत गेम को खेलने में आपकी सहायता करूंगी।",
+    "intro_line_two": "मैं इस असाधारण गेम को खेलने में आपकी सहायता करूंगी।",
     "intro_line_three": "इस ऐप को चलाना जारी रखने के लिए स्क्रीन पर किसी भी स्थान पर दो बार टैप करें"
+  },
+  "difficulty_level" : {
+    "ask_for_difficulty_level_line_one" : "ठीक है!",
+    "ask_for_difficulty_level_line_two" : "अब हम अपने अगले भाग की ओर बढ़ते हैं।",
+    "ask_for_difficulty_level_line_three" : "ट्यूटोरियल की मदद से इस गेम को समझने के लिए बाएं स्वाइप करें",
+    "ask_for_difficulty_level_line_four" : "यह ट्यूटोरियल पहली बार उपयोग करने वालों के लिए अनुशंसित है।",
+    "ask_for_difficulty_level_line_five" : "आप नया गेम शुरू करने के लिए दाईं ओर स्वाइप कर सकते हैं।",
+    "read_game_instructions_line_one" : "अब {appName} आपको इस गेम को खेलने के निर्देशों के बारे में बताएगा।",
+    "read_game_instructions_line_two" : "हमारा हीरो {खिलाड़ीनाम}, फंस गया है।",
+    "read_game_instructions_line_three" : "और इस जाल से बाहर निकलने के लिए {playerName} को सिक्के इकट्ठा करने होंगे।",
+    "read_game_instructions_line_four" : "यह आसान नहीं है क्योंकि {playerName} को एक बदमाश से मिलना होगा।",
+    "read_game_instructions_line_five" : "आपको {kLevelEasyCompletionCoins} सिक्के इकट्ठा करके {playerName} को बचाना होगा।",
+    "read_game_instructions_line_six" : "सिक्के इकट्ठा करने के लिए आप बाएँ, दाएँ, ऊपर और नीचे स्वाइप करके {playerName} को स्थानांतरित कर सकते हैं।",
+    "read_game_instructions_line_seven" : "एकाधिक बदमाश से {playerName} की जान बचाने की पूरी कोशिश करें।"
   }
 }

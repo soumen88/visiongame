@@ -22,9 +22,12 @@ class VisionTextToSpeechConverter{
 
     bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
     _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
+    var listOfdata = await _textToSpeechConverter.getVoices;
+    _logger.log(_TAG, "Voices $listOfdata");
     if(isLanguageAvailable){
       await _textToSpeechConverter.setLanguage('hi-IN');
-      await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
+      //await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
+      await _textToSpeechConverter.setVoice({"name": "hi-IN-default", "locale": "hin-default"});
     }
   }
 

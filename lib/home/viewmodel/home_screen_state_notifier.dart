@@ -55,9 +55,15 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   void startIntroduction() async{
-    _logger.log(_TAG, "After translation ${LocaleKeys.home_intro_line_one.tr()}");
+
     visionTts.enableSpeaking();
-    String lineOne = LocaleKeys.home_intro_line_one.tr();
+    /*String lineOne = LocaleKeys.home_intro_line_one.tr(namedArgs: {
+      'appName' : ApplicationConstants.APP_NAME
+    });*/
+    String lineOne = LocaleKeys.difficulty_level_read_game_instructions_line_five.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName,
+      'kLevelEasyCompletionCoins' : ApplicationConstants.kLevelEasyCompletionCoins.toString(),
+    });
     await visionTts.speakText(lineOne);
     String lineTwo = LocaleKeys.home_intro_line_two.tr();
     await visionTts.speakText(lineTwo);
