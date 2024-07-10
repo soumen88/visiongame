@@ -46,12 +46,15 @@ class HomeScreen extends HookConsumerWidget{
 
     final appLifecycleState = useAppLifecycleState();
 
-    Future<void> chooseEnglish() async{
+    Future<void> chooseEnglish({bool dontSpeak = false}) async{
       LanguageListItemModel english = LanguageManager.instance.getEnglishLang();
       languageChangeNotifier.saveLocale(english);
       await context.setLocale(english.locale);
-      String lineTwo = LocaleKeys.home_choose_lang_line_one.tr();
       await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.enLocale);
+      if(dontSpeak){
+        return;
+      }
+      String lineTwo = LocaleKeys.home_choose_lang_line_one.tr();
       await visionTts.speakText(lineTwo);
     }
 
@@ -135,19 +138,7 @@ class HomeScreen extends HookConsumerWidget{
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  /*Container(
-                    margin: EdgeInsets.all(50),
-                    child: ElevatedButton(onPressed: () async{
-                      if(isEnabled != null && isEnabled!){
-                        isEnabled = false;
-                        bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();
-                        if(hasStoppedSpeaking){
-                          homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
-                        }
-                      }
 
-                    }, child: Text("Test")),
-                  ),*/
                   RobotWaveWidget()
                 ],
               )
@@ -174,9 +165,55 @@ class HomeScreen extends HookConsumerWidget{
                 onSwipeDown: (Offset offset) async{
                   ///When English language is selected then its a swipe down
                   _logger.log(_TAG, "Swipe down done");
+                  await chooseEnglish(dontSpeak: true);
                   await homeScreenNotifier.setAppLanguage(LanguageManager.instance.enLocale);
                 },
-                child: RobotWaveWidget(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Continue in Hindi",
+                            style: TextStyle(
+                                fontSize: 30
+                            ),
+                          ),
+                          Lottie.asset(
+                              'assets/animation/swipe_up.json',
+                              height: 200
+                          ),
+                        ],
+                      )
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: RobotWaveWidget(),
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            Lottie.asset(
+                                'assets/animation/swipe_down.json',
+                                height: 200
+                            ),
+                            Text(
+                                "Continue in English",
+                                style: TextStyle(
+                                  fontSize: 30
+                                ),
+                            ),
+                          ],
+                        ),
+                    )
+                  ],
+                )
+
               ),
             ),
           );

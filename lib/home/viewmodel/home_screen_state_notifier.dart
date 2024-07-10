@@ -64,6 +64,7 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
   }
 
   Future<void> setAppLanguage(Locale locale) async{
+    state = const HomeScreenViewState.homeView();
     await startIntroduction();
   }
 
