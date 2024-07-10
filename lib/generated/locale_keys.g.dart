@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const home_choose_lang_line_one = 'home.choose_lang_line_one';
   static const home_intro_line_one = 'home.intro_line_one';
   static const home_intro_line_two = 'home.intro_line_two';
   static const home_intro_line_three = 'home.intro_line_three';
@@ -18,5 +19,7 @@ abstract class  LocaleKeys {
   static const difficulty_level_read_game_instructions_line_six = 'difficulty_level.read_game_instructions_line_six';
   static const difficulty_level_read_game_instructions_line_seven = 'difficulty_level.read_game_instructions_line_seven';
   static const difficulty_level = 'difficulty_level';
+  static const game_begin = 'game.begin';
+  static const game = 'game';
 
 }

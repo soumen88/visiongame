@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:visiongame/appmodels/language_list_item_model.dart';
+import 'package:visiongame/base/language_manager.dart';
 import 'package:visiongame/injector/injection.dart';
 
 import '../base/logger_utils.dart';
@@ -13,21 +16,36 @@ class VisionTextToSpeechConverter{
   BehaviorSubject<bool?> speechEventNotifier = BehaviorSubject.seeded(null);
   bool isStop = false;
 
-  Future<void> setUpTTs() async{
-    await _textToSpeechConverter.setLanguage("en-US");
+  Future<void> setUpTTs({Locale? setupLanguage}) async{
+    var listOfdata = await _textToSpeechConverter.getVoices;
+    _logger.log(_TAG, "Voices $listOfdata");
     await _textToSpeechConverter.setSpeechRate(0.5);
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.setPitch(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
+    if(setupLanguage != null){
+      if(setupLanguage == LanguageManager.instance.enLocale){
+        await _textToSpeechConverter.setLanguage("en-US");
+      }
+      else{
+        await setupHindiLanguage();
+      }
+    }
+    else{
+      await setupHindiLanguage();
+    }
+  }
 
+  Future<void> setupHindiLanguage() async{
     bool isLanguageAvailable = await _textToSpeechConverter.isLanguageAvailable("hi-IN");
     _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
-    var listOfdata = await _textToSpeechConverter.getVoices;
-    _logger.log(_TAG, "Voices $listOfdata");
     if(isLanguageAvailable){
       await _textToSpeechConverter.setLanguage('hi-IN');
       //await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
       await _textToSpeechConverter.setVoice({"name": "hi-IN-default", "locale": "hin-default"});
+    }
+    else{
+      await _textToSpeechConverter.setLanguage("en-US");
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:visiongame/base/speech_input_model.dart';
 import 'package:visiongame/enums/speech_input_enums.dart';
 import 'package:visiongame/injector/injection.dart';
 
+import '../../base/language_manager.dart';
 import '../../base/logger_utils.dart';
 import '../../generated/locale_keys.g.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
@@ -38,7 +39,8 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
       bool isSpeechInputInitialized = await visionSpeechInput.setUpVoiceInput();
       if(isPermissionGranted && isSpeechInputInitialized){
         state = const HomeScreenViewState.homeView();
-        startIntroduction();
+        chooseLanguage();
+        //startIntroduction();
         /*Future.delayed(Duration(seconds: 2),(){
         startIntroduction();
 
@@ -50,11 +52,19 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     }
     else{
       state = const HomeScreenViewState.homeView();
-      startIntroduction();
+      //chooseLanguage();
     }
   }
 
-  void startIntroduction() async{
+  Future<void> chooseLanguage() async{
+    String lineOne = LocaleKeys.home_choose_lang_line_one.tr();
+    await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.hiLocale);
+    await visionTts.speakText(lineOne);
+    await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.enLocale);
+    await visionTts.speakText(lineOne);
+  }
+
+  Future<void> startIntroduction() async{
 
     visionTts.enableSpeaking();
     /*String lineOne = LocaleKeys.home_intro_line_one.tr(namedArgs: {

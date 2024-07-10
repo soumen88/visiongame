@@ -21,6 +21,7 @@ mixin _$HomeScreenViewState {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
     required TResult Function() permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +30,7 @@ mixin _$HomeScreenViewState {
     TResult? Function(String errorMessage)? error,
     TResult? Function()? loading,
     TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
     TResult? Function()? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ mixin _$HomeScreenViewState {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
     TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) =>
@@ -46,6 +49,7 @@ mixin _$HomeScreenViewState {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
     required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +58,7 @@ mixin _$HomeScreenViewState {
     TResult? Function(_Error value)? error,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +67,7 @@ mixin _$HomeScreenViewState {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) =>
@@ -154,6 +160,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
     required TResult Function() permissionDeniedView,
   }) {
     return error(errorMessage);
@@ -165,6 +172,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(String errorMessage)? error,
     TResult? Function()? loading,
     TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
     TResult? Function()? permissionDeniedView,
   }) {
     return error?.call(errorMessage);
@@ -176,6 +184,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
     TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -191,6 +200,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
     required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return error(this);
@@ -202,6 +212,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Error value)? error,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return error?.call(this);
@@ -213,6 +224,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -273,6 +285,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
     required TResult Function() permissionDeniedView,
   }) {
     return loading();
@@ -284,6 +297,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(String errorMessage)? error,
     TResult? Function()? loading,
     TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
     TResult? Function()? permissionDeniedView,
   }) {
     return loading?.call();
@@ -295,6 +309,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
     TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -310,6 +325,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
     required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return loading(this);
@@ -321,6 +337,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Error value)? error,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return loading?.call(this);
@@ -332,6 +349,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -387,6 +405,7 @@ class _$HomeViewImpl implements _HomeView {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
     required TResult Function() permissionDeniedView,
   }) {
     return homeView();
@@ -398,6 +417,7 @@ class _$HomeViewImpl implements _HomeView {
     TResult? Function(String errorMessage)? error,
     TResult? Function()? loading,
     TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
     TResult? Function()? permissionDeniedView,
   }) {
     return homeView?.call();
@@ -409,6 +429,7 @@ class _$HomeViewImpl implements _HomeView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
     TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -424,6 +445,7 @@ class _$HomeViewImpl implements _HomeView {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
     required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return homeView(this);
@@ -435,6 +457,7 @@ class _$HomeViewImpl implements _HomeView {
     TResult? Function(_Error value)? error,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return homeView?.call(this);
@@ -446,6 +469,7 @@ class _$HomeViewImpl implements _HomeView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -458,6 +482,126 @@ class _$HomeViewImpl implements _HomeView {
 
 abstract class _HomeView implements HomeScreenViewState {
   const factory _HomeView() = _$HomeViewImpl;
+}
+
+/// @nodoc
+abstract class _$$ChooseLanguageViewImplCopyWith<$Res> {
+  factory _$$ChooseLanguageViewImplCopyWith(_$ChooseLanguageViewImpl value,
+          $Res Function(_$ChooseLanguageViewImpl) then) =
+      __$$ChooseLanguageViewImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ChooseLanguageViewImplCopyWithImpl<$Res>
+    extends _$HomeScreenViewStateCopyWithImpl<$Res, _$ChooseLanguageViewImpl>
+    implements _$$ChooseLanguageViewImplCopyWith<$Res> {
+  __$$ChooseLanguageViewImplCopyWithImpl(_$ChooseLanguageViewImpl _value,
+      $Res Function(_$ChooseLanguageViewImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$ChooseLanguageViewImpl implements _ChooseLanguageView {
+  const _$ChooseLanguageViewImpl();
+
+  @override
+  String toString() {
+    return 'HomeScreenViewState.chooseLanguageView()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ChooseLanguageViewImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String errorMessage) error,
+    required TResult Function() loading,
+    required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
+    required TResult Function() permissionDeniedView,
+  }) {
+    return chooseLanguageView();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String errorMessage)? error,
+    TResult? Function()? loading,
+    TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
+    TResult? Function()? permissionDeniedView,
+  }) {
+    return chooseLanguageView?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String errorMessage)? error,
+    TResult Function()? loading,
+    TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
+    TResult Function()? permissionDeniedView,
+    required TResult orElse(),
+  }) {
+    if (chooseLanguageView != null) {
+      return chooseLanguageView();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Error value) error,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
+    required TResult Function(_PermissionDeniedView value) permissionDeniedView,
+  }) {
+    return chooseLanguageView(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Error value)? error,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
+    TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
+  }) {
+    return chooseLanguageView?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Error value)? error,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
+    TResult Function(_PermissionDeniedView value)? permissionDeniedView,
+    required TResult orElse(),
+  }) {
+    if (chooseLanguageView != null) {
+      return chooseLanguageView(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChooseLanguageView implements HomeScreenViewState {
+  const factory _ChooseLanguageView() = _$ChooseLanguageViewImpl;
 }
 
 /// @nodoc
@@ -502,6 +646,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     required TResult Function(String errorMessage) error,
     required TResult Function() loading,
     required TResult Function() homeView,
+    required TResult Function() chooseLanguageView,
     required TResult Function() permissionDeniedView,
   }) {
     return permissionDeniedView();
@@ -513,6 +658,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     TResult? Function(String errorMessage)? error,
     TResult? Function()? loading,
     TResult? Function()? homeView,
+    TResult? Function()? chooseLanguageView,
     TResult? Function()? permissionDeniedView,
   }) {
     return permissionDeniedView?.call();
@@ -524,6 +670,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     TResult Function(String errorMessage)? error,
     TResult Function()? loading,
     TResult Function()? homeView,
+    TResult Function()? chooseLanguageView,
     TResult Function()? permissionDeniedView,
     required TResult orElse(),
   }) {
@@ -539,6 +686,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     required TResult Function(_Error value) error,
     required TResult Function(_Loading value) loading,
     required TResult Function(_HomeView value) homeView,
+    required TResult Function(_ChooseLanguageView value) chooseLanguageView,
     required TResult Function(_PermissionDeniedView value) permissionDeniedView,
   }) {
     return permissionDeniedView(this);
@@ -550,6 +698,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     TResult? Function(_Error value)? error,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_HomeView value)? homeView,
+    TResult? Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult? Function(_PermissionDeniedView value)? permissionDeniedView,
   }) {
     return permissionDeniedView?.call(this);
@@ -561,6 +710,7 @@ class _$PermissionDeniedViewImpl implements _PermissionDeniedView {
     TResult Function(_Error value)? error,
     TResult Function(_Loading value)? loading,
     TResult Function(_HomeView value)? homeView,
+    TResult Function(_ChooseLanguageView value)? chooseLanguageView,
     TResult Function(_PermissionDeniedView value)? permissionDeniedView,
     required TResult orElse(),
   }) {

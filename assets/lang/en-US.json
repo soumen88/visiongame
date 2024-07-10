@@ -1,5 +1,6 @@
 {
   "home": {
+    "choose_lang_line_one" : "To Continue in English swipe down",
     "intro_line_one": "Hello I am {appName} Robot.",
     "intro_line_two": "I would be assisting you to play this Amazing game.",
     "intro_line_three": "To Continue playing, double tap any where on the screen"

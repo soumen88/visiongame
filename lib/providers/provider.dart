@@ -3,6 +3,8 @@ import 'package:visiongame/difficultylevel/model/difficulty_level_view_state.dar
 import 'package:visiongame/difficultylevel/viewmodel/difficulty_level_state_notifier.dart';
 import 'package:visiongame/game/models/game_screen_view_state.dart';
 import 'package:visiongame/game/viewmodel/game_view_state_notifier.dart';
+import 'package:visiongame/home/model/locale_state.dart';
+import 'package:visiongame/home/viewmodel/locale_state_notifier.dart';
 import 'package:visiongame/timer/model/timer_view_state.dart';
 import 'package:visiongame/timer/viewmodel/timer_state_notifier.dart';
 
@@ -23,4 +25,8 @@ final timerProvider = StateNotifierProvider<TimerStateNotifier, TimerViewState>(
 
 final gameProvider = StateNotifierProvider<GameViewStateNotifier, GameScreenViewState>(
         (ref) => GameViewStateNotifier()
+);
+
+final languageProvider = StateNotifierProvider<LocaleStateNotifier, LocaleState>(
+        (ref) => LocaleStateNotifier()
 );

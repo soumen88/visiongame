@@ -8,5 +8,6 @@ class HomeScreenViewState with _$HomeScreenViewState {
   const factory HomeScreenViewState.error(String errorMessage) = _Error;
   const factory HomeScreenViewState.loading() = _Loading;
   const factory HomeScreenViewState.homeView() = _HomeView;
+  const factory HomeScreenViewState.chooseLanguageView() = _ChooseLanguageView;
   const factory HomeScreenViewState.permissionDeniedView() = _PermissionDeniedView;
 }
