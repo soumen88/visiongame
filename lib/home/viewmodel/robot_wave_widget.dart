@@ -8,19 +8,9 @@ import '../../timer/timer_container.dart';
 class RobotWaveWidget extends HookWidget{
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        /*Container(
-          width: 100,
-          height: 100,
-          child: TimerContainer(timerLabel: "Secs", durationLabel: "00",),
-        ),*/
-        Align(
-          alignment: Alignment.center,
-          child: // Load a Lottie animation file from your assets
-          Lottie.asset('assets/animation/robot_wave.json'),
-        )
-      ],
+    return Align(
+      alignment: Alignment.center,
+      child: Lottie.asset('assets/animation/robot_wave.json'),
     );
   }
 

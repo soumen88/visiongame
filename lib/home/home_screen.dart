@@ -46,20 +46,32 @@ class HomeScreen extends HookConsumerWidget{
 
     final appLifecycleState = useAppLifecycleState();
 
-    Future<void> chooseLanguage() async{
-      String lineOne = LocaleKeys.home_choose_lang_line_one.tr();
-      LanguageListItemModel hindi = LanguageManager.instance.getHindiLang();
-      languageChangeNotifier.saveLocale(hindi);
-      await context.setLocale(hindi.locale);
-      await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.hiLocale);
-      await visionTts.speakText(lineOne);
-
+    Future<void> chooseEnglish() async{
       LanguageListItemModel english = LanguageManager.instance.getEnglishLang();
       languageChangeNotifier.saveLocale(english);
       await context.setLocale(english.locale);
       String lineTwo = LocaleKeys.home_choose_lang_line_one.tr();
       await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.enLocale);
       await visionTts.speakText(lineTwo);
+    }
+
+    Future<void> chooseHindi({bool dontSpeak = false}) async{
+
+      LanguageListItemModel hindi = LanguageManager.instance.getHindiLang();
+      languageChangeNotifier.saveLocale(hindi);
+      await context.setLocale(hindi.locale);
+      await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.hiLocale);
+      if(dontSpeak){
+        return;
+      }
+      String lineOne = LocaleKeys.home_choose_lang_line_one.tr();
+      await visionTts.speakText(lineOne);
+    }
+
+    Future<void> chooseLanguage() async{
+      await chooseHindi();
+      await chooseEnglish();
+      homeScreenNotifier.setLanguageView();
     }
 
     useEffect(() {
@@ -70,7 +82,11 @@ class HomeScreen extends HookConsumerWidget{
       } else if (appLifecycleState == AppLifecycleState.resumed) {
         Future.delayed(Duration.zero, (){
           homeScreenNotifier.init();
-          chooseLanguage();
+          if(!homeScreenNotifier.isLanguageSelectionSpoken){
+            homeScreenNotifier.isLanguageSelectionSpoken = true;
+            chooseLanguage();
+          }
+
           isEnabled = true;
         });
 
@@ -142,18 +158,27 @@ class HomeScreen extends HookConsumerWidget{
           return ErrorScreen(errorMessage: ApplicationConstants.PermissionDeniedMessage);
         },
         chooseLanguageView: (){
-          return SwipeDetector(
-            behavior: HitTestBehavior.opaque,
-            //Start tutorial
-            onSwipeUp: (Offset offset) async{
-              _logger.log(_TAG, "Swipe Up done");
-
-            },
-            //Begin a fresh game
-            onSwipeDown: (Offset offset) async{
-              _logger.log(_TAG, "Swipe down done");
-            },
-            child: RobotWaveWidget(),
+          return Scaffold(
+            backgroundColor: Colors.lightGreen,
+            body: Center(
+              child: SwipeDetector(
+                behavior: HitTestBehavior.opaque,
+                //Start tutorial
+                onSwipeUp: (Offset offset) async{
+                  ///When Hindi language is selected then its a swipe up
+                  _logger.log(_TAG, "Swipe Up done");
+                  await chooseHindi(dontSpeak: true);
+                  await homeScreenNotifier.setAppLanguage(LanguageManager.instance.hiLocale);
+                },
+                //Begin a fresh game
+                onSwipeDown: (Offset offset) async{
+                  ///When English language is selected then its a swipe down
+                  _logger.log(_TAG, "Swipe down done");
+                  await homeScreenNotifier.setAppLanguage(LanguageManager.instance.enLocale);
+                },
+                child: RobotWaveWidget(),
+              ),
+            ),
           );
         },
         orElse: (){

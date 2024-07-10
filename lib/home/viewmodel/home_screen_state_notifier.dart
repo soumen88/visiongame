@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/base/constants.dart';
@@ -26,6 +27,9 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
 
   bool isSpeechInputEnabled = false;
 
+  ///This flag is used to check if the language selection text is already spoken in home screen
+  bool isLanguageSelectionSpoken = false;
+
   HomeScreenStateNotifer() : super(const HomeScreenViewState.loading()){
     listenToSpeechInput();
   }
@@ -39,7 +43,6 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
       bool isSpeechInputInitialized = await visionSpeechInput.setUpVoiceInput();
       if(isPermissionGranted && isSpeechInputInitialized){
         state = const HomeScreenViewState.homeView();
-        chooseLanguage();
         //startIntroduction();
         /*Future.delayed(Duration(seconds: 2),(){
         startIntroduction();
@@ -56,23 +59,19 @@ class HomeScreenStateNotifer extends StateNotifier<HomeScreenViewState> {
     }
   }
 
-  Future<void> chooseLanguage() async{
-    String lineOne = LocaleKeys.home_choose_lang_line_one.tr();
-    await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.hiLocale);
-    await visionTts.speakText(lineOne);
-    await visionTts.setUpTTs(setupLanguage: LanguageManager.instance.enLocale);
-    await visionTts.speakText(lineOne);
+  void setLanguageView(){
+    state = const HomeScreenViewState.chooseLanguageView();
+  }
+
+  Future<void> setAppLanguage(Locale locale) async{
+    await startIntroduction();
   }
 
   Future<void> startIntroduction() async{
 
-    visionTts.enableSpeaking();
-    /*String lineOne = LocaleKeys.home_intro_line_one.tr(namedArgs: {
+    //visionTts.enableSpeaking();
+    String lineOne = LocaleKeys.home_intro_line_one.tr(namedArgs: {
       'appName' : ApplicationConstants.APP_NAME
-    });*/
-    String lineOne = LocaleKeys.difficulty_level_read_game_instructions_line_five.tr(namedArgs: {
-      'playerName' : ApplicationConstants.PlayerName,
-      'kLevelEasyCompletionCoins' : ApplicationConstants.kLevelEasyCompletionCoins.toString(),
     });
     await visionTts.speakText(lineOne);
     String lineTwo = LocaleKeys.home_intro_line_two.tr();
