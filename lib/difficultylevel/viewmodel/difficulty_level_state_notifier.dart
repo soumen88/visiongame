@@ -97,7 +97,8 @@ class DifficultyLevelStateNotifier extends StateNotifier<DifficultyLevelViewStat
     });
     bool isLineFourComplete = await visionTts.speakText(lineFour);
     String lineFive = LocaleKeys.difficulty_level_read_game_instructions_line_five.tr(namedArgs: {
-      'playerName' : ApplicationConstants.PlayerName
+      'playerName' : ApplicationConstants.PlayerName,
+      'kLevelEasyCompletionCoins' : ApplicationConstants.kLevelEasyCompletionCoins.toString(),
     });
     bool isLineFiveComplete = await visionTts.speakText(lineFive);
     String lineSix = LocaleKeys.difficulty_level_read_game_instructions_line_six.tr(namedArgs: {

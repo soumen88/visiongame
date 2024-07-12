@@ -19,7 +19,7 @@ class VisionTextToSpeechConverter{
   Future<void> setUpTTs({Locale? setupLanguage}) async{
     var listOfdata = await _textToSpeechConverter.getVoices;
     _logger.log(_TAG, "Voices $listOfdata");
-    await _textToSpeechConverter.setSpeechRate(0.5);
+    await _textToSpeechConverter.setSpeechRate(0.4);
     await _textToSpeechConverter.setVolume(1.0);
     await _textToSpeechConverter.setPitch(1.0);
     await _textToSpeechConverter.awaitSpeakCompletion(true);
@@ -33,6 +33,7 @@ class VisionTextToSpeechConverter{
     }
     else{
       await setupHindiLanguage();
+      //await _textToSpeechConverter.setLanguage("en-US");
     }
   }
 
@@ -41,8 +42,9 @@ class VisionTextToSpeechConverter{
     _logger.log(_TAG, "Is language available hindi $isLanguageAvailable");
     if(isLanguageAvailable){
       await _textToSpeechConverter.setLanguage('hi-IN');
-      //await _textToSpeechConverter.setVoice({"name": "hi-in-x-hid-local", "locale": "hi-IN"});
       await _textToSpeechConverter.setVoice({"name": "hi-IN-default", "locale": "hin-default"});
+      //await _textToSpeechConverter.setVoice({"name": "hi-IN-SMTf00", "locale": "hin-x-lvariant-f00"});
+      //await _textToSpeechConverter.setVoice({"name": "es-MX-default", "locale": "spa-default"});
     }
     else{
       await _textToSpeechConverter.setLanguage("en-US");

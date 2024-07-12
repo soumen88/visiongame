@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
@@ -22,6 +23,7 @@ import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../base/logger_utils.dart';
 import '../enums/difficulty_level_enum.dart';
+import '../generated/locale_keys.g.dart';
 import '../texttospeech/vision_text_to_speech_converter.dart';
 import 'components/player.dart';
 import 'helpers/direction.dart';
@@ -70,7 +72,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE){
         Future.delayed(Duration(seconds: 4), () async{
           changePlayerWalkDirection();
-          await add(_player);
+          await world.add(_player);
           _gameTriggers.setImmutability();
         });
       }
@@ -219,9 +221,12 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
   ///Once mike icon is set to turn off position the speaking for enemy position would stop
   void listenToVoiceInputEnabled(){
-    _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) {
+    _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) async{
       if(isInputEnabled != null){
         isVoiceEnabled = isInputEnabled;
+        if(!isVoiceEnabled){
+          await _visionTts.speakStop();
+        }
       }
     });
   }
@@ -237,7 +242,11 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           enemyName = "Ghost";
           await _visionTts.speakStop();
           _visionTts.enableSpeaking();
-          await _visionTts.speakText("Lets Begin. To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelEasyCompletionCoins} collectibles.");
+          String beginText = LocaleKeys.game_begin.tr(namedArgs: {
+            'enemyName' : enemyName,
+            'kLevelEasyCompletionCoins': ApplicationConstants.kLevelEasyCompletionCoins.toString()
+          });
+          await _visionTts.speakText(beginText);
           _dragon.isEnabled = false;
           _dragon.removeFromParent();
           _ninjaGirl.removeFromParent();
@@ -253,11 +262,18 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _ghostPlayer.removeFromParent();
           enemyName = "Dragon";
           //await _visionTts.speakStop();
-          await _visionTts.speakText("Yay! You have cleared Level Medium. Enemy changes to $enemyName");
-          await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelMediumCompletionCoins} collectibles.");
+          String levelClearEasy = LocaleKeys.game_level_clear_easy.tr(namedArgs: {
+            'enemyName' : enemyName
+          });
+          String toDefeatEnemy = LocaleKeys.game_to_defeat_enemy.tr(namedArgs: {
+            'enemyName' : enemyName,
+            'kLevelMediumCompletionCoins' : ApplicationConstants.kLevelMediumCompletionCoins.toString()
+          });
+          await _visionTts.speakText(levelClearEasy);
+          await _visionTts.speakText(toDefeatEnemy);
           int randomX = next(50, 400);
           int randomY = next(50, 400);
-          await add(_dragon);
+          await world.add(_dragon);
           _dragon.position = Vector2(camera.viewport.position.x + randomX, camera.viewport.position.y + randomY);
           _dragon.spawnDragon();
         }
@@ -272,9 +288,16 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           int randomY = next(50, 400);
           await _visionTts.speakStop();
           _visionTts.enableSpeaking();
-          await _visionTts.speakText("You have moved to Level Hard. Enemy changes to $enemyName");
-          await _visionTts.speakText("To Defeat $enemyName Enemy collect ${ApplicationConstants.kLevelHardCompletionCoins} collectibles.");
-          await add(_ninjaGirl);
+          String levelHard = LocaleKeys.game_level_clear_medium.tr(namedArgs: {
+            'enemyName' : enemyName,
+          });
+          String toDefeatEnemy = LocaleKeys.game_to_defeat_enemy.tr(namedArgs: {
+            'enemyName' : enemyName,
+            'kLevelCompletionCoins' : ApplicationConstants.kLevelHardCompletionCoins.toString()
+          });
+          await _visionTts.speakText(levelHard);
+          await _visionTts.speakText(toDefeatEnemy);
+          await world.add(_ninjaGirl);
           _ninjaGirl.position = Vector2(camera.viewport.position.x + randomX, camera.viewport.position.y + randomY);
           _ninjaGirl.spawnNinjaGirl();
         }
@@ -324,7 +347,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
         isCoinRemoved = true;
         collectibleCounter = 3;
         _coins.removeFromParent();
-        String removeCollectible = "Collectible Removed. Wait Until Amaze informs you again";
+        String removeCollectible = LocaleKeys.game_collectible_removed.tr(namedArgs:{
+          'appName' : ApplicationConstants.APP_NAME
+        });
         await _visionTts.speakText(removeCollectible);
       }
       else{
@@ -353,7 +378,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
       int randomNumberOne = next(-10, 10);
       int randomNumberTwo = next(-10, 10);
       isCoinRemoved = false;
-      await add(_coins);
+      await world.add(_coins);
 
       if(randomNumberOne > 0){
         if(randomNumberTwo > 0){
@@ -433,30 +458,46 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     bool isPlayerDownwards =   enemyPosition.y > _player.position.y  ;
     if(ghostPositionModel.isXAxisMovement){
       if(ghostPositionModel.isLeft && isPlayerDownwards){
-        speakString = "$enemyName is downwards and moving left";
+        speakString = LocaleKeys.game_enemy_down_left.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
       else if(ghostPositionModel.isLeft && !isPlayerDownwards){
-        speakString = "$enemyName is upwards and moving left";
+        speakString = LocaleKeys.game_enemy_up_left.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
       else if(!ghostPositionModel.isLeft && isPlayerDownwards){
-        speakString = "$enemyName is downwards and moving right";
+        speakString = LocaleKeys.game_enemy_down_right.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
       else if(!ghostPositionModel.isLeft && !isPlayerDownwards){
-        speakString = "$enemyName is upwards and moving right";
+        speakString = LocaleKeys.game_enemy_up_right.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
     }
     else{
       if(ghostPositionModel.isDown && isPlayerRight){
-        speakString = "$enemyName coming from right and walking down";
+        speakString = LocaleKeys.game_enemy_right_down.tr(namedArgs: {
+          'enemyName' : enemyName
+        });;
       }
       else if(ghostPositionModel.isDown && !isPlayerRight){
-        speakString = "$enemyName coming from left and walking down";
+        speakString = LocaleKeys.game_enemy_left_down.tr(namedArgs: {
+          'enemyName' : enemyName
+        });;
       }
       else if(!ghostPositionModel.isDown && isPlayerRight){
-        speakString = "$enemyName coming from right and walking up";
+        LocaleKeys.game_enemy_right_up.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
       else if(!ghostPositionModel.isDown && !isPlayerRight){
-        speakString = "$enemyName coming from left and walking up";
+        speakString = LocaleKeys.game_enemy_left_up.tr(namedArgs: {
+          'enemyName' : enemyName
+        });
       }
     }
     _logger.log(_TAG, "Speak String $speakString");
@@ -496,18 +537,34 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     String coinPositionText;
     if(isUp){
       if(isLeft){
-        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} upwards";
+        coinPositionText = LocaleKeys.game_collectible_left_up.tr(namedArgs: {
+          'collectibleMessage' : ApplicationConstants.collectibleMessage,
+          'xPlaces' : xPlaces.toString(),
+          'yPlaces' : yPlaces.toString()
+        });
       }
       else{
-        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} upwards";
+        coinPositionText = LocaleKeys.game_collectible_right_up.tr(namedArgs: {
+          'collectibleMessage' : ApplicationConstants.collectibleMessage,
+          'xPlaces' : xPlaces.toString(),
+          'yPlaces' : yPlaces.toString()
+        });
       }
     }
     else{
       if(isLeft){
-        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} left and ${yPlaces} downwards";
+        coinPositionText = LocaleKeys.game_collectible_left_down.tr(namedArgs: {
+          'collectibleMessage' : ApplicationConstants.collectibleMessage,
+          'xPlaces' : xPlaces.toString(),
+          'yPlaces' : yPlaces.toString()
+        });
       }
       else{
-        coinPositionText = "${ApplicationConstants.collectibleMessage} is ${xPlaces} right and ${yPlaces} downwards";
+        coinPositionText = LocaleKeys.game_collectible_right_down.tr(namedArgs: {
+          'collectibleMessage' : ApplicationConstants.collectibleMessage,
+          'xPlaces' : xPlaces.toString(),
+          'yPlaces' : yPlaces.toString()
+        });
       }
     }
     //_logger.log(_TAG, "Next collectible at $coinPositionText");

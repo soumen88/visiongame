@@ -31,6 +31,7 @@ class LocaleStateNotifier extends StateNotifier<LocaleState>{
 
   void setLocaleFromLocalStorage() {
     LanguageListItemModel model = LanguageManager.instance.hiLanguageListItem;;
+    //LanguageListItemModel model = LanguageManager.instance.enLanguageListItem;;
     currentLocaleListItemModel = model;
     _logger.log(_TAG, "Current language ${currentLocaleListItemModel}");
   }

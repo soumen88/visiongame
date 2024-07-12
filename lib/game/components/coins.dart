@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/enums/collectible_quadrant_enums.dart';
@@ -11,6 +12,7 @@ import 'package:visiongame/injector/injection.dart';
 
 import '../../audioplayer/game_audio_player.dart';
 import '../../base/logger_utils.dart';
+import '../../generated/locale_keys.g.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../triggers/game_triggers.dart';
 import '../triggers/game_tutorial_triggers.dart';
@@ -42,8 +44,9 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
     sprite = await gameRef.loadSprite('coin.png');
     position = gameRef.size / 2;
     add(RectangleHitbox());
+    _logger.log(_TAG, "Position of coin $position");
     ///Once this timer elapses then collectible image would be changed in game
-    add(
+    /*add(
         TimerComponent(
           period: 10,
           repeat: true,
@@ -51,7 +54,7 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
             await spawnNewCollectible();
           },
         )
-    );
+    );*/
   }
 
   ///Once mike icon is set to turn off position the speaking for enemy position would stop
@@ -66,7 +69,8 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
 
   Future<void> spawnNewCollectible() async{
     String collectibleName = await generateRandomCollectible();
-    sprite = await gameRef.loadSprite(collectableIconName);
+    //sprite = await gameRef.loadSprite(collectableIconName);
+    sprite = await gameRef.loadSprite('coin.png');
   }
 
   Future<String> generateRandomCollectible() async{
@@ -127,10 +131,13 @@ class Coins extends SpriteComponent with HasGameRef, CollisionCallbacks{
     if(other is Player){
       if(isVoiceEnabled){
         await _visionTts.speakStop()
-            .then((value) {
+            .then((value) async{
               _logger.log(_TAG, "Speak stop value $value");
               _visionTts.enableSpeaking();
-              _visionTts.speakText("Yay! You collected $currentCollectable");
+              String collectCoinText = LocaleKeys.game_coin_collected.tr(namedArgs: {
+                'currentCollectable' : currentCollectable
+              });
+              _visionTts.speakText(collectCoinText);
         }).then((value){
           _logger.log(_TAG, "Play game sound");
           _gameAudioPlayer.playGameSound(GameComponentEnums.COINS);

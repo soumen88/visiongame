@@ -125,6 +125,7 @@ class HomeScreen extends HookConsumerWidget{
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () async{
+              _logger.log(_TAG, "Is enabled $isEnabled");
               if(isEnabled != null && isEnabled!){
                 isEnabled = false;
                 bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();

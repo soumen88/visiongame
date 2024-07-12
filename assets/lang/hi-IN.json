@@ -18,5 +18,26 @@
     "read_game_instructions_line_five" : "आपको {kLevelEasyCompletionCoins} सिक्के इकट्ठा करके {playerName} को बचाना होगा।",
     "read_game_instructions_line_six" : "सिक्के इकट्ठा करने के लिए आप बाएँ, दाएँ, ऊपर और नीचे स्वाइप करके {playerName} को स्थानांतरित कर सकते हैं।",
     "read_game_instructions_line_seven" : "एकाधिक बदमाश से {playerName} की जान बचाने की पूरी कोशिश करें।"
+  },
+  "game" : {
+    "begin" : "चलो शुरू करें। विरोधी को हराने के लिए {kLevelEasyCompletionCoins} सिक्के जमा करें।",
+    "coin_collected" : "वाह! आप 1 सिक्का जमा करने में सफल थे।",
+    "player_dead" : "अरे नहीं! आपका खिलाड़ी मारा गया",
+    "level_clear_easy" : "वाह! आपने लेवल मीडियम पास कर लिया है। विरोधीु का नाम बदलकर {enemyName} कर दिया गया है",
+    "level_clear_medium" : "आप लेवल हार्ड में चले गए हैं। शत्रु का नाम बदलकर {enemyName} कर दिया गया है",
+    "to_defeat_enemy" : "विरोधी को हराने के लिए {kLevelCompletionCoins} सिक्के जमा करें।",
+    "collectible_removed" : "सिक्के हटा दिया गया है. तब तक प्रतीक्षा करें जब तक कि {appName} आपको दोबारा सूचित न कर दे",
+    "enemy_down_left" : "{enemyName} नीचे की ओर है और बायीं ओर बढ़ रहा है",
+    "enemy_up_left" : "{enemyName} ऊपर की ओर है और बायीं ओर बढ़ रहा है",
+    "enemy_down_right" : "{enemyName} नीचे की ओर है और दाईं ओर बढ़ रहा है",
+    "enemy_up_right" : "{enemyName} ऊपर की ओर है और दाईं ओर बढ़ रहा है",
+    "enemy_right_down" : "{enemyName} दाईं ओर से आ रहा है और नीचे चल रहा है",
+    "enemy_left_down" : "{enemyName} बाईं ओर से आ रहा है और नीचे चल रहा है",
+    "enemy_right_up" : "{enemyName} दाईं ओर से आ रहा है और ऊपर चल रहा है",
+    "enemy_left_up" : "{enemyName} बाईं ओर से आ रहा है और ऊपर चल रहा है",
+    "collectible_left_up" : "अगला सिक्का {xPlaces} स्थान बायीं और ऊपर की तरफ {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_right_up" : "अगला सिक्का {xPlaces} स्थान दाहिनी और ऊपर की ओर {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_left_down" : "अगला सिक्का {xPlaces} स्थान बायीं ओर नीचे की तरफ {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_right_down" : "अगला सिक्का {xPlaces} स्थान दाहिनी और नीचे की तरफ {yPlaces} स्थान पर मौजूद है"
   }
 }
