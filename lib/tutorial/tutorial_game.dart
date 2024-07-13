@@ -145,7 +145,6 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     _player.position = _world.size / 1.5;
     addWorldCollision();
     await world.add(_ghostPlayer);
-
     camera
       ..viewfinder.visibleGameSize = Vector2(screenWidth.toDouble(), screenHeight.toDouble())
       ..follow(_player)
@@ -184,6 +183,7 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
       }
     }
     if(running &&  !_coins.isMounted){
+
       int randomX = next(1, 5);
       //int randomX = 2;
       int randomY = next(1, 8);
@@ -191,7 +191,6 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
       int randomNumberOne = next(-10, 10);
       int randomNumberTwo = next(-10, 10);
       isCoinRemoved = false;
-      await add(_coins);
 
       if(randomNumberOne > 0){
         if(randomNumberTwo > 0){
@@ -232,7 +231,10 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
           _coins.currentQuadrant = CollectibleQuadrantEnums.FIRST;
         }
       }
+
     }
+    _logger.log(_TAG, "Coin is mounted ${_coins.isMounted} and position ${_coins.position}");
+    await world.add(_coins);
     return Future.value(isCoinRemoved);
   }
 

@@ -87,10 +87,11 @@ class HomeScreen extends HookConsumerWidget{
           homeScreenNotifier.init();
           if(!homeScreenNotifier.isLanguageSelectionSpoken){
             homeScreenNotifier.isLanguageSelectionSpoken = true;
+            isEnabled = true;
             chooseLanguage();
           }
 
-          isEnabled = true;
+
         });
 
       }
