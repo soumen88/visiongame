@@ -209,9 +209,43 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
 
     _ninjaGirl.ninjaPositionNotifier.listen((GhostPositionModel? ninjaPositionModel) async{
       if(ninjaPositionModel != null && running){
-        int randomX = next(50, 400);
-        int randomY = next(50, 400);
-        //_ninjaGirl.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        int randomX = next(1, 6);
+        int randomY = next(1, 12);
+        int randomNumberOne = next(-10, 10);
+        int randomNumberTwo = next(-10, 10);
+        //_dragon.position = Vector2(camera.position.x + randomX, camera.position.y + randomY);
+        if(randomNumberOne > 0){
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 4th quadrant
+            _ninjaGirl.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 3rd quadrant
+            _ninjaGirl.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * ApplicationConstants.deltaValue)
+            );
+          }
+        }
+        else {
+          if(randomNumberTwo > 0){
+            ///This will make ghost appear in 2nd quadrant
+            _ninjaGirl.position = Vector2(
+                _player.position.x + (randomX * -ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+          else{
+            ///This will make ghost appear in 1st quadrant
+            _ninjaGirl.position = Vector2(
+                _player.position.x + (randomX * ApplicationConstants.deltaValue),
+                _player.position.y + (randomY * -ApplicationConstants.deltaValue)
+            );
+          }
+        }
         if(isVoiceEnabled){
           await speakMovement(ninjaPositionModel, _ninjaGirl.position);
         }
@@ -224,7 +258,11 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     _gameTriggers.isVoiceInputEnabled.listen((bool? isInputEnabled) async{
       if(isInputEnabled != null){
         isVoiceEnabled = isInputEnabled;
-        if(!isVoiceEnabled){
+        if(isVoiceEnabled){
+          _logger.log(_TAG, "Setting up tts");
+          _visionTts.enableSpeaking();
+        }
+        else{
           await _visionTts.speakStop();
         }
       }
@@ -282,8 +320,6 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _dragon.isEnabled = false;
           _dragon.removeFromParent();
           enemyName = "Ninja Girl";
-          /*final componentSize = Vector2(150, 100);
-          _moth = Moth(Vector2.all(60), Vector2.all(100), componentSize);*/
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
@@ -309,9 +345,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   Future<void> onLoad() async {
     super.onLoad();
     _logger.log(_TAG, "inside on load");
-
     await world.add(_world);
     await world.add(_player);
+    _logger.log(_TAG, "Our World size ${_world.size} and }");
     _player.position = _world.size / 1.5;
     await addWorldCollision();
     await world.add(_ghostPlayer);
@@ -321,7 +357,10 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
     camera
       ..viewfinder.visibleGameSize = Vector2(screenWidth.toDouble(), screenHeight.toDouble())
       ..follow(_player)
-      ..setBounds(Rectangle.fromLTRB(0, 0, _world.size.x, _world.size.y));
+      //..setBounds(Rectangle.fromLTRB(182.9, 380.2, _world.size.x, _world.size.y));
+      ..setBounds(Rectangle.fromLTRB(182.9, 380.2, 2200, 2000));
+
+
   }
 
   onArrowKeyChanged(Direction direction){
@@ -424,9 +463,9 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
   }
 
   Future<void> addWorldCollision() async {
-    (await MapLoader.readRayWorldCollisionMap()).forEach((rect) {
+    (await MapLoader.readRayWorldCollisionMap()).forEach((rect) async{
       _logger.log(_TAG, "Added collidable at $rect");
-      add(WorldCollidable()
+      await world.add(WorldCollidable()
         ..position = Vector2(rect.left, rect.top)
         ..width = rect.width
         ..height = rect.height);

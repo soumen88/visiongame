@@ -159,6 +159,7 @@ class EnemyDragon extends SpriteAnimationComponent with HasGameRef, CollisionCal
   Future<void> _loadAnimations() async {
     final spriteSheet = SpriteSheet(
       image: await gameRef.images.load('dragon_sprite_sheet.png'),
+      //image: await gameRef.images.load('ninja_girl_sprite_sheet.png'),
       ///First parameter is width and second is height
       srcSize: Vector2(192, 192),
     );

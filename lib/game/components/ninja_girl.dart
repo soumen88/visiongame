@@ -7,17 +7,19 @@ import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
 import '../../enums/difficulty_level_enum.dart';
+import '../../enums/player_life_status_enums.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
 
 import '../models/ghost_position_model.dart';
+import '../models/player_motion_model.dart';
 import '../triggers/game_triggers.dart';
 
 class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallbacks {
   final _logger = locator<LoggerUtils>();
-  final _TAG = "EnemyDragon";
+  final _TAG = "NinjaGirl";
 
-  final double _playerSpeed = 100.0;
+  final double _playerSpeed = 50.0;
   final double _animationSpeed = 0.15;
 
   late final SpriteAnimation _runDownAnimation;
@@ -37,9 +39,9 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
   bool isXAxisMovement = false;
   bool isYAxisMovement = true;
   bool isEnabled = false;
-  final _gameTriggers = locator<GameTriggers>();
-
+  TimerComponent? _ninjaGirlTimerComponent;
   final BehaviorSubject<GhostPositionModel?> ninjaPositionNotifier = BehaviorSubject.seeded(null);
+  final _gameTriggers = locator<GameTriggers>();
 
   NinjaGirl()
       : super(
@@ -69,29 +71,15 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
         ..paint = hitboxPaint
         ..renderShape = false,
     );
-    //add(ScreenHitbox());
 
-    //listenToDifficultyLevelChanges();
+    add(ScreenHitbox());
+
     listenToPlayerCollect();
   }
 
-  ///Depending upon difficulty level enemy is added in game
-  Future<void> spawnNinjaGirl() async{
-    isEnabled = true;
-    await addNinjaMotion();
-    ///Once this timer elapses then ninja girl position would be changed in game
-    add(
-        TimerComponent(
-          period: 10,
-          repeat: true,
-          onTick: () async{
-            await addNinjaMotion();
-          },
-        )
-    );
-  }
 
-  Future<void> addNinjaMotion() async{
+
+  Future<void> addDragonMotion() async{
     if(isEnabled == false){
       //_logger.log(_TAG, "Not changing because ghost is disabled");
       return;
@@ -118,12 +106,12 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
         isLeft = false;
       }
     }
-    _logger.log(_TAG, "Changing position of ninja");
 
-    GhostPositionModel ninjaPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
-    ninjaPositionNotifier.add(ninjaPositionModel);
+    _logger.log(_TAG, "Ninja girl changing position now ${_ninjaGirlTimerComponent?.timer.isRunning()}");
+    GhostPositionModel dragonPositionModel = GhostPositionModel(isLeft: isLeft, isDown: isDown, isXAxisMovement: isXAxisMovement, isYAxisMovement: isYAxisMovement);
+    ninjaPositionNotifier.add(dragonPositionModel);
+
   }
-
 
   @override
   void update(double delta) {
@@ -131,19 +119,36 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
     if(isEnabled){
       movePlayer(delta);
     }
+  }
 
+  ///Depending upon difficulty level enemy is added in game
+  Future<void> spawnNinjaGirl() async{
+    isEnabled = true;
+    await addDragonMotion();
+    ///Once this timer elapses then dragon position would be changed in game
+    add(
+        _ninjaGirlTimerComponent = TimerComponent(
+          period: 10,
+          repeat: true,
+          onTick: () async{
+            await addDragonMotion();
+          },
+        )
+    );
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent  other) {
     super.onCollision(intersectionPoints, other);
-    if (other is ScreenHitbox) {
+    ///DO NOT DELETE
+    ///If you want the dragon to stop on screen collision then uncomment below lines
+    //_logger.log(_TAG, "Inside on collision");
+    /*if (other is ScreenHitbox) {
       if (!_hasCollided) {
         _hasCollided = true;
         _collisionDirection = direction;
       }
-    }
-
+    }*/
   }
 
   @override
@@ -172,18 +177,6 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
 
     _standingAnimation =
         spriteSheet.createAnimation(row: 0, stepTime: _animationSpeed, to: 1);
-  }
-
-  void listenToPlayerCollect(){
-    _gameTriggers.playerCoinsStream.listen((int? coinsValue) {
-      if(coinsValue != null){
-        _logger.log(_TAG, "Coins value $coinsValue");
-        isEnabled = false;
-        Future.delayed(Duration(seconds: 3), (){
-          isEnabled = true;
-        });
-      }
-    });
   }
 
   void movePlayer(double delta) {
@@ -216,6 +209,18 @@ class NinjaGirl extends SpriteAnimationComponent with HasGameRef, CollisionCallb
         animation = _standingAnimation;
         break;
     }
+  }
+
+  void listenToPlayerCollect(){
+    _gameTriggers.playerCoinsStream.listen((int? coinsValue) {
+      if(coinsValue != null){
+        _logger.log(_TAG, "Coins value $coinsValue");
+        isEnabled = false;
+        Future.delayed(Duration(seconds: 3), (){
+          isEnabled = true;
+        });
+      }
+    });
   }
 
   bool canPlayerMoveUp() {

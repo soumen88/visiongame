@@ -119,6 +119,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
     }
 
     if (other is ScreenHitbox) {
+      _logger.log(_TAG, 'Player has hit screen collidable ${position}');
       _gameTriggers.addPlayerEvent(PlayerLifeStatusEnums.PLAYER_CHANGE_DIRECTION, position);
       return;
     }
@@ -259,7 +260,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
           onTick: () async{
             isPlayerMoving = true;
             _oneTimeTimer?.removeFromParent();
-            //_logger.log(_TAG, "After position ${position}");
+            _logger.log(_TAG, "After position ${position}");
           },
         )
     );

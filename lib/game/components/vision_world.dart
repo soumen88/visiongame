@@ -6,5 +6,6 @@ class VisionWorld extends SpriteComponent with HasGameRef {
     super.onLoad();
     sprite = await gameRef.loadSprite('rayworld_background.png');
     size = sprite!.originalSize;
+
   }
 }

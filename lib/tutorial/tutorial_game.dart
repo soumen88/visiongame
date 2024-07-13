@@ -1,32 +1,38 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:visiongame/base/constants.dart';
+import 'package:visiongame/enums/collectible_quadrant_enums.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
-import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/hearts.dart';
-import 'package:visiongame/game/components/moth.dart';
-import 'package:visiongame/game/components/tutorial_ghost.dart';
-import 'package:visiongame/game/components/tutorial_player.dart';
+import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/game/components/vision_world.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/game/models/ghost_position_model.dart';
 import 'package:visiongame/game/models/player_motion_model.dart';
 import 'package:visiongame/game/triggers/game_triggers.dart';
 import 'package:visiongame/injector/injection.dart';
-import '../base/constants.dart';
 import '../base/logger_utils.dart';
-import '../enums/collectible_quadrant_enums.dart';
 import '../enums/difficulty_level_enum.dart';
-import '../game/components/player.dart';
+import '../enums/tutorial_step_enums.dart';
+import '../game/components/moth.dart';
+import '../game/components/tutorial_ghost.dart';
+import '../game/components/tutorial_player.dart';
 import '../game/helpers/direction.dart';
 import '../game/helpers/map_loader.dart';
 import '../game/triggers/game_tutorial_triggers.dart';
+import '../generated/locale_keys.g.dart';
 import '../texttospeech/vision_text_to_speech_converter.dart';
+
 
 /// This class encapulates the whole game.
 class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetector{
@@ -132,12 +138,19 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
     super.onLoad();
     _logger.log(_TAG, "inside on load");
 
-    await add(_world);
-    await add(_player);
+    _logger.log(_TAG, "inside on load");
+    await world.add(_world);
+    await world.add(_player);
+    _logger.log(_TAG, "Our World size ${_world.size} and }");
     _player.position = _world.size / 1.5;
     addWorldCollision();
+    await world.add(_ghostPlayer);
 
-    //camera.followComponent(_player, worldBounds: Rect.fromLTRB(0, 0, _world.size.x, _world.size.y));
+    camera
+      ..viewfinder.visibleGameSize = Vector2(screenWidth.toDouble(), screenHeight.toDouble())
+      ..follow(_player)
+    //..setBounds(Rectangle.fromLTRB(182.9, 380.2, _world.size.x, _world.size.y));
+      ..setBounds(Rectangle.fromLTRB(182.9, 380.2, 2200, 2000));
 
   }
 
@@ -240,8 +253,8 @@ class TutorialGame extends FlameGame with HasCollisionDetection, DoubleTapDetect
   }
 
   void addWorldCollision() async =>
-      (await MapLoader.readRayWorldCollisionMap()).forEach((rect) {
-        add(WorldCollidable()
+      (await MapLoader.readRayWorldCollisionMap()).forEach((rect) async{
+        await world.add(WorldCollidable()
           ..position = Vector2(rect.left, rect.top)
           ..width = rect.width
           ..height = rect.height);
