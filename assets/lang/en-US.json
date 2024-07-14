@@ -39,5 +39,32 @@
     "collectible_right_up" : "Collectable is to your is {xPlaces} right and {yPlaces} upwards",
     "collectible_left_down" : "Collectable is to your is {xPlaces} left and {yPlaces} downwards",
     "collectible_right_down" : "Collectable is to your is {xPlaces} right and {yPlaces} downwards"
+  },
+  "tutorial" : {
+    "step_one_line_one" : "Great! Now {appName} would let you know how to play this game.",
+    "step_one_line_two" : "In a moment I will introduce you to our game",
+    "step_one_line_three" : "At center of screen is our game hero and his name is {playerName}",
+    "step_one_line_four" : "Now swipe left to get {playerName} walking",
+    "step_two_line_one" : "Well as you know every story has a villain",
+    "step_two_line_two" : "In this game villain is a group of monsters.",
+    "step_two_line_three" : "In a moment {playerName} would spawn a monster",
+    "step_two_line_four" : "{playerName} has to avoid coming in contact with this monsters to save his life.",
+    "step_three_line_one" : "Now lets move on to Step Three.",
+    "step_three_line_two" : "{playerName} will now introduce you to game collectables.",
+    "step_three_line_three" : "In your screen I would add a coin.",
+    "step_three_line_four" : "You have to swipe on your screen and make {playerName} walk over coin to collect it",
+    "step_four_line_one" : "In a similar way you will also hear about other collectibles in the game.",
+    "step_four_line_two" : "{appName} would help you three times to reach to collectible from players position.",
+    "step_four_line_three" : "If you don't collect even after three times then {playerName} would remove collectible and add a new one.",
+    "step_four_line_four" : "Our new collectible will be at a new position",
+    "step_five_line_one" : "Now I am going to take you to our Actual game",
+    "step_five_line_two" : "I believe you would love to play it"
+  },
+  "game_complete" : {
+    "line_one" : "Congratulations on winning this game. You have successfully saved {playerName} life",
+    "line_two" : "We hope that you liked our game",
+    "line_three" : "You had successfully collected {coinsCollected} collectibles while playing this game.",
+    "line_four" : "Do you want to continue playing our game?",
+    "line_five" : "Double tap on the screen"
   }
 }

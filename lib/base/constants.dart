@@ -11,7 +11,7 @@ class ApplicationConstants {
   //This indicates the number of coins player has to collect in order to complete 1st level
   static int kLevelEasyCompletionCoins = 1;
   static int kLevelMediumCompletionCoins = 1;
-  static int kLevelHardCompletionCoins = 3;
+  static int kLevelHardCompletionCoins = 1;
   static int kLevelEasyWalkSpeed = 100;
 
   static int kGhostTimer  = 5;//seconds

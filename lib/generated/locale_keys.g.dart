@@ -39,5 +39,30 @@ abstract class  LocaleKeys {
   static const game_collectible_left_down = 'game.collectible_left_down';
   static const game_collectible_right_down = 'game.collectible_right_down';
   static const game = 'game';
+  static const tutorial_step_one_line_one = 'tutorial.step_one_line_one';
+  static const tutorial_step_one_line_two = 'tutorial.step_one_line_two';
+  static const tutorial_step_one_line_three = 'tutorial.step_one_line_three';
+  static const tutorial_step_one_line_four = 'tutorial.step_one_line_four';
+  static const tutorial_step_two_line_one = 'tutorial.step_two_line_one';
+  static const tutorial_step_two_line_two = 'tutorial.step_two_line_two';
+  static const tutorial_step_two_line_three = 'tutorial.step_two_line_three';
+  static const tutorial_step_two_line_four = 'tutorial.step_two_line_four';
+  static const tutorial_step_three_line_one = 'tutorial.step_three_line_one';
+  static const tutorial_step_three_line_two = 'tutorial.step_three_line_two';
+  static const tutorial_step_three_line_three = 'tutorial.step_three_line_three';
+  static const tutorial_step_three_line_four = 'tutorial.step_three_line_four';
+  static const tutorial_step_four_line_one = 'tutorial.step_four_line_one';
+  static const tutorial_step_four_line_two = 'tutorial.step_four_line_two';
+  static const tutorial_step_four_line_three = 'tutorial.step_four_line_three';
+  static const tutorial_step_four_line_four = 'tutorial.step_four_line_four';
+  static const tutorial_step_five_line_one = 'tutorial.step_five_line_one';
+  static const tutorial_step_five_line_two = 'tutorial.step_five_line_two';
+  static const tutorial = 'tutorial';
+  static const game_complete_line_one = 'game_complete.line_one';
+  static const game_complete_line_two = 'game_complete.line_two';
+  static const game_complete_line_three = 'game_complete.line_three';
+  static const game_complete_line_four = 'game_complete.line_four';
+  static const game_complete_line_five = 'game_complete.line_five';
+  static const game_complete = 'game_complete';
 
 }

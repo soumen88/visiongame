@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:visiongame/enums/tutorial_step_enums.dart';
 import 'package:visiongame/game/models/game_screen_view_state.dart';
+import 'package:visiongame/generated/locale_keys.g.dart';
 import 'package:visiongame/injector/injection.dart';
 
 import '../../base/constants.dart';
@@ -128,21 +130,19 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
     }
     //await _visionTts.speakStop();
     _visionTts.enableSpeaking();
-    String lineOne = "Congratulations on winning this game. You have successfully saved ${ApplicationConstants.PlayerName} life";
+    String lineOne = LocaleKeys.game_complete_line_one.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "We hope that you liked our game";
+    String lineTwo = LocaleKeys.game_complete_line_two.tr();
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "You had successfully collected ${_gameTriggers.collectibleCounter} collectibles while playing this game.";
+    String lineThree = LocaleKeys.game_complete_line_three.tr(namedArgs: {
+      'coinsCollected' : _gameTriggers.collectibleCounter.toString()
+    });
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "Do you want to continue playing our game?";
+    String lineFour = LocaleKeys.game_complete_line_four.tr();
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
-    String lineFive;
-    if(isSpeechInputEnabled){
-      lineFive = "Say yes to continue or double tap on the screen";
-    }
-    else{
-      lineFive = "double tap on the screen";
-    }
+    String lineFive = LocaleKeys.game_complete_line_five.tr();
 
     bool isLineFiveComplete = await _visionTts.speakText(lineFive);
     if(isLineOneComplete && isLineTwoComplete && isLineThreeComplete & isLineFourComplete && isLineFiveComplete){
@@ -213,13 +213,19 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   Future<bool> startStepOneInTutorial() async{
-    String lineOne = "Great! Now Amaze would let you know how to play this game.";
+    String lineOne = LocaleKeys.tutorial_step_one_line_one.tr(namedArgs: {
+      'appName' : ApplicationConstants.APP_NAME
+    });
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "In a moment I will introduce you to our game";
+    String lineTwo = LocaleKeys.tutorial_step_one_line_two.tr();
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "At center of screen is our game hero and his name is ${ApplicationConstants.PlayerName}";
+    String lineThree = LocaleKeys.tutorial_step_one_line_three.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "Now swipe left to get ${ApplicationConstants.PlayerName} walking";
+    String lineFour = LocaleKeys.tutorial_step_one_line_four.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
     bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
@@ -229,16 +235,18 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startStepThreeInTutorial() async{
-    String lineOne = "Now lets move on to Step Three.";
+    String lineOne = LocaleKeys.tutorial_step_three_line_one.tr();
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "Amaze will now introduce you to game collectables.";
+    String lineTwo = LocaleKeys.tutorial_step_three_line_two.tr(namedArgs: {
+      'appName' : ApplicationConstants.APP_NAME
+    });
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "In your screen I would add a coin.";
+    String lineThree = LocaleKeys.tutorial_step_three_line_three.tr();
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "You have to swipe on your screen and make ${ApplicationConstants.PlayerName} walk over coin to collect it";
+    String lineFour = LocaleKeys.tutorial_step_three_line_four.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
-    /*String lineFive = "You have to move 3 places to your right and 4 places down to reach to your coin";
-    bool isLineFiveComplete = await _visionTts.speakText(lineFive);*/
     bool isAllComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isAllComplete){
       _gameTutorialTriggers.addStepCounter(TutorialStepEnums.SPAWN_COIN);
@@ -246,15 +254,18 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startStepFourInTutorial() async{
-    String lineOne = "In a similar way you will also hear about other collectibles in the game.";
+    String lineOne = LocaleKeys.tutorial_step_four_line_one.tr();
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "Amaze would help you three times to reach to collectible from players position.";
+    String lineTwo = LocaleKeys.tutorial_step_four_line_two.tr(namedArgs: {
+      'appName' : ApplicationConstants.APP_NAME
+    });
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "If you don't collect even after three times then Amaze would remove collectible and add a new one.";
+    String lineThree = LocaleKeys.tutorial_step_four_line_three.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "Our new collectible will be at a new position";
+    String lineFour = LocaleKeys.tutorial_step_four_line_four.tr();
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
-    //bool isComplete = isLineOneComplete && isLineTwoComplete;
     bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isComplete){
       _gameTutorialTriggers.addStepCounter(TutorialStepEnums.START_ACTUAL_GAME);
@@ -262,13 +273,17 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startStepTwoInTutorial() async{
-    String lineOne = "Well as you know every story has a villain";
+    String lineOne = LocaleKeys.tutorial_step_two_line_one.tr();
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "In this game villain is a group of monsters.";
+    String lineTwo = LocaleKeys.tutorial_step_two_line_two.tr();
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
-    String lineThree = "In a moment Amaze would spawn a monster";
+    String lineThree = LocaleKeys.tutorial_step_two_line_three.tr(namedArgs:{
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineThreeComplete = await _visionTts.speakText(lineThree);
-    String lineFour = "${ApplicationConstants.PlayerName} has to avoid coming in contact with this monsters to save his life.";
+    String lineFour = LocaleKeys.tutorial_step_two_line_four.tr(namedArgs: {
+      'playerName' : ApplicationConstants.PlayerName
+    });
     bool isLineFourComplete = await _visionTts.speakText(lineFour);
     bool isComplete = isLineOneComplete && isLineTwoComplete && isLineThreeComplete && isLineFourComplete;
     if(isComplete){
@@ -278,9 +293,9 @@ class GameViewStateNotifier extends StateNotifier<GameScreenViewState>{
   }
 
   void startStepFiveInTutorial() async{
-    String lineOne = "Now I am going to take you to our Actual game";
+    String lineOne = LocaleKeys.tutorial_step_five_line_one.tr();
     bool isLineOneComplete = await _visionTts.speakText(lineOne);
-    String lineTwo = "I believe you would love to play it";
+    String lineTwo = LocaleKeys.tutorial_step_five_line_two.tr();
     bool isLineTwoComplete = await _visionTts.speakText(lineTwo);
     bool isAllComplete = isLineOneComplete && isLineTwoComplete;
     _gameTutorialTriggers.setTutorialInProgress(false);

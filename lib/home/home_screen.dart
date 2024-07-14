@@ -34,7 +34,6 @@ class HomeScreen extends HookConsumerWidget{
   final _logger = locator<LoggerUtils>();
   final _TAG = "HomeScreenPage";
   bool isBottomSheetDisplayed = false;
-  bool? isEnabled;
   final visionTts = locator<VisionTextToSpeechConverter>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,7 +86,6 @@ class HomeScreen extends HookConsumerWidget{
           homeScreenNotifier.init();
           if(!homeScreenNotifier.isLanguageSelectionSpoken){
             homeScreenNotifier.isLanguageSelectionSpoken = true;
-            isEnabled = true;
             chooseLanguage();
           }
 
@@ -126,13 +124,9 @@ class HomeScreen extends HookConsumerWidget{
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () async{
-              _logger.log(_TAG, "Is enabled $isEnabled");
-              if(isEnabled != null && isEnabled!){
-                isEnabled = false;
-                bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();
-                if(hasStoppedSpeaking){
-                  homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
-                }
+              bool hasStoppedSpeaking = await homeScreenNotifier.stopSpeaking();
+              if(hasStoppedSpeaking){
+                homeScreenNotifier.startNextScreen(ApplicationConstants.ScreenDifficulty);
               }
             },
             child: Scaffold(

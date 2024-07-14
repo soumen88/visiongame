@@ -12,7 +12,7 @@
     "ask_for_difficulty_level_line_four" : "यह ट्यूटोरियल पहली बार उपयोग करने वालों के लिए अनुशंसित है।",
     "ask_for_difficulty_level_line_five" : "आप नया गेम शुरू करने के लिए दाईं ओर स्वाइप कर सकते हैं।",
     "read_game_instructions_line_one" : "अब {appName} आपको इस गेम को खेलने के निर्देशों के बारे में बताएगा।",
-    "read_game_instructions_line_two" : "हमारा हीरो {खिलाड़ीनाम}, फंस गया है।",
+    "read_game_instructions_line_two" : "हमारा हीरो {playerName}, फंस गया है।",
     "read_game_instructions_line_three" : "और इस जाल से बाहर निकलने के लिए {playerName} को सिक्के इकट्ठा करने होंगे।",
     "read_game_instructions_line_four" : "यह आसान नहीं है क्योंकि {playerName} को एक बदमाश से मिलना होगा।",
     "read_game_instructions_line_five" : "आपको {kLevelEasyCompletionCoins} सिक्के इकट्ठा करके {playerName} को बचाना होगा।",
@@ -20,13 +20,13 @@
     "read_game_instructions_line_seven" : "एकाधिक बदमाश से {playerName} की जान बचाने की पूरी कोशिश करें।"
   },
   "game" : {
-    "begin" : "चलो शुरू करें। विरोधी को हराने के लिए {kLevelEasyCompletionCoins} सिक्के जमा करें।",
-    "coin_collected" : "वाह! आप 1 सिक्का जमा करने में सफल थे।",
+    "begin" : "चलो शुरू करें। विरोधी को हराने के लिए {kLevelEasyCompletionCoins} कॉइन जमा करें।",
+    "coin_collected" : "वाह! आप 1 कॉइन जमा करने में सफल थे।",
     "player_dead" : "अरे नहीं! आपका खिलाड़ी मारा गया",
-    "level_clear_easy" : "वाह! आपने लेवल मीडियम पास कर लिया है। विरोधीु का नाम बदलकर {enemyName} कर दिया गया है",
+    "level_clear_easy" : "वाह! आपने लेवल मीडियम पास कर लिया है। विरोधी का नाम बदलकर {enemyName} कर दिया गया है",
     "level_clear_medium" : "आप लेवल हार्ड में चले गए हैं। शत्रु का नाम बदलकर {enemyName} कर दिया गया है",
-    "to_defeat_enemy" : "विरोधी को हराने के लिए {kLevelCompletionCoins} सिक्के जमा करें।",
-    "collectible_removed" : "सिक्के हटा दिया गया है. तब तक प्रतीक्षा करें जब तक कि {appName} आपको दोबारा सूचित न कर दे",
+    "to_defeat_enemy" : "विरोधी को हराने के लिए {kLevelCompletionCoins} कॉइन जमा करें।",
+    "collectible_removed" : "कॉइन हटा दिया गया है. तब तक प्रतीक्षा करें जब तक कि {appName} आपको दोबारा सूचित न कर दे",
     "enemy_down_left" : "{enemyName} नीचे की ओर है और बायीं ओर बढ़ रहा है",
     "enemy_up_left" : "{enemyName} ऊपर की ओर है और बायीं ओर बढ़ रहा है",
     "enemy_down_right" : "{enemyName} नीचे की ओर है और दाईं ओर बढ़ रहा है",
@@ -35,9 +35,36 @@
     "enemy_left_down" : "{enemyName} बाईं ओर से आ रहा है और नीचे चल रहा है",
     "enemy_right_up" : "{enemyName} दाईं ओर से आ रहा है और ऊपर चल रहा है",
     "enemy_left_up" : "{enemyName} बाईं ओर से आ रहा है और ऊपर चल रहा है",
-    "collectible_left_up" : "अगला सिक्का {xPlaces} स्थान बायीं और ऊपर की तरफ {yPlaces} स्थान पर मौजूद हैै",
-    "collectible_right_up" : "अगला सिक्का {xPlaces} स्थान दाहिनी और ऊपर की ओर {yPlaces} स्थान पर मौजूद हैै",
-    "collectible_left_down" : "अगला सिक्का {xPlaces} स्थान बायीं ओर नीचे की तरफ {yPlaces} स्थान पर मौजूद हैै",
-    "collectible_right_down" : "अगला सिक्का {xPlaces} स्थान दाहिनी और नीचे की तरफ {yPlaces} स्थान पर मौजूद है"
+    "collectible_left_up" : "अगला कॉइन {xPlaces} स्थान बायीं और ऊपर की तरफ {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_right_up" : "अगला कॉइन {xPlaces} स्थान दाहिनी और ऊपर की ओर {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_left_down" : "अगला कॉइन {xPlaces} स्थान बायीं ओर नीचे की तरफ {yPlaces} स्थान पर मौजूद हैै",
+    "collectible_right_down" : "अगला कॉइन {xPlaces} स्थान दाहिनी और नीचे की तरफ {yPlaces} स्थान पर मौजूद है"
+  },
+  "tutorial" : {
+    "step_one_line_one" : "बहुत खूब! अब {appName} आपको बताएगा कि यह गेम कैसे खेलें।",
+    "step_one_line_two" : "एक पल में मैं आपको हमारे गेम से परिचित करवाउंगी",
+    "step_one_line_three" : "स्क्रीन के बीच में हमारा गेम का हीरो है और उसका नाम {playerName} है",
+    "step_one_line_four" : "अब {playerName} चलने के लिए बाएं स्वाइप करें",
+    "step_two_line_one" : "वैसे जैसा कि आप जानते हैं कि हर कहानी में एक विरोधी होता है",
+    "step_two_line_two" : "इस खेल में विरोधी राक्षसों का एक समूह है।",
+    "step_two_line_three" : "एक क्षण में {playerName} एक विरोधी जोड़ देगा",
+    "step_two_line_four" : "{playerName} को अपनी जान बचाने के लिए इस विरोधी के संपर्क में आने से बचना होगा।",
+    "step_three_line_one" : "अब चरण तीन पर चलते हैं।",
+    "step_three_line_two" : "{playerName} अब आपको गेम कॉइन से परिचित कराएगा।",
+    "step_three_line_three" : "आपकी स्क्रीन में मैं एक कॉइन जोड़ूंगा।",
+    "step_three_line_four" : "आपको अपनी स्क्रीन पर स्वाइप करना होगा और कॉइन को इकट्ठा करने के लिए {playerName} को कॉइन पर चलना होगा",
+    "step_four_line_one" : "इसी तरह आप खेल में अन्य कॉइन के बारे में भी सुनेंगे.",
+    "step_four_line_two" : "{appName} आपको खिलाड़ियों की स्थिति से कॉइन तक पहुंचने में तीन बार मदद करेगा।",
+    "step_four_line_three" : "यदि आप तीन बार के बाद भी कॉइन नहीं करते हैं तो {playerName} कॉइन हटा देगा और एक नया जोड़ देगा।",
+    "step_four_line_four" : "हमारी नई कॉइन एक नए स्थान पर होगी",
+    "step_five_line_one" : "अब मैं आपको हमारे वास्तविक गेम पर ले चलता हूं",
+    "step_five_line_two" : "मुझे विश्वास है कि आप इसे खेलना पसंद करेंगे"
+  },
+  "game_complete" : {
+    "line_one" : "यह गेम जीतने पर बधाई. आपने सफलतापूर्वक {playerName} की जान बचा ली है",
+    "line_two" : "हमें उम्मीद है कि आपको हमारा गेम पसंद आया होगा",
+    "line_three" : "आपने यह गेम खेलते समय सफलतापूर्वक {coinsCollected} कॉइन इकट्ठा कर ली थीं।",
+    "line_four" : "क्या आप हमारा गेम खेलना जारी रखना चाहते हैं?",
+    "line_five" : "खेलना जारी रखने के लिए स्क्रीन पर दो बार टैप करें"
   }
 }

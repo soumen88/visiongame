@@ -319,7 +319,7 @@ class VisionGame extends FlameGame with HasCollisionDetection, DoubleTapDetector
           _logger.log(_TAG, "Received event for hard level");
           _dragon.isEnabled = false;
           _dragon.removeFromParent();
-          enemyName = "Ninja Girl";
+          enemyName = "Vayuna";
           int randomX = next(50, 400);
           int randomY = next(50, 400);
           await _visionTts.speakStop();
