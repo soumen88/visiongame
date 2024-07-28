@@ -22,7 +22,6 @@
   "game" : {
     "begin" : "Lets Begin. To Defeat {enemyName} Enemy collect {kLevelEasyCompletionCoins} collectibles.",
     "coin_collected" : "Yay! You collected {currentCollectable}",
-    "player_dead" : "Oh no! Your player died",
     "level_clear_easy" : "Yay! You have cleared Level Medium. Enemy changes to {enemyName}",
     "level_clear_medium" : "You have moved to Level Hard. Enemy changes to {enemyName}",
     "to_defeat_enemy" : "To Defeat {enemyName} Enemy collect {kLevelCompletionCoins} collectibles.",
@@ -38,7 +37,8 @@
     "collectible_left_up" : "Collectable is to your is {xPlaces} left and {yPlaces} upwards",
     "collectible_right_up" : "Collectable is to your is {xPlaces} right and {yPlaces} upwards",
     "collectible_left_down" : "Collectable is to your is {xPlaces} left and {yPlaces} downwards",
-    "collectible_right_down" : "Collectable is to your is {xPlaces} right and {yPlaces} downwards"
+    "collectible_right_down" : "Collectable is to your is {xPlaces} right and {yPlaces} downwards",
+    "player_dead" : "Oh no! Your player is dead"
   },
   "tutorial" : {
     "step_one_line_one" : "Great! Now {appName} would let you know how to play this game.",

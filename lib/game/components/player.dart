@@ -26,6 +26,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE. **/
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/base/constants.dart';
@@ -37,6 +38,7 @@ import 'package:visiongame/game/components/ninja_girl.dart';
 import 'package:visiongame/game/components/world_collidable.dart';
 import 'package:visiongame/injector/injection.dart';
 import '../../base/logger_utils.dart';
+import '../../generated/locale_keys.g.dart';
 import '../../texttospeech/vision_text_to_speech_converter.dart';
 import '../helpers/direction.dart';
 import 'package:flame/sprite.dart';
@@ -145,7 +147,7 @@ class Player extends SpriteAnimationComponent with HasGameRef, CollisionCallback
       _logger.log(_TAG, "Player got dead $playerMotionModel");
       if(playerMotionModel != null && playerMotionModel.event == PlayerLifeStatusEnums.PLAYER_NEW_LIFE && playerMotionModel.playerLivesLeft >= 0){
         if(isVoiceEnabled){
-          String playerDead = "Oh no! You Died";
+          String playerDead = LocaleKeys.game_player_dead.tr();
           await _visionTts.speakStop();
           _visionTts.enableSpeaking();
           await _visionTts.speakText(playerDead);
