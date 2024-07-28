@@ -30,7 +30,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:visiongame/base/constants.dart';
 import 'package:visiongame/enums/player_life_status_enums.dart';
-import 'package:visiongame/game/components/coins.dart';
 import 'package:visiongame/game/components/enemy_dragon.dart';
 import 'package:visiongame/game/components/ghost.dart';
 import 'package:visiongame/game/components/moth.dart';

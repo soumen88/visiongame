@@ -1,4 +1,4 @@
-package com.visiongame.visiongame
+package com.madhav.game
 
 import io.flutter.embedding.android.FlutterActivity
 
