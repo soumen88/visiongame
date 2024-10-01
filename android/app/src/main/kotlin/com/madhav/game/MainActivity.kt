@@ -1,4 +1,4 @@
-package com.madhav.game
+package com.madhav.game.google
 
 import io.flutter.embedding.android.FlutterActivity
 
